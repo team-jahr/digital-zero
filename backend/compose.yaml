@@ -1,1 +1,14 @@
+version: '1.0'
 services:
+  postgres:
+    image: 'postgres:15'
+    container_name: "jahr_db"
+    environment:
+      - POSTGRES_USER=jahr
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=jahr
+    volumes:
+      - ./data/pgdata:/var/postgressql/data
+    ports:
+      - 5432:5432
+    restart: always
