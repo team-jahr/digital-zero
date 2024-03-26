@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import './App.css';
 import { fetchHelloWorld } from './globalFunctions';
 import { Hello } from './types';
 
-function App() {
+const App = () => {
   const [greetings, setGreetings] = useState<Hello[]>();
 
   useEffect(() => {
@@ -14,15 +13,15 @@ function App() {
 
   return (
     <>
-      {greetings !== undefined && (
-        <div>
-          {greetings.map((el) => {
-            return <div>{el.msg}</div>;
-          })}
-        </div>
-      )}
+      {
+        greetings !== undefined && greetings.map(el => {
+          return (
+            <div key={el.id}>{el.msg}</div>
+          )
+        })
+      }
     </>
-  );
+  )
 }
 
 export default App;
