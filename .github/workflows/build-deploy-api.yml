@@ -27,7 +27,7 @@ env:
 on:
   push:
     branches: ['deployment']
-    paths: ['backend/**']
+    # paths: ['backend/**']
   workflow_dispatch:
 
 permissions:
