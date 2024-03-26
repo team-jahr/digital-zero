@@ -1,16 +1,17 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
+  docker:
+    compose:
+      enabled: false
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/jahr
-    username: jahr
-    password: secret
-    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
     show-sql: true
   sql:
     init:
