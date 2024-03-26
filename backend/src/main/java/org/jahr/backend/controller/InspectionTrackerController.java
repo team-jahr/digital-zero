@@ -2,12 +2,16 @@ package org.jahr.backend.controller;
 
 import org.jahr.backend.model.HelloWorld;
 import org.jahr.backend.repository.HelloWorldRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 
 @RestController
@@ -26,4 +30,21 @@ public class InspectionTrackerController {
         repo.save(new HelloWorld("Hello world"));
         return ResponseEntity.ok(repo.findAll());
     }
+
+    @Value("azure-blob://inspection-tracker-blob/tes.txt")
+    private Resource blobFile;
+
+    @GetMapping("/readBlobFile")
+    public String readBlobFile() throws IOException {
+        return StreamUtils.copyToString(this.blobFile.getInputStream(), Charset.defaultCharset());
+    }
+
+    @PostMapping("/writeBlobFile")
+    public String writeBlobFile(@RequestBody String data) throws IOException {
+        try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
+            os.write(data.getBytes());
+        }
+        return "file was updated";
+    }
+    
 }
