@@ -1,4 +1,4 @@
-package org.jahr.backend.model;
+package org.jahr.backend;
 
 import jakarta.persistence.*;
 import lombok.Getter;

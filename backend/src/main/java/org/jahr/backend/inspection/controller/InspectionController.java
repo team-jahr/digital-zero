@@ -1,7 +1,7 @@
-package org.jahr.backend.controller;
+package org.jahr.backend.inspection.controller;
 
-import org.jahr.backend.model.HelloWorld;
-import org.jahr.backend.repository.HelloWorldRepository;
+import org.jahr.backend.HelloWorld;
+import org.jahr.backend.HelloWorldRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/inspections")
-public class InspectionTrackerController {
+public class InspectionController {
 
     private final HelloWorldRepository repo;
 
-    public InspectionTrackerController(HelloWorldRepository repo) {
+    public InspectionController(HelloWorldRepository repo) {
         this.repo = repo;
     }
 

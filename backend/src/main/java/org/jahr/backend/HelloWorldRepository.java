@@ -1,6 +1,5 @@
-package org.jahr.backend.repository;
+package org.jahr.backend;
 
-import org.jahr.backend.model.HelloWorld;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
