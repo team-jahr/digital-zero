@@ -5,6 +5,7 @@ import org.jahr.backend.repository.HelloWorldRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,23 +29,26 @@ public class InspectionTrackerController {
     @GetMapping
     public ResponseEntity<List<HelloWorld>> helloWorld() {
         repo.save(new HelloWorld("Hello world"));
-        return ResponseEntity.ok(repo.findAll());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        return ResponseEntity.ok().headers(headers).body(repo.findAll());
     }
 
     @Value("azure-blob://inspection-tracker-blob/tes.txt")
     private Resource blobFile;
 
     @GetMapping("/readBlobFile")
-    public String readBlobFile() throws IOException {
-        return StreamUtils.copyToString(this.blobFile.getInputStream(), Charset.defaultCharset());
+    public ResponseEntity<String> readBlobFile() throws IOException {
+        return ResponseEntity.ok(
+                StreamUtils.copyToString(this.blobFile.getInputStream(), Charset.defaultCharset()));
     }
 
     @PostMapping("/writeBlobFile")
-    public String writeBlobFile(@RequestBody String data) throws IOException {
+    public ResponseEntity<String> writeBlobFile(@RequestBody String data) throws IOException {
         try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
             os.write(data.getBytes());
         }
-        return "file was updated";
+        return ResponseEntity.ok("file was updated");
     }
-    
+
 }
