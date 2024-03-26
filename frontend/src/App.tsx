@@ -1,9 +1,27 @@
+import { useEffect, useState } from 'react';
 import './App.css';
+import { fetchHelloWorld } from './globalFunctions';
+import { Hello } from './types';
 
 function App() {
+  const [greetings, setGreetings] = useState<Hello[]>();
+
+  useEffect(() => {
+    fetchHelloWorld()
+      .then((res) => setGreetings(res))
+      .catch(() => console.log('Error while fetching'));
+  }, []);
+
+  console.log(greetings);
   return (
     <>
-      <div>Hello world</div>
+      {greetings !== undefined && (
+        <div>
+          {greetings.map((el) => {
+            return <div>{el.msg}</div>;
+          })}
+        </div>
+      )}
     </>
   );
 }

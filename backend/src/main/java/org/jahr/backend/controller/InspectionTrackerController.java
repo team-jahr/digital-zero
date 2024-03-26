@@ -28,7 +28,6 @@ public class InspectionTrackerController {
 
     @GetMapping
     public ResponseEntity<List<HelloWorld>> helloWorld() {
-        repo.save(new HelloWorld("Hello world"));
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         return ResponseEntity.ok().headers(headers).body(repo.findAll());
