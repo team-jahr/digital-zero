@@ -12,7 +12,6 @@ function App() {
       .catch(() => console.log('Error while fetching'));
   }, []);
 
-  console.log(greetings);
   return (
     <>
       {greetings !== undefined && (
