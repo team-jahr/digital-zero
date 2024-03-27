@@ -1,15 +1,127 @@
-.add-issue-button:hover {
-  background-color: #0056b3;
+/* Form Container */
+.issue-form-container {
+  max-width: 600px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
-.ant-btn.add-issue-button {
-  background-color: #007bff;
+/* Form Title */
+.form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
-.save-issue-button {
-  background-color: #007bff !important;
+
+/* Form Input */
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Severity Level Select */
+.severity-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Description Textarea */
+.description-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Pictures Container */
+.pictures-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Picture Item */
+.picture-item {
+  width: calc(33.33% - 10px);
+  position: relative;
+}
+
+/* Picture Image */
+.picture-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Add Picture Button */
+.add-picture-button {
+  background-color: #007bff;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-right: 10px;
+}
+
+.add-picture-button:hover {
+  background-color: #0056b3;
+}
+
+/* Save Issue Button */
+.save-issue-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-issue-button:hover {
+  background-color: #0056b3;
+}
+
+/* Cancel Button */
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.ant-btn.add-issue-button:hover,
+.save-issue-button:hover,
+.cancel-button:hover {
+  background-color: #0056b3 !important;
+}
+
+.ant-btn.add-issue-button,
+.save-issue-button,
+.cancel-button {
+  background-color: #007bff !important;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
 }
