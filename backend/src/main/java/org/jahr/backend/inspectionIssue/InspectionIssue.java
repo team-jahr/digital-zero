@@ -26,9 +26,16 @@ public class InspectionIssue {
     public InspectionIssue() {
     }
 
-    public InspectionIssue(InspectionIssueKey id, Inspection inspection, Issue issue) {
+    private InspectionIssue(InspectionIssueKey id, Inspection inspection, Issue issue) {
         this.id = id;
         this.inspection = inspection;
         this.issue = issue;
     }
+
+    public static InspectionIssue add(Inspection inspection, Issue issue) {
+        return new InspectionIssue(new InspectionIssueKey(inspection.getId(), issue.getId()),
+                                   inspection,
+                                   issue);
+    }
+
 }

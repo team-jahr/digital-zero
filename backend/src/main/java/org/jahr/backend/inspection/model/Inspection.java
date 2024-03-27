@@ -3,6 +3,9 @@ package org.jahr.backend.inspection.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.jahr.backend.area.Area;
+import org.jahr.backend.inspectionIssue.InspectionIssue;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -29,12 +32,17 @@ public class Inspection {
     @ManyToOne
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
-    
+
+    @OneToMany(mappedBy = "inspection", cascade = CascadeType.MERGE)
+    private List<InspectionIssue> inspectionIssues;
 
     public Inspection() {
     }
 
-    public Inspection(String description, String date, boolean submitted, String reportedTo,
+    public Inspection(String description,
+                      String date,
+                      boolean submitted,
+                      String reportedTo,
                       Area area) {
         this.description = description;
         this.date = date;

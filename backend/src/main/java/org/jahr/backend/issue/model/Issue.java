@@ -2,6 +2,9 @@ package org.jahr.backend.issue.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.jahr.backend.inspectionIssue.InspectionIssue;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -24,6 +27,9 @@ public class Issue {
 
     @Column(name = "img_ref")
     private String imgRef;
+
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST)
+    private List<InspectionIssue> inspectionIssues;
 
     public Issue() {
     }
