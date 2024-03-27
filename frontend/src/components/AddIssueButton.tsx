@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import IssueForm from './IssueForm';
-import './IssueForm.css';
+
+import './InspectionFormStyles.css';
+
+
+
 
 const AddIssueButton = ({ onAddIssue }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);

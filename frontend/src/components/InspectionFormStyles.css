@@ -1,109 +1,129 @@
 .form {
-    max-width: 600px;
-    margin: 50px auto;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+  max-width: 600px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .textarea,
 .select,
 .input {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    border-radius: 4px;
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    border: 1px solid #9ca3af;
-    outline: none;
-    font-weight: lighter;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid #9ca3af;
+  outline: none;
+  font-weight: lighter;
 }
-.input[readOnly]{
-    background: #f3f3f3;
+.input[readOnly] {
+  background: #f3f3f3;
 }
-.name-label, .date-label,.location-label, .area-label{
-    background: white;
-    position: absolute;
-    left: 15px;
-    top: -12px;
-    padding: 0 5px;
-    font-size: 14px;
-    font-weight: lighter;
-    color: #9ca3af;
+.name-label,
+.date-label,
+.location-label,
+.area-label {
+  background: white;
+  position: absolute;
+  left: 15px;
+  top: -12px;
+  padding: 0 5px;
+  font-size: 14px;
+  font-weight: lighter;
+  color: #9ca3af;
 }
-.name-label{
-    background: linear-gradient(to bottom, #ffffff 56%, #f3f3f3 44%);
+.name-label {
+  background: linear-gradient(to bottom, #ffffff 56%, #f3f3f3 44%);
 }
-.date-label{
-    top: 46px;
+.date-label {
+  top: 46px;
 }
-.location-label{
-    top: 107px;
+.location-label {
+  top: 107px;
 }
-.select{
-    padding: 12px 15px;
-    appearance: none;
-    background: rgba(255,255,255,1) url(../assets/arrow-down.svg) no-repeat scroll calc(100% - 18px) center/8px auto;
-    background-size: 14px;
+.select {
+  padding: 12px 15px;
+  appearance: none;
+  background: rgba(255, 255, 255, 1) url(../assets/arrow-down.svg) no-repeat
+    scroll calc(100% - 18px) center/8px auto;
+  background-size: 14px;
 }
 
-.area-label{
-    top: 167px;
+.area-label {
+  top: 167px;
 }
-.location-icon{
-    position: absolute;
-    right: 17px;
-    top: 135px;
+.location-icon {
+  position: absolute;
+  right: 17px;
+  top: 135px;
 }
-.area-icon{
-    position: absolute;
-    right: 17px;
-    top: 195px;
+.area-icon {
+  position: absolute;
+  right: 17px;
+  top: 195px;
 }
 
 .label,
 section > label {
-    line-height: 2;
-    text-align: left;
-    display: block;
-    margin-bottom: 13px;
-    margin-top: 20px;
-    color: black;
-    font-size: 14px;
-    font-weight: 200;
+  line-height: 2;
+  text-align: left;
+  display: block;
+  margin-bottom: 13px;
+  margin-top: 20px;
+  color: black;
+  font-size: 14px;
+  font-weight: 200;
 }
 
-input[type="submit"],
+input[type='submit'],
 .button {
-    background: #9e0363;
-    color: white;
-    text-transform: uppercase;
-    border: none;
-    margin-top: 20px;
-    padding: 20px;
-    font-size: 16px;
-    display: block;
-    appearance: none;
-    border-radius: 4px;
-    width: 200px;
-    font-weight: 400;
-    letter-spacing: 0.5rem;
-    transition: 0.3s all;
-    cursor: pointer;
+  background: #9e0363;
+  color: white;
+  text-transform: uppercase;
+  border: none;
+  margin-top: 20px;
+  padding: 20px;
+  font-size: 16px;
+  display: block;
+  appearance: none;
+  border-radius: 4px;
+  width: 200px;
+  font-weight: 400;
+  letter-spacing: 0.5rem;
+  transition: 0.3s all;
+  cursor: pointer;
 }
 
-input[type="submit"]:hover,
-button[type="button"]:hover {
-    background: #830051;
-    color: white;
+input[type='submit']:hover,
+button[type='button']:hover {
+  background: #830051;
+  color: white;
 }
 
-input[type="submit"]:active {
-    transition: 0.3s all;
-    top: 2px;
+input[type='submit']:active {
+  transition: 0.3s all;
+  top: 2px;
+}
+
+.ant-btn.add-issue-button {
+  background-color: #007bff;
+}
+.save-issue-button {
+  background-color: #007bff !important;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-issue-button:hover {
+  background-color: #0056b3 !important;
 }

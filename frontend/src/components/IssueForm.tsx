@@ -1,6 +1,9 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import './IssueForm.css';
+
+import axios from 'axios';
+import './InspectionFormStyles.css';
+
 
 type Inputs = {
   title: string;
@@ -9,8 +12,18 @@ type Inputs = {
 };
 
 const IssueForm = () => {
-  const { handleSubmit, register } = useForm<Inputs>();
+
+  const { handleSubmit, register, reset } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      await axios.post('URL', data);
+      console.log('Issue saved successfully!');
+      reset();
+    } catch (error) {
+      console.error('Error saving issue:', error);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -38,8 +51,11 @@ const IssueForm = () => {
 
       {/* Below is where you can add logic for adding a picture */}
       {/* Add your picture input logic here */}
+      
+      <button className='save-issue-button' type='submit'>
+        Save Issue
+      </button>
 
-      <button type='submit'>Add Issue</button>
     </form>
   );
 };
