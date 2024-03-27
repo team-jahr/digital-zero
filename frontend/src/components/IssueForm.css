@@ -5,3 +5,11 @@
 .ant-btn.add-issue-button {
   background-color: #007bff;
 }
+.save-issue-button {
+  background-color: #007bff !important;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
