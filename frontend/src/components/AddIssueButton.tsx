@@ -19,12 +19,6 @@ const AddIssueButton = ({ onAddIssue }) => {
     showDrawer();
   };
 
-  const handleSubmit = (values) => {
-    // Logic to handle form submission
-    console.log('Form values:', values);
-    onCloseDrawer();
-  };
-
   return (
     <>
       <Button
@@ -42,7 +36,7 @@ const AddIssueButton = ({ onAddIssue }) => {
         open={isDrawerVisible}
         width={500}
       >
-        <IssueForm onSubmit={handleSubmit} />
+        <IssueForm onCloseDrawer={onCloseDrawer} />
       </Drawer>
     </>
   );
