@@ -110,7 +110,7 @@ const InspectionForm = () => {
                         required: "Field is required",
                         pattern: {
                           value: /^\S+@\S+$/i,
-                          message: "Wrong email please check correctness.",
+                          message: "Please enter a valid email address. It should contain an '@' symbol and valid domain extension such as .com or .net.",
                         },
                       })}
                       className={errors?.emails?.[index]?.value ? "form-input mb-0 error" : "form-input mb-0"}
