@@ -3,8 +3,12 @@ import {useState} from "react";
 import {location, user} from "../data/data.ts";
 import './InspectionFormStyles.css'
 import {Area, Inputs} from "../types.ts";
+import AddIssueButton from './AddIssueButton';
 
 const InspectionForm = () => {
+  const handleAddIssue = () => {
+    // Logic to handle adding an issue goes here
+  };
 
   const [currentLocation, setCurrentLocation] = useState(user.location);
   const [otherLocations] = useState(location.filter(el => el.name !== currentLocation.name))
@@ -51,20 +55,23 @@ const InspectionForm = () => {
 
       {/* below place import for list component*/}
 
-
-      {/* below place add issue button*/}
-
+      <AddIssueButton onAddIssue={handleAddIssue} />
 
       {/* below place send email checkbox*/}
+
 
 
       {/* below place enter email/emails input/inputs*/}
 
 
+
+
+
+
       {/* below place buttons save draft and submit*/}
 
 
-      <input type="submit"/>
+      <input type="submit" />
     </form>
   );
 };
