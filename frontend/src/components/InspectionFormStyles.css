@@ -28,7 +28,7 @@
     background: #f3f3f3;
 }
 
-.name-label, .date-label, .location-label, .area-label, .emailToSend-label {
+.name-label, .date-label, .location-label, .area-label, .emailToSend-label, .description-label {
     background: white;
     position: absolute;
     left: 15px;
@@ -74,6 +74,10 @@
     top: 195px;
 }
 
+.description-label {
+    top: -12px;
+}
+
 .label,
 section > label {
     line-height: 2;
@@ -85,6 +89,7 @@ section > label {
     font-size: 14px;
     font-weight: 200;
 }
+
 .email-label {
     display: flex;
     gap: 10px;
@@ -123,32 +128,50 @@ input[type="submit"]:active {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active{
+input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
-.form-email-field{
+
+.form-email-field {
     display: flex;
     gap: 10px;
     align-items: center;
 }
-.email{
+
+.email {
     margin-bottom: 15px;
 }
-.email-input{
+
+.email-input {
     width: 80%;
 }
-.email-label{
+
+.email-label {
     color: #9ca3af;
 }
 
 .error {
     border-left: 5px solid #ec5990;
 }
-.emails-label{
+
+.emails-label {
     line-height: 2;
     text-align: left;
     display: block;
     font-size: 14px;
     font-weight: 200;
     color: #9ca3af;
+}
+
+.form-description-field {
+    position: relative;
+}
+
+.form-email-field-wrapper {
+    margin-bottom: 30px;
+}
+
+.textarea {
+    resize: none;
+    padding: 10px;
 }
