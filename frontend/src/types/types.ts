@@ -10,5 +10,7 @@ export type Area = {
 export type Inputs = {
   date: string,
   location: Location[],
-  area: Area
+  area: Area,
+  email: boolean,
+  emails: { value: string }[]
 }

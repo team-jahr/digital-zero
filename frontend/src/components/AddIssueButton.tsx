@@ -29,7 +29,7 @@ const AddIssueButton = ({ onAddIssue }) => {
     <>
       <Button
         type='primary'
-        className='add-issue-button'
+        className='primary-button'
         onClick={handleAddIssue}
       >
         Add Issue

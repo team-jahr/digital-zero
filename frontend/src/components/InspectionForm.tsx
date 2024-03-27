@@ -1,23 +1,34 @@
-import {useForm, SubmitHandler} from "react-hook-form";
+import {useForm, SubmitHandler, useFieldArray} from "react-hook-form";
 import {useState} from "react";
 import {location, user} from "../data/data.ts";
 import './InspectionFormStyles.css'
 import AddIssueButton from './AddIssueButton';
 import {Area, Inputs} from "../types/types.ts";
+import {Button} from "antd";
+import {DeleteOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons";
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
     // Logic to handle adding an issue goes here
   };
-
   const [currentLocation, setCurrentLocation] = useState(user.location);
+  const [sendEmail, setSendEmail] = useState(false);
   const [otherLocations] = useState(location.filter(el => el.name !== currentLocation.name))
   const {
     register,
     handleSubmit,
     resetField,
-  } = useForm<Inputs>()
+    control,
+    formState: {errors}
+  } = useForm<Inputs>({
+    defaultValues: {
+      emails: [{ value: ""}]
+    }})
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+  const {fields, append, remove} = useFieldArray({
+    name: "emails",
+    control
+  });
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
       <label className="name-label" htmlFor="name">Name</label>
@@ -55,23 +66,63 @@ const InspectionForm = () => {
 
       {/* below place import for list component*/}
 
-      <AddIssueButton onAddIssue={handleAddIssue} />
-
-      {/* below place send email checkbox*/}
-
+      <AddIssueButton onAddIssue={handleAddIssue}/>
+      <label className="label email-label">
+        <input type="checkbox" placeholder="email" {...register("email", {
+          onChange: () => {
+            resetField("emails")
+            setSendEmail(!sendEmail)
+          }
+        })} />
+        Send email
+      </label>
+      {sendEmail &&
+          <>
+              <label className="emails-label">Enter email(s):</label>
+            {fields.map((field, index) => {
+              return (
+                <div key={field.id} className="form-email-field">
+                  <input
+                    {...register(`emails.${index}.value` as const, {
+                      required: true,
+                      pattern: /^\S+@\S+$/i
+                    })}
+                    className={errors?.emails?.[index]?.value ? "input email-input error" : "input email-input"}
+                  />
+                  {fields.length > 1 &&
+                      <Button
+                          type='default'
+                          className="email"
+                          shape="circle"
+                          icon={<DeleteOutlined/>}
+                          onClick={() =>
+                            remove(index)}
+                      />
+                  }
+                </div>
+              )
+            })}
+              <Button
+                  type='primary'
+                  className="primary-button"
+                  onClick={() =>
+                    append({
+                      value: "",
+                    })}
+              >
+                  Add another email
+              </Button>
+          </>
+      }
 
 
       {/* below place enter email/emails input/inputs*/}
 
 
-
-
-
-
       {/* below place buttons save draft and submit*/}
 
 
-      <input type="submit" />
+      <input type="submit"/>
     </form>
   );
 };
