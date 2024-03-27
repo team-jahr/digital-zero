@@ -6,6 +6,7 @@ import AddIssueButton from './AddIssueButton';
 import {Area, Inputs} from "../types/types.ts";
 import {Button} from "antd";
 import {DeleteOutlined} from "@ant-design/icons";
+import {ErrorMessage} from "@hookform/error-message";
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
@@ -25,50 +26,69 @@ const InspectionForm = () => {
       emails: [{value: ""}]
     }
   })
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
   const {fields, append, remove} = useFieldArray({
     name: "emails",
     control
   });
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
-      <label className="name-label" htmlFor="name">Name</label>
-      <input type="text" id="name" defaultValue={user.name} readOnly className="input"/>
-      <label className="date-label" htmlFor="date">Date</label>
-      <input type="date" id="date" className="input"
-             {...register("date", {valueAsDate: true})}
-             defaultValue={new Date().toISOString().substring(0, 10)}/>
-      <label className="location-label" htmlFor="location">Location</label>
-      <select id="location" {...register("location", {
-        onChange: e => {
-          const selectedLocation = location.filter(element => element.name === e.target.value)
-          resetField("area")
-          setCurrentLocation(selectedLocation[0]);
-        }
-      })} className="select">
-        <option value={user.location.name}>{user.location.name}</option>
-        {otherLocations.map(element => {
-          const {name, id} = element;
-          return (
-            <option value={name} key={id}>{name}</option>
-          )
-        })}
-      </select>
-      <label className="area-label" htmlFor="area">Area</label>
-      <select id="area" {...register("area")} className="select">
-        <option value="">Select area</option>
-        {currentLocation.area.map((element: Area) => {
-          const {name, id} = element;
-          return (
-            <option value={name} key={id}>{name}</option>
-          )
-        })}
-      </select>
+      <div className="form-field-container">
+        <label className="form-label name-label" htmlFor="name">Name</label>
+        <input type="text" id="name" defaultValue={user.name} readOnly className="form-input"/>
+      </div>
 
-      {/* below place import for list component*/}
+      <div className="form-field-container">
+        <label className="form-label" htmlFor="date">Date</label>
+        <input type="date" id="date" className="form-input"
+               {...register("date", {valueAsDate: true})}
+               defaultValue={new Date().toISOString().substring(0, 10)}/>
+      </div>
+
+      <div className="form-field-container">
+        <label className="form-label" htmlFor="location">Location</label>
+        <select id="location" {...register("location", {
+          onChange: e => {
+            const selectedLocation = location.filter(element => element.name === e.target.value)
+            resetField("area")
+            setCurrentLocation(selectedLocation[0]);
+          }
+        })} className="form-select">
+          <option value={user.location.name}>{user.location.name}</option>
+          {otherLocations.map(element => {
+            const {name, id} = element;
+            return (
+              <option value={name} key={id}>{name}</option>
+            )
+          })}
+        </select>
+      </div>
+
+      <div className="form-field-container mb-5">
+        <label className="form-label" htmlFor="area">Area</label>
+        <select id="area" {...register("area", {required: "Field is required."})}
+                className={errors?.area ? "form-select mb-1 error" : "form-select mb-1"}>
+          <option value="">Select area</option>
+          {currentLocation.area.map((element: Area) => {
+            const {name, id} = element;
+            return (
+              <option value={name} key={id}>{name}</option>
+            )
+          })}
+        </select>
+        <ErrorMessage
+          errors={errors}
+          name="area"
+          render={({message}) => <p>{message}</p>}
+        />
+      </div>
 
       <AddIssueButton onAddIssue={handleAddIssue}/>
-      <label className="label email-label">
+
+      <label className="email-label">
         <input type="checkbox" placeholder="email" {...register("email", {
           onChange: () => {
             resetField("emails")
@@ -77,30 +97,41 @@ const InspectionForm = () => {
         })} />
         Send email
       </label>
+
       {sendEmail &&
-          <div className="form-email-field-wrapper">
+          <div className="form-field-container mb-10">
               <label className="emails-label">Enter email(s):</label>
             {fields.map((field, index) => {
               return (
-                <div key={field.id} className="form-email-field">
-                  <input
-                    {...register(`emails.${index}.value` as const, {
-                      required: true,
-                      pattern: /^\S+@\S+$/i
-                    })}
-                    className={errors?.emails?.[index]?.value ? "input email-input error" : "input email-input"}
+                <div key={field.id} className="mb-3">
+                  <div className="form-email-field">
+                    <input
+                      {...register(`emails.${index}.value` as const, {
+                        required: "Field is required",
+                        pattern: {
+                          value: /^\S+@\S+$/i,
+                          message: "Wrong email please check correctness.",
+                        },
+                      })}
+                      className={errors?.emails?.[index]?.value ? "form-input mb-0 error" : "form-input mb-0"}
+                    />
+                    {fields.length > 1 &&
+                        <Button
+                            type='default'
+                            shape="circle"
+                            icon={<DeleteOutlined/>}
+                            onClick={() =>
+                              remove(index)}
+                        />
+                    }
+                  </div>
+                  <ErrorMessage
+                    errors={errors}
+                    name={`emails.${index}.value` as const}
+                    render={({message}) => <p>{message}</p>}
                   />
-                  {fields.length > 1 &&
-                      <Button
-                          type='default'
-                          className="email"
-                          shape="circle"
-                          icon={<DeleteOutlined/>}
-                          onClick={() =>
-                            remove(index)}
-                      />
-                  }
                 </div>
+
               )
             })}
               <Button
@@ -115,14 +146,16 @@ const InspectionForm = () => {
               </Button>
           </div>
       }
-      <div className="form-description-field">
-        <label className="description-label">Additional notes</label>
-        <textarea {...register("description")} className="textarea"/>
+      <div className="form-field-container">
+        <label className="form-label">Additional notes</label>
+        <textarea {...register("description")} className="form-textarea"/>
       </div>
-      {/* below place buttons save draft and submit*/}
-
-
-      <input type="submit"/>
+      <div className="buttons-container">
+        <button className="tertiary-button">
+          Save draft
+        </button>
+        <button type="submit" className="success-button">Submit</button>
+      </div>
     </form>
   );
 };
