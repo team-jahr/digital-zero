@@ -2,7 +2,10 @@ package org.jahr.backend.user.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.location.model.Location;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -20,6 +23,9 @@ public class AppUser {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.PERSIST)
+    private List<Inspection> inspections;
 
     public AppUser() {
     }

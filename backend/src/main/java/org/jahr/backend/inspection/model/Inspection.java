@@ -5,6 +5,7 @@ import lombok.Data;
 import org.jahr.backend.area.Area;
 import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.issue.model.Issue;
+import org.jahr.backend.user.model.AppUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,10 @@ public class Inspection {
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
 
+    @ManyToOne
+    @JoinColumn(name = "app_user_id", nullable = false)
+    private AppUser appUser;
+
     @OneToMany(mappedBy = "inspection", cascade = CascadeType.MERGE)
     private List<InspectionIssue> inspectionIssues;
 
@@ -42,13 +47,19 @@ public class Inspection {
     }
 
     public Inspection(
-            String description, String date, boolean submitted, String reportedTo, Area area
+            String description,
+            String date,
+            boolean submitted,
+            String reportedTo,
+            Area area,
+            AppUser appUser
     ) {
         this.description = description;
         this.date = date;
         this.submitted = submitted;
         this.reportedTo = reportedTo;
         this.area = area;
+        this.appUser = appUser;
     }
 
     public void addIssue(Issue issue) {

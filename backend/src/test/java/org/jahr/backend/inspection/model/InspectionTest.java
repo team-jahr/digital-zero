@@ -63,9 +63,14 @@ class InspectionTest {
 
 
         Inspection inspection1 =
-                new Inspection("An inspection", "yyyy-MM-dd hh:mm", false, null, area);
-        Inspection inspection2 =
-                new Inspection("Another inspection", "yyyy-MM-dd hh:mm", false, null, area);
+                new Inspection("An inspection", "yyyy-MM-dd hh:mm", false, null, area, appUser);
+        Inspection inspection2 = new Inspection("Another inspection",
+                                                "yyyy-MM-dd hh:mm",
+                                                false,
+                                                null,
+                                                area,
+                                                appUser
+        );
 
         inspection1.addIssue(issue2);
         inspection2.addIssue(issue1);
