@@ -2,8 +2,8 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {useState} from "react";
 import {location, user} from "../data/data.ts";
 import './InspectionFormStyles.css'
-import {Area, Inputs} from "../types.ts";
 import AddIssueButton from './AddIssueButton';
+import {Area, Inputs} from "../types/types.ts";
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
