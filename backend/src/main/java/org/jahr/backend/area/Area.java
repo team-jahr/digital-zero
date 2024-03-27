@@ -22,10 +22,10 @@ public class Area {
     @OneToMany(mappedBy = "area")
     private List<Inspection> inspections;
 
+    public Area() {
+    }
+    
     public Area(String name) {
         this.name = name;
-    }
-
-    public Area() {
     }
 }

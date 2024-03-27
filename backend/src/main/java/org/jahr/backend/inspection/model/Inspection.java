@@ -29,6 +29,7 @@ public class Inspection {
     @ManyToOne
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
+    
 
     public Inspection() {
     }
