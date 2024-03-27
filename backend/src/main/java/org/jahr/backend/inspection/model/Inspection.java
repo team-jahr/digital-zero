@@ -29,4 +29,16 @@ public class Inspection {
     @ManyToOne
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
+
+    public Inspection() {
+    }
+
+    public Inspection(String description, String date, boolean submitted, String reportedTo,
+                      Area area) {
+        this.description = description;
+        this.date = date;
+        this.submitted = submitted;
+        this.reportedTo = reportedTo;
+        this.area = area;
+    }
 }

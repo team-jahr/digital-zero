@@ -16,6 +16,16 @@ public class Area {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "name")
+    private String name;
+
     @OneToMany(mappedBy = "area")
     private List<Inspection> inspections;
+
+    public Area(String name) {
+        this.name = name;
+    }
+
+    public Area() {
+    }
 }
