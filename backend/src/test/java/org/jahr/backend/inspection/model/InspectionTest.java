@@ -9,6 +9,8 @@ import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
 import org.jahr.backend.location.model.Location;
 import org.jahr.backend.location.repository.LocationRepository;
+import org.jahr.backend.user.model.AppUser;
+import org.jahr.backend.user.repository.UserRepository;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ class InspectionTest {
     @Autowired
     private LocationRepository locationRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
     @Order(1)
     @Test
     void canAddInspection() {
@@ -44,7 +49,10 @@ class InspectionTest {
 
         Location location = new Location("A location");
         locationRepo.save(location);
-        
+
+        AppUser appUser = new AppUser("email", location);
+        userRepo.save(appUser);
+
         Area area = new Area("An area", location);
         areaRepo.save(area);
 
