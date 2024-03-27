@@ -1,14 +1,39 @@
 .form {
-    max-width: 600px;
-    margin: 50px auto;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+    @apply my-5 mx-5 flex flex-col relative max-w-2xl;
 }
 
-.textarea,
-.select,
-.input {
+.buttons-container {
+    @apply flex flex-col items-center;
+}
+
+.success-button, button[type='submit'] {
+    @apply bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded;
+}
+
+.primary-button {
+    @apply bg-blue-500 hover:bg-blue-400 text-white px-4 rounded;
+}
+
+.tertiary-button {
+    @apply bg-gray-500 hover:bg-gray-400 text-white py-2 px-4 rounded;
+}
+
+
+@media only screen and (min-width: 600px){
+    .form {
+        @apply my-5 mx-auto flex flex-col relative max-w-2xl;
+    }
+    .buttons-container {
+        @apply flex flex-row justify-between items-center;
+    }
+}
+.form-field-container{
+    @apply relative mb-2;
+}
+
+.form-textarea,
+.form-select,
+.form-input {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -17,18 +42,25 @@
     width: 100%;
     border-radius: 4px;
     padding: 10px 15px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 14px;
     border: 1px solid #9ca3af;
     outline: none;
     font-weight: lighter;
 }
 
-.input[readOnly] {
+.form-select {
+    padding: 12px 15px;
+    appearance: none;
+    background: rgba(255, 255, 255, 1) url(../assets/arrow-down.svg) no-repeat scroll calc(100% - 18px) center/8px auto;
+    background-size: 14px;
+}
+
+.form-input[readOnly] {
     background: #f3f3f3;
 }
 
-.name-label, .date-label, .location-label, .area-label, .emailToSend-label, .description-label {
+.form-label {
     background: white;
     position: absolute;
     left: 15px;
@@ -43,23 +75,9 @@
     background: linear-gradient(to bottom, #ffffff 56%, #f3f3f3 44%);
 }
 
-.date-label {
-    top: 46px;
-}
-
-.location-label {
-    top: 107px;
-}
-
-.select {
-    padding: 12px 15px;
-    appearance: none;
-    background: rgba(255, 255, 255, 1) url(../assets/arrow-down.svg) no-repeat scroll calc(100% - 18px) center/8px auto;
-    background-size: 14px;
-}
-
-.area-label {
-    top: 167px;
+.email-label{
+    color: #9ca3af;
+    @apply flex gap-3 my-5 text-sm font-extralight;
 }
 
 .location-icon {
@@ -74,50 +92,22 @@
     top: 195px;
 }
 
-.description-label {
-    top: -12px;
-}
 
-.label,
-section > label {
-    line-height: 2;
-    text-align: left;
-    display: block;
-    margin-bottom: 13px;
-    margin-top: 20px;
-    color: black;
-    font-size: 14px;
-    font-weight: 200;
-}
-
-.email-label {
-    display: flex;
-    gap: 10px;
-}
-
-input[type="submit"],
-.button {
-    background: #9e0363;
-    color: white;
+.success-button,
+.tertiary-button{
     text-transform: uppercase;
     border: none;
     margin-top: 20px;
-    padding: 20px;
+    padding: 10px;
     font-size: 16px;
     display: block;
     appearance: none;
     border-radius: 4px;
     width: 200px;
     font-weight: 400;
-    letter-spacing: 0.5rem;
+    letter-spacing: 0.2rem;
     transition: 0.3s all;
     cursor: pointer;
-}
-
-input[type="submit"]:hover,
-button[type="button"]:hover {
-    background: #830051;
-    color: white;
 }
 
 input[type="submit"]:active {
@@ -138,16 +128,8 @@ input:-webkit-autofill:active {
     align-items: center;
 }
 
-.email {
-    margin-bottom: 15px;
-}
-
 .email-input {
     width: 80%;
-}
-
-.email-label {
-    color: #9ca3af;
 }
 
 .error {
@@ -163,15 +145,23 @@ input:-webkit-autofill:active {
     color: #9ca3af;
 }
 
-.form-description-field {
-    position: relative;
-}
 
-.form-email-field-wrapper {
-    margin-bottom: 30px;
-}
-
-.textarea {
+.form-textarea {
     resize: none;
-    padding: 10px;
+    padding: 12px;
 }
+p {
+    color: #bf1650;
+    font-size: 10px;
+}
+
+p::before {
+    display: inline;
+    content: "⚠ ";
+}
+
+
+
+
+
+
