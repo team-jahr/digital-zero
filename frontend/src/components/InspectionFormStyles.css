@@ -23,10 +23,12 @@
     outline: none;
     font-weight: lighter;
 }
-.input[readOnly]{
+
+.input[readOnly] {
     background: #f3f3f3;
 }
-.name-label, .date-label,.location-label, .area-label{
+
+.name-label, .date-label, .location-label, .area-label, .emailToSend-label {
     background: white;
     position: absolute;
     left: 15px;
@@ -36,31 +38,37 @@
     font-weight: lighter;
     color: #9ca3af;
 }
-.name-label{
+
+.name-label {
     background: linear-gradient(to bottom, #ffffff 56%, #f3f3f3 44%);
 }
-.date-label{
+
+.date-label {
     top: 46px;
 }
-.location-label{
+
+.location-label {
     top: 107px;
 }
-.select{
+
+.select {
     padding: 12px 15px;
     appearance: none;
-    background: rgba(255,255,255,1) url(../assets/arrow-down.svg) no-repeat scroll calc(100% - 18px) center/8px auto;
+    background: rgba(255, 255, 255, 1) url(../assets/arrow-down.svg) no-repeat scroll calc(100% - 18px) center/8px auto;
     background-size: 14px;
 }
 
-.area-label{
+.area-label {
     top: 167px;
 }
-.location-icon{
+
+.location-icon {
     position: absolute;
     right: 17px;
     top: 135px;
 }
-.area-icon{
+
+.area-icon {
     position: absolute;
     right: 17px;
     top: 195px;
@@ -76,6 +84,10 @@ section > label {
     color: black;
     font-size: 14px;
     font-weight: 200;
+}
+.email-label {
+    display: flex;
+    gap: 10px;
 }
 
 input[type="submit"],
@@ -106,4 +118,37 @@ button[type="button"]:hover {
 input[type="submit"]:active {
     transition: 0.3s all;
     top: 2px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+.form-email-field{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.email{
+    margin-bottom: 15px;
+}
+.email-input{
+    width: 80%;
+}
+.email-label{
+    color: #9ca3af;
+}
+
+.error {
+    border-left: 5px solid #ec5990;
+}
+.emails-label{
+    line-height: 2;
+    text-align: left;
+    display: block;
+    font-size: 14px;
+    font-weight: 200;
+    color: #9ca3af;
 }
