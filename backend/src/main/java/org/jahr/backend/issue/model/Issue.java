@@ -2,7 +2,7 @@ package org.jahr.backend.issue.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.jahr.backend.inspectionIssue.InspectionIssue;
+import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Issue {
     private String description;
 
     @Column(name = "severity")
-    private int severity;
+    private String severity;
 
     @Column(name = "img_ref")
     private String imgRef;
@@ -34,7 +34,7 @@ public class Issue {
     public Issue() {
     }
 
-    public Issue(String title, String description, int severity, String imgRef) {
+    public Issue(String title, String description, String severity, String imgRef) {
         this.title = title;
         this.description = description;
         this.severity = severity;

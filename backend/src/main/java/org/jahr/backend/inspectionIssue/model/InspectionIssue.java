@@ -1,4 +1,4 @@
-package org.jahr.backend.inspectionIssue;
+package org.jahr.backend.inspectionIssue.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,6 +26,12 @@ public class InspectionIssue {
     public InspectionIssue() {
     }
 
+    public InspectionIssue(Inspection inspection, Issue issue) {
+        this.id = new InspectionIssueKey(inspection.getId(), issue.getId());
+        this.inspection = inspection;
+        this.issue = issue;
+    }
+
     private InspectionIssue(InspectionIssueKey id, Inspection inspection, Issue issue) {
         this.id = id;
         this.inspection = inspection;
@@ -37,5 +43,4 @@ public class InspectionIssue {
                                    inspection,
                                    issue);
     }
-
 }

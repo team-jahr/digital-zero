@@ -3,8 +3,10 @@ package org.jahr.backend.inspection.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.jahr.backend.area.Area;
-import org.jahr.backend.inspectionIssue.InspectionIssue;
+import org.jahr.backend.inspectionIssue.model.InspectionIssue;
+import org.jahr.backend.issue.model.Issue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -49,5 +51,19 @@ public class Inspection {
         this.submitted = submitted;
         this.reportedTo = reportedTo;
         this.area = area;
+    }
+
+    public void addIssue(Issue issue) {
+        List<InspectionIssue> inspectionIssues = this.getInspectionIssues();
+        InspectionIssue inspectionIssue = new InspectionIssue(this, issue);
+
+        if (inspectionIssues == null) {
+            List<InspectionIssue> newList = new ArrayList<>();
+            newList.add(inspectionIssue);
+            this.setInspectionIssues(newList);
+        } else {
+            inspectionIssues.add(inspectionIssue);
+            this.setInspectionIssues(inspectionIssues);
+        }
     }
 }

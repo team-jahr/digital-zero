@@ -1,4 +1,4 @@
-package org.jahr.backend.inspectionIssue;
+package org.jahr.backend.inspectionIssue.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

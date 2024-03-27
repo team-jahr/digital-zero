@@ -3,7 +3,8 @@ package org.jahr.backend.inspection.model;
 import org.jahr.backend.area.Area;
 import org.jahr.backend.area.AreaRepository;
 import org.jahr.backend.inspection.repository.InspectionRepository;
-import org.jahr.backend.inspectionIssue.InspectionIssue;
+import org.jahr.backend.inspectionIssue.model.InspectionIssue;
+import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
 import org.junit.jupiter.api.Order;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +28,10 @@ class InspectionTest {
     @Autowired
     private IssueRepository issueRepo;
 
-    @Order(0)
+    @Autowired
+    private InspectionIssueRepository inspectionIssueRepo;
+
+    @Order(1)
     @Test
     void canAddInspection() {
         // Arrange
@@ -37,27 +40,48 @@ class InspectionTest {
         Area area = new Area("An area");
         areaRepo.save(area);
 
-        Issue issue1 = new Issue("An issue", "", 7, "url");
-        Issue issue2 = new Issue("Another issue", "", 4, "url");
+        Issue issue1 = new Issue("An issue", "", "warning", "url");
+        Issue issue2 = new Issue("Another issue", "", "warning", "url");
         issueRepo.save(issue1);
         issueRepo.save(issue2);
 
 
-        Inspection inspection1 = new Inspection(null, "yyyy-MM-dd hh:mm", false, null, area);
+        Inspection inspection1 =
+                new Inspection("An inspection", "yyyy-MM-dd hh:mm", false, null, area);
+        Inspection inspection2 =
+                new Inspection("Another inspection", "yyyy-MM-dd hh:mm", false, null, area);
 
-        List<InspectionIssue> issues1 = new ArrayList<>();
-        InspectionIssue inspectionIssue = InspectionIssue.add(inspection1, issue1);
-        issues1.add(inspectionIssue);
-        inspection1.setInspectionIssues(issues1);
+        inspection1.addIssue(issue2);
+        inspection2.addIssue(issue1);
+
         inspectionsRepo.save(inspection1);
-
-        Inspection inspection2 = new Inspection(null, "yyyy-MM-dd hh:mm", false, null, area);
         inspectionsRepo.save(inspection2);
+
+        inspectionIssueRepo.saveAll(inspection1.getInspectionIssues());
+        inspectionIssueRepo.saveAll(inspection2.getInspectionIssues());
 
         // Act
         int actual = inspectionsRepo.findAll().size();
 
         // Assert
         assertEquals(expected, actual);
+    }
+
+    @Order(2)
+    @Test
+    void shouldContainOneIssue() {
+        int expectedSize = 1;
+        String expectedValue = "Another issue";
+
+        List<InspectionIssue> inspectionIssues = inspectionIssueRepo.findAll()
+                .stream()
+                .filter(el -> el.getInspection().getId() == 1)
+                .toList();
+        
+        int actualSize = inspectionIssues.size();
+        String actualValue = inspectionIssues.get(0).getIssue().getTitle();
+
+        assertEquals(expectedSize, actualSize);
+        assertEquals(expectedValue, actualValue);
     }
 }
