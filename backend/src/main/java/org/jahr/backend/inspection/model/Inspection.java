@@ -41,11 +41,9 @@ public class Inspection {
     public Inspection() {
     }
 
-    public Inspection(String description,
-                      String date,
-                      boolean submitted,
-                      String reportedTo,
-                      Area area) {
+    public Inspection(
+            String description, String date, boolean submitted, String reportedTo, Area area
+    ) {
         this.description = description;
         this.date = date;
         this.submitted = submitted;

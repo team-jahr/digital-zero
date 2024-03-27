@@ -7,6 +7,8 @@ import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
+import org.jahr.backend.location.model.Location;
+import org.jahr.backend.location.repository.LocationRepository;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +33,19 @@ class InspectionTest {
     @Autowired
     private InspectionIssueRepository inspectionIssueRepo;
 
+    @Autowired
+    private LocationRepository locationRepo;
+
     @Order(1)
     @Test
     void canAddInspection() {
         // Arrange
         int expected = 2;
 
-        Area area = new Area("An area");
+        Location location = new Location("A location");
+        locationRepo.save(location);
+        
+        Area area = new Area("An area", location);
         areaRepo.save(area);
 
         Issue issue1 = new Issue("An issue", "", "warning", "url");
@@ -77,7 +85,7 @@ class InspectionTest {
                 .stream()
                 .filter(el -> el.getInspection().getId() == 1)
                 .toList();
-        
+
         int actualSize = inspectionIssues.size();
         String actualValue = inspectionIssues.get(0).getIssue().getTitle();
 
