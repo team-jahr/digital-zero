@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import IssueForm from './IssueForm';
+
 import './InspectionFormStyles.css';
+
+
+
 
 const AddIssueButton = ({ onAddIssue }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -42,7 +46,6 @@ const AddIssueButton = ({ onAddIssue }) => {
         visible={isDrawerVisible}
         width={500}
       >
-        <p>Content for adding an issue...</p>
         <IssueForm onSubmit={handleSubmit} />
       </Drawer>
     </>
