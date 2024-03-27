@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import IssueForm from './IssueForm';
+import './IssueForm.css';
 
 const AddIssueButton = ({ onAddIssue }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -26,7 +27,11 @@ const AddIssueButton = ({ onAddIssue }) => {
 
   return (
     <>
-      <Button type='primary' onClick={handleAddIssue}>
+      <Button
+        type='primary'
+        className='add-issue-button'
+        onClick={handleAddIssue}
+      >
         Add Issue
       </Button>
       <Drawer
@@ -37,7 +42,6 @@ const AddIssueButton = ({ onAddIssue }) => {
         visible={isDrawerVisible}
         width={500}
       >
-        <p>Content for adding an issue...</p>
         <IssueForm onSubmit={handleSubmit} />
       </Drawer>
     </>
