@@ -12,5 +12,6 @@ export type Inputs = {
   location: Location[],
   area: Area,
   email: boolean,
-  emails: { value: string }[]
+  emails: { value: string }[],
+  description: string
 }

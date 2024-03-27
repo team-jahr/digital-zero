@@ -5,7 +5,7 @@ import './InspectionFormStyles.css'
 import AddIssueButton from './AddIssueButton';
 import {Area, Inputs} from "../types/types.ts";
 import {Button} from "antd";
-import {DeleteOutlined, MinusOutlined, PlusOutlined} from "@ant-design/icons";
+import {DeleteOutlined} from "@ant-design/icons";
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
@@ -22,8 +22,9 @@ const InspectionForm = () => {
     formState: {errors}
   } = useForm<Inputs>({
     defaultValues: {
-      emails: [{ value: ""}]
-    }})
+      emails: [{value: ""}]
+    }
+  })
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
   const {fields, append, remove} = useFieldArray({
     name: "emails",
@@ -77,7 +78,7 @@ const InspectionForm = () => {
         Send email
       </label>
       {sendEmail &&
-          <>
+          <div className="form-email-field-wrapper">
               <label className="emails-label">Enter email(s):</label>
             {fields.map((field, index) => {
               return (
@@ -112,13 +113,12 @@ const InspectionForm = () => {
               >
                   Add another email
               </Button>
-          </>
+          </div>
       }
-
-
-      {/* below place enter email/emails input/inputs*/}
-
-
+      <div className="form-description-field">
+        <label className="description-label">Additional notes</label>
+        <textarea {...register("description")} className="textarea"/>
+      </div>
       {/* below place buttons save draft and submit*/}
 
 

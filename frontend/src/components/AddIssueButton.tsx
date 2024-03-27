@@ -39,7 +39,7 @@ const AddIssueButton = ({ onAddIssue }) => {
         placement='right'
         closable={true}
         onClose={onCloseDrawer}
-        visible={isDrawerVisible}
+        open={isDrawerVisible}
         width={500}
       >
         <IssueForm onSubmit={handleSubmit} />
