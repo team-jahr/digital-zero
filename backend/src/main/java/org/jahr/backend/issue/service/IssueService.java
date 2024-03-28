@@ -6,6 +6,7 @@ import org.jahr.backend.issue.repository.IssueRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class IssueService {
 
     public Issue getIssueById(Integer id) {
         return issueRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Issue not found with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Issue not found with id: " + id));
     }
 
     public Issue createIssue(Issue issue) {

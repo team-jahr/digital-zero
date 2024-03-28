@@ -1,12 +1,14 @@
 package org.jahr.backend.issue.controller;
 
+import org.jahr.backend.issue.DTO.IssueDTO;
+import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,32 +23,35 @@ public class IssueController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Issue>> getAllIssues() {
+    public ResponseEntity<IssueListDTO> getAllIssues() {
         List<Issue> issues = issueService.getAllIssues();
-        return new ResponseEntity<>(issues, HttpStatus.OK);
+        return ResponseEntity.ok(IssueListDTO.fromIssues(issues));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Issue> getIssueById(@PathVariable("id") Integer id) {
+    public ResponseEntity<IssueDTO> getIssueById(@PathVariable("id") Integer id) {
         Issue issue = issueService.getIssueById(id);
-        return new ResponseEntity<>(issue, HttpStatus.OK);
+        return ResponseEntity.ok(IssueDTO.fromIssue(issue));
     }
 
     @PostMapping
-    public ResponseEntity<Issue> createIssue(@RequestBody Issue issue) {
+    public ResponseEntity<IssueDTO> createIssue(@RequestBody Issue issue) {
         Issue createdIssue = issueService.createIssue(issue);
-        return new ResponseEntity<>(createdIssue, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("/api/issues/" + createdIssue.getId()))
+                .body(IssueDTO.fromIssue(createdIssue));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Issue> updateIssue(@PathVariable("id") Integer id, @RequestBody Issue issue) {
+    public ResponseEntity<IssueDTO> updateIssue(
+            @PathVariable("id") Integer id, @RequestBody Issue issue
+    ) {
         Issue updatedIssue = issueService.updateIssue(id, issue);
-        return new ResponseEntity<>(updatedIssue, HttpStatus.OK);
+        return ResponseEntity.accepted().body(IssueDTO.fromIssue(updatedIssue));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteIssue(@PathVariable("id") Integer id) {
         issueService.deleteIssue(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
