@@ -1,0 +1,16 @@
+.single-issue-container{
+    display: flex;
+    border: 1px solid #f3f3f3;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    margin: 10px 0;
+}
+.single-issue-container:hover{
+    background-color: #f3f3f3;
+    cursor: pointer;
+}
+.buttons-container{
+    display: flex;
+    gap: 5px;
+}

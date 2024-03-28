@@ -1,8 +1,17 @@
-const IssuesList = () => {
+import SingleIssue from "./SingleIssue.tsx";
+import {Issue} from "../types/types.ts";
+type ListOfIssuesProp = {
+  list: Issue[];
+}
+const IssuesList = ({list}:ListOfIssuesProp) => {
   return (
-    <>
-      {/*here comes list of issues*/}
-    </>
+    <div>
+      {list.map(el=>{
+        return(
+          <SingleIssue data={el} key={el.id}/>
+        )
+      })}
+    </div>
   );
 };
 
