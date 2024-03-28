@@ -1,12 +1,22 @@
-import { allMockedAppLocations } from '../data/data';
-import { AppLocation } from '../types/types';
+import { allMockedLocations, mockedUser } from '../data/data';
+import { Location, User } from '../types/types';
 
-export const fetchLocations = (url: string): Promise<AppLocation[]> => {
-  return new Promise<AppLocation[]>((resolve, reject) => {
-    if (url === 'break') {
+export const fetchLocations = (url: string): Promise<Location[]> => {
+  return new Promise((resolve, reject) => {
+    if (url === 'kindly break') {
       reject('Error');
     } else {
-      resolve(allMockedAppLocations);
+      resolve(allMockedLocations);
+    }
+  });
+};
+
+export const fetchUser = (url: string): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    if (url === 'kindly break') {
+      reject('Error');
+    } else {
+      resolve(mockedUser);
     }
   });
 };

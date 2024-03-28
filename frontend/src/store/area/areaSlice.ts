@@ -1,25 +1,25 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AppArea } from '../../types/types';
-import { mockedAppArea } from '../../data/data';
+import { Area } from '../../types/types';
+import { mockedArea } from '../../data/data';
 
-interface AppAreaState {
-  value: AppArea;
+interface AreaState {
+  value: Area;
 }
 
-const initialState: AppAreaState = {
-  value: mockedAppArea,
+const initialState: AreaState = {
+  value: mockedArea,
 };
 
-const appAreaSlice = createSlice({
-  name: 'appArea',
+const areaSlice = createSlice({
+  name: 'area',
   initialState: initialState,
   reducers: {
-    setAppArea: (state, action: PayloadAction<AppArea>) => {
+    setArea: (state, action: PayloadAction<Area>) => {
       state.value = action.payload;
     },
   },
 });
 
-export const { setAppArea } = appAreaSlice.actions;
+export const { setArea } = areaSlice.actions;
 
-export default appAreaSlice.reducer;
+export default areaSlice.reducer;

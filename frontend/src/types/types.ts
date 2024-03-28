@@ -1,12 +1,12 @@
-export type Location = {
-  id: string;
-  name: string;
-  area: Area[];
-};
-export type Area = {
-  id: string;
-  name: string;
-};
+// export type Location = {
+//   id: string;
+//   name: string;
+//   area: Area[];
+// };
+// export type Area = {
+//   id: string;
+//   name: string;
+// };
 export type Inputs = {
   date: string;
   location: Location[];
@@ -16,13 +16,22 @@ export type Inputs = {
   description: string;
 };
 
-export type AppArea = {
+/**
+ * -----------------------------------------------------------------------------
+ */
+export type Area = {
   id: string;
   name: string;
 };
 
-export type AppLocation = {
+export type Location = {
   id: string;
   name: string;
-  area: AppArea[];
+  area: Area[];
+};
+
+export type User = {
+  id: string;
+  name: string;
+  location: Location;
 };

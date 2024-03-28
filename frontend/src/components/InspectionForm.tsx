@@ -1,41 +1,42 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { allMockedAppLocations, user } from '../data/data.ts';
 import './InspectionFormStyles.css';
 import AddIssueButton from './AddIssueButton';
-import { AppLocation, Area, Inputs } from '../types/types.ts';
+import { Location, Area, Inputs, User } from '../types/types.ts';
 import { Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ErrorMessage } from '@hookform/error-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
-import { setAppLocation } from '../store/location/locationSlice.ts';
-import { fetchLocations } from '../utils/globalFunctions.ts';
+import { setLocation } from '../store/location/locationSlice.ts';
+import { fetchLocations, fetchUser } from '../utils/globalFunctions.ts';
+import { mockedUser } from '../data/data.ts';
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
     // Logic to handle adding an issue goes here
   };
   // const [currentLocation, setCurrentLocation] = useState(user.location);
-  const appLocation = useSelector(
-    (state: RootState) => state.setAppLocation.value
-  );
-  const dispatchAppLocation = useDispatch<AppDispatch>();
+  const location = useSelector((state: RootState) => state.setLocation.value);
+  const dispatchLocation = useDispatch<AppDispatch>();
 
   const [sendEmail, setSendEmail] = useState(false);
   // const [otherLocations] = useState(
-  //   location.filter((el) => el.name !== appLocation.name)
+  //   location.filter((el) => el.name !== location.name)
   // );
 
-  const [otherLocations, setOtherLocations] = useState<AppLocation[]>();
+  const [otherLocations, setOtherLocations] = useState<Location[]>([]);
+  const [user, setUser] = useState<User>(mockedUser);
+
+  useEffect(() => {
+    fetchUser('kindly work').then((res) => setUser(res));
+  }, []);
 
   useEffect(() => {
     fetchLocations('kindly work').then((res) =>
-      setOtherLocations(
-        res.filter((location) => location.id !== appLocation.id)
-      )
+      setOtherLocations(res.filter((e) => e.id !== location.id))
     );
-  }, [appLocation]);
+  }, [location]);
 
   const {
     register,
@@ -56,6 +57,10 @@ const InspectionForm = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
   };
+
+  console.log(location);
+  console.log(otherLocations);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='form'>
       <div className='form-field-container'>
@@ -65,7 +70,7 @@ const InspectionForm = () => {
         <input
           type='text'
           id='name'
-          defaultValue={user.name}
+          defaultValue={user !== undefined ? user.name : 'User Name'}
           readOnly
           className='form-input'
         />
@@ -92,11 +97,11 @@ const InspectionForm = () => {
           id='location'
           {...register('location', {
             onChange: (e) => {
-              const selectedLocation = allMockedAppLocations.filter(
+              const selectedLocation = [...otherLocations, location].filter(
                 (element) => element.name === e.target.value
               );
               resetField('area');
-              dispatchAppLocation(setAppLocation(selectedLocation[0]));
+              dispatchLocation(setLocation(selectedLocation[0]));
               // setCurrentLocation(selectedLocation[0]);
             },
           })}
@@ -127,7 +132,7 @@ const InspectionForm = () => {
           }
         >
           <option value=''>Select area</option>
-          {appLocation.area.map((element: Area) => {
+          {location.area.map((element: Area) => {
             const { name, id } = element;
             return (
               <option value={name} key={id}>

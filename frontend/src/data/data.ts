@@ -1,4 +1,4 @@
-import { AppArea, AppLocation } from '../types/types';
+import { Area, Location, User } from '../types/types';
 
 export const user = {
   id: '1',
@@ -41,18 +41,15 @@ export const location = [
   },
 ];
 
-export const mockedAppArea: AppArea = {
+/**
+ * -----------------------------------------------------------------------------
+ */
+export const mockedArea: Area = {
   id: '1',
   name: 'Hall 111',
 };
 
-export const mockedAppLocation: AppLocation = {
-  id: '4',
-  name: 'Avesta',
-  area: [mockedAppArea],
-};
-
-export const allMockedAppLocations: AppLocation[] = [
+export const allMockedLocations: Location[] = [
   {
     id: '1',
     name: 'Avesta',
@@ -78,3 +75,9 @@ export const allMockedAppLocations: AppLocation[] = [
     ],
   },
 ];
+
+export const mockedUser: User = {
+  id: '1',
+  name: 'John Doe',
+  location: allMockedLocations[0],
+};
