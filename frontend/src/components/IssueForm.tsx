@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
 import AddPictureButton from './AddPictureButton';
@@ -10,10 +10,9 @@ type Inputs = {
   description: string;
 };
 
-const IssueForm = ({ onCloseDrawer }) => {
+const IssueForm = () => {
   const { handleSubmit, register, reset } = useForm<Inputs>();
   const [pictures, setPictures] = useState<string[]>([]);
-  const [picture, setPicture] = useState<string | null>(null);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -23,7 +22,6 @@ const IssueForm = ({ onCloseDrawer }) => {
       console.log('Issue saved successfully!');
       reset();
       setPictures([]);
-      setPicture(null);
     } catch (error) {
       console.error('Error saving issue:', error);
     }
@@ -39,13 +37,11 @@ const IssueForm = ({ onCloseDrawer }) => {
 
   const handlePictureAdded = (imageDataUrl: string) => {
     setPictures((prevPictures) => [...prevPictures, imageDataUrl]);
-    setPicture(imageDataUrl);
   };
 
   const handleCancel = () => {
     reset();
     setPictures([]);
-    setPicture(null);
   };
 
   const handlePictureClick = (pictureUrl: string) => {
@@ -145,6 +141,7 @@ const IssueForm = ({ onCloseDrawer }) => {
           style={{ display: 'none' }}
           ref={fileInputRef}
           onChange={(e) =>
+            e.target.files !== null &&
             handlePictureAdded(URL.createObjectURL(e.target.files[0]))
           }
         />

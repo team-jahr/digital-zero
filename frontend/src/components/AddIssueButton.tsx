@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import IssueForm from './IssueForm';
 import './IssueForm.css';
 
-const AddIssueButton = ({ onAddIssue }) => {
+type AddIssueButtonProp = {
+  onAddIssue: () => void;
+};
+
+const AddIssueButton = ({ onAddIssue }: AddIssueButtonProp) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
   const showDrawer = () => {
@@ -36,7 +40,7 @@ const AddIssueButton = ({ onAddIssue }) => {
         open={isDrawerVisible}
         width={500}
       >
-        <IssueForm onCloseDrawer={onCloseDrawer} />
+        <IssueForm />
       </Drawer>
     </>
   );

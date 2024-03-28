@@ -1,21 +1,34 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import './IssueForm.css';
 
-const AddPictureButton = ({ onPicturesAdded }) => {
-  const fileInputRef = useRef(null);
+type AddPictureButtonProp = {
+  onPicturesAdded: (p1: string[]) => void;
+};
 
-  const handleFileInputChange = (event) => {
+const AddPictureButton = ({ onPicturesAdded }: AddPictureButtonProp) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = event.target.files;
-    if (files.length > 0) {
-      const newPictures = [];
+    if (!!files && files.length > 0) {
+      const newPictures: string[] = [];
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const reader = new FileReader();
         reader.onload = (e) => {
-          const imageDataUrl = e.target.result;
-          newPictures.push(imageDataUrl); // Append the new picture to the list
+          if (e.target !== null) {
+            let imageDataUrl = e.target.result;
+            if (imageDataUrl instanceof ArrayBuffer) {
+              const decoder = new TextDecoder();
+              imageDataUrl = decoder.decode(imageDataUrl);
+            }
+            if (imageDataUrl !== null) {
+              newPictures.push(imageDataUrl);
+            }
+          }
           if (i === files.length - 1) {
-            // If it's the last file, trigger the callback with all new pictures
             onPicturesAdded(newPictures);
           }
         };
@@ -32,8 +45,16 @@ const AddPictureButton = ({ onPicturesAdded }) => {
       const blob = await imageCapture.takePhoto();
       const reader = new FileReader();
       reader.onload = (e) => {
-        const imageDataUrl = e.target.result;
-        onPicturesAdded([imageDataUrl]); // Add the new picture to the list
+        if (e.target !== null) {
+          let imageDataUrl = e.target.result;
+          if (imageDataUrl instanceof ArrayBuffer) {
+            const decoder = new TextDecoder();
+            imageDataUrl = decoder.decode(imageDataUrl);
+          }
+          if (imageDataUrl !== null) {
+            onPicturesAdded([imageDataUrl]);
+          }
+        }
       };
       reader.readAsDataURL(blob);
     } catch (error) {
@@ -53,7 +74,7 @@ const AddPictureButton = ({ onPicturesAdded }) => {
       />
       <button
         className='add-picture-button'
-        onClick={() => fileInputRef.current.click()}
+        onClick={() => !!fileInputRef.current && fileInputRef.current.click()}
       >
         Upload Picture
       </button>

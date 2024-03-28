@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@hookform/error-message": "^2.0.1",
-    "@reduxjs/toolkit": "^2.2.2",
-    "react-hook-form": "^7.51.1"
-  }
-}
