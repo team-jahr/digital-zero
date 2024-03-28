@@ -1,5 +1,6 @@
 package org.jahr.backend.inspection.service;
 
+import org.jahr.backend.inspection.DTO.InspectionDTO;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
 import org.springframework.stereotype.Service;
@@ -20,4 +21,7 @@ public class InspectionService {
     }
 
     // Full CRUD-functionality
+//    public InspectionDTO createInspectionDraft(InspectionDTO inspectionDTO){
+//
+//    }
 }
