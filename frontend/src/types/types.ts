@@ -15,3 +15,11 @@ export type Inputs = {
   emails: { value: string }[],
   description: string
 }
+
+export type Issue = {
+  id: string,
+  title: string,
+  severityLevel: string,
+  description: string,
+  images: string[],
+}

@@ -1,12 +1,13 @@
 import {useForm, SubmitHandler, useFieldArray} from "react-hook-form";
-import {useState} from "react";
-import {location, user} from "../data/data.ts";
+import {useEffect, useState} from "react";
+import {listOfIssues, location, user} from "../data/data.ts";
 import './InspectionFormStyles.css'
 import AddIssueButton from './AddIssueButton';
-import {Area, Inputs} from "../types/types.ts";
+import {Area, Inputs, Issue} from "../types/types.ts";
 import {Button} from "antd";
 import {DeleteOutlined} from "@ant-design/icons";
 import {ErrorMessage} from "@hookform/error-message";
+import IssuesList from "./IssuesList.tsx";
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
@@ -14,6 +15,7 @@ const InspectionForm = () => {
   };
   const [currentLocation, setCurrentLocation] = useState(user.location);
   const [sendEmail, setSendEmail] = useState(false);
+  const[list, setList] = useState<Issue[]>([]);
   const [otherLocations] = useState(location.filter(el => el.name !== currentLocation.name))
   const {
     register,
@@ -26,11 +28,13 @@ const InspectionForm = () => {
       emails: [{value: ""}]
     }
   })
-
   const {fields, append, remove} = useFieldArray({
     name: "emails",
     control
   });
+  useEffect(()=>{
+   setList([...listOfIssues]);
+  },[])
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
   }
@@ -87,6 +91,7 @@ const InspectionForm = () => {
       </div>
 
       <AddIssueButton onAddIssue={handleAddIssue}/>
+      <IssuesList list={list}/>
 
       <label className="email-label">
         <input type="checkbox" placeholder="email" {...register("email", {

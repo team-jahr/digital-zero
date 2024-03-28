@@ -15,3 +15,21 @@ export const location = [
     name: 'Malmö',
     area: [{id: '1', name: 'Hall 666'}, {id: '2', name: 'Hall 777'}, {id: '3', name: 'Hall 888'}]
   }]
+
+
+export const listOfIssues = [
+  {
+    id: '1',
+    title: 'Issue1',
+    severityLevel: "Warning",
+    description: "Some simple description.",
+    images: ["Image1", "Image2"]
+  },
+  {
+    id: '2',
+    title: 'Issue2',
+    severityLevel: "Error",
+    description: "Some simple description.",
+    images: ["Image1", "Image2"]
+  }
+]
