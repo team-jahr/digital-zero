@@ -1,15 +1,16 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
-import { useState } from 'react';
-import { location, user } from '../data/data.ts';
+import { useEffect, useState } from 'react';
+import { allMockedAppLocations, user } from '../data/data.ts';
 import './InspectionFormStyles.css';
 import AddIssueButton from './AddIssueButton';
-import { Area, Inputs } from '../types/types.ts';
+import { AppLocation, Area, Inputs } from '../types/types.ts';
 import { Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ErrorMessage } from '@hookform/error-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
 import { setAppLocation } from '../store/location/locationSlice.ts';
+import { fetchLocations } from '../utils/globalFunctions.ts';
 
 const InspectionForm = () => {
   const handleAddIssue = () => {
@@ -22,9 +23,20 @@ const InspectionForm = () => {
   const dispatchAppLocation = useDispatch<AppDispatch>();
 
   const [sendEmail, setSendEmail] = useState(false);
-  const [otherLocations] = useState(
-    location.filter((el) => el.name !== appLocation.name)
-  );
+  // const [otherLocations] = useState(
+  //   location.filter((el) => el.name !== appLocation.name)
+  // );
+
+  const [otherLocations, setOtherLocations] = useState<AppLocation[]>();
+
+  useEffect(() => {
+    fetchLocations('kindly work').then((res) =>
+      setOtherLocations(
+        res.filter((location) => location.id !== appLocation.id)
+      )
+    );
+  }, [appLocation]);
+
   const {
     register,
     handleSubmit,
@@ -80,7 +92,7 @@ const InspectionForm = () => {
           id='location'
           {...register('location', {
             onChange: (e) => {
-              const selectedLocation = location.filter(
+              const selectedLocation = allMockedAppLocations.filter(
                 (element) => element.name === e.target.value
               );
               resetField('area');
@@ -91,14 +103,15 @@ const InspectionForm = () => {
           className='form-select'
         >
           <option value={user.location.name}>{user.location.name}</option>
-          {otherLocations.map((element) => {
-            const { name, id } = element;
-            return (
-              <option value={name} key={id}>
-                {name}
-              </option>
-            );
-          })}
+          {otherLocations !== undefined &&
+            otherLocations.map((element) => {
+              const { name, id } = element;
+              return (
+                <option value={name} key={id}>
+                  {name}
+                </option>
+              );
+            })}
         </select>
       </div>
 

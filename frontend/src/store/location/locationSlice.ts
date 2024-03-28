@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { mockAppLocation } from '../../data/data';
+import { mockedAppLocation } from '../../data/data';
 import { AppLocation } from '../../types/types';
 
 interface AppLocationState {
@@ -7,7 +7,7 @@ interface AppLocationState {
 }
 
 const initialState: AppLocationState = {
-  value: mockAppLocation,
+  value: mockedAppLocation,
 };
 
 const appLocationSlice = createSlice({

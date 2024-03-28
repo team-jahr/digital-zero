@@ -41,13 +41,40 @@ export const location = [
   },
 ];
 
-export const mockAppArea: AppArea = {
+export const mockedAppArea: AppArea = {
   id: '1',
   name: 'Hall 111',
 };
 
-export const mockAppLocation: AppLocation = {
-  id: '1',
+export const mockedAppLocation: AppLocation = {
+  id: '4',
   name: 'Avesta',
-  area: [mockAppArea],
+  area: [mockedAppArea],
 };
+
+export const allMockedAppLocations: AppLocation[] = [
+  {
+    id: '1',
+    name: 'Avesta',
+    area: [
+      { id: '1', name: 'Hall 111' },
+      { id: '2', name: 'Hall 222' },
+    ],
+  },
+  {
+    id: '2',
+    name: 'Stockholm',
+    area: [
+      { id: '3', name: 'Hall 333' },
+      { id: '4', name: 'Hall 444' },
+    ],
+  },
+  {
+    id: '3',
+    name: 'Uppsala',
+    area: [
+      { id: '5', name: 'Hall 555' },
+      { id: '6', name: 'Hall 666' },
+    ],
+  },
+];

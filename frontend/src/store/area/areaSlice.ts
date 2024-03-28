@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { AppArea } from '../../types/types';
-import { mockAppArea } from '../../data/data';
+import { mockedAppArea } from '../../data/data';
 
 interface AppAreaState {
   value: AppArea;
 }
 
 const initialState: AppAreaState = {
-  value: mockAppArea,
+  value: mockedAppArea,
 };
 
 const appAreaSlice = createSlice({
