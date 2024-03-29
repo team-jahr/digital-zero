@@ -1,33 +1,17 @@
 package org.jahr.backend.inspection.controller;
-
 import lombok.RequiredArgsConstructor;
-import org.jahr.backend.area.Area;
 import org.jahr.backend.area.AreaRepository;
 import org.jahr.backend.inspection.DTO.InspectionDTO;
-import org.jahr.backend.inspection.DTO.InspectionListDTO;
-import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
 import org.jahr.backend.inspection.service.InspectionService;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
-import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
-import org.jahr.backend.location.model.Location;
 import org.jahr.backend.location.repository.LocationRepository;
-import org.jahr.backend.user.model.AppUser;
 import org.jahr.backend.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.List;
+
 
 @RestController
 @CrossOrigin
@@ -35,19 +19,13 @@ import java.util.List;
 @RequestMapping("/api/inspections")
 public class InspectionController {
 
-    private final InspectionRepository inspectionRepo;
-    private final AreaRepository areaRepo;
-    private final IssueRepository issueRepo;
-    private final InspectionIssueRepository inspectionIssueRepo;
-    private final LocationRepository locationRepo;
-    private final UserRepository userRepo;
+
     private final InspectionService service;
 
-    @PostMapping("/save-draft")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public void createInspection(@RequestBody InspectionDTO inspection){
-        System.out.println("inspection = " + inspection);
-//        return service.createInspectionDraft(inspection);
+        service.createInspection(inspection);
     }
 
 //    // Temporary for test of deployment

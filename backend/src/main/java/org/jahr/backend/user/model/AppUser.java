@@ -24,8 +24,8 @@ public class AppUser {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.PERSIST)
-    private List<Inspection> inspections;
+//    @OneToMany(mappedBy = "appUser", cascade = CascadeType.PERSIST)
+//    private List<Inspection> inspections;
 
     public AppUser() {
     }

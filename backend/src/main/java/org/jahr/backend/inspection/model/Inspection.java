@@ -6,7 +6,9 @@ import org.jahr.backend.area.Area;
 import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.user.model.AppUser;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Inspection {
     private String description;
 
     @Column(name = "date")
-    private String date;
+    private LocalDateTime date;
 
     @Column(name = "submitted")
     private boolean submitted;
@@ -32,13 +34,13 @@ public class Inspection {
     @Column(name = "reported_to")
     private String reportedTo;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
 
-    @ManyToOne
-    @JoinColumn(name = "app_user_id", nullable = false)
-    private AppUser appUser;
+//    @ManyToOne
+//    @JoinColumn(name = "app_user_id", nullable = false)
+//    private AppUser appUser;
 
     @OneToMany(mappedBy = "inspection", cascade = CascadeType.MERGE)
     private List<InspectionIssue> inspectionIssues;
@@ -48,18 +50,16 @@ public class Inspection {
 
     public Inspection(
             String description,
-            String date,
+            LocalDateTime date,
             boolean submitted,
             String reportedTo,
-            Area area,
-            AppUser appUser
+            Area area
     ) {
         this.description = description;
         this.date = date;
         this.submitted = submitted;
         this.reportedTo = reportedTo;
         this.area = area;
-        this.appUser = appUser;
     }
 
     public void addIssue(Issue issue) {

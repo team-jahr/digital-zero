@@ -23,7 +23,7 @@ public class Area {
     @OneToMany(mappedBy = "area")
     private List<Inspection> inspections;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
