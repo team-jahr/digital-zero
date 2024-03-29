@@ -1,9 +1,10 @@
-import SingleIssue from './SingleIssue.tsx';
-import { Issue } from '../types/types.ts';
+import { Issue } from '../types/types';
+import SingleIssue from './SingleIssue';
 
 type ListOfIssuesProp = {
   list: Issue[];
 };
+
 const IssuesList = ({ list }: ListOfIssuesProp) => {
   return (
     <div>
