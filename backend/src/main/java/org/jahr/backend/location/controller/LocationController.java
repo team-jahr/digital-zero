@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.jahr.backend.location.model.Location;
 import org.jahr.backend.location.service.LocationService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 @RequestMapping("/api/locations")
 public class LocationController {
     private final LocationService service;
