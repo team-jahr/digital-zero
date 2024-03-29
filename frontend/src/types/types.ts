@@ -35,3 +35,8 @@ export type User = {
   name: string;
   location: Location;
 };
+
+export type Email = {
+  email: string;
+  sent: boolean;
+};

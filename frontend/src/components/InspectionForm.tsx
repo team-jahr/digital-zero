@@ -16,14 +16,11 @@ const InspectionForm = () => {
   const handleAddIssue = () => {
     // Logic to handle adding an issue goes here
   };
-  // const [currentLocation, setCurrentLocation] = useState(user.location);
+
   const location = useSelector((state: RootState) => state.setLocation.value);
   const dispatchLocation = useDispatch<AppDispatch>();
 
   const [sendEmail, setSendEmail] = useState(false);
-  // const [otherLocations] = useState(
-  //   location.filter((el) => el.name !== location.name)
-  // );
 
   const [otherLocations, setOtherLocations] = useState<Location[]>([]);
   const [user, setUser] = useState<User>(mockedUser);
