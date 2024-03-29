@@ -1,24 +1,54 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { listOfIssues, location, user } from '../data/data.ts';
+import { listOfIssues, user } from '../data/data.ts';
 import './InspectionFormStyles.css';
 import AddIssueButton from './AddIssueButton';
-import { Area, Inputs, Issue } from '../types/types.ts';
+import { Area, Inputs, Issue, Location } from '../types/types.ts';
 import { Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ErrorMessage } from '@hookform/error-message';
 import IssuesList from './IssuesList.tsx';
 
 const InspectionForm = () => {
+  const [location, setLocations] = useState<Location[]>([]);
+  const [areas, setAreas] = useState<Area[]>([]);
+
+  useEffect(() => {
+    fetchLocations();
+    fetchAreas(currentLocation.name);
+  }, []);
+  const fetchLocations = () => {
+    fetch('http://localhost:8080/api/locations')
+      .then((res) => res.json())
+      .then((res) => {
+        setLocations(res);
+        return res;
+      })
+      .then((res) => {
+        const otherLocations = res.filter(
+          (el: Location) => el.name !== currentLocation.name,
+        );
+        setOtherLocations(otherLocations);
+      })
+      .catch((err) => console.log(err));
+  };
+  const fetchAreas = (location: string) => {
+    fetch(`http://localhost:8080/api/areas?location=${location}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setAreas(res);
+      });
+  };
   const handleAddIssue = () => {
     // Logic to handle adding an issue goes here
   };
-  const [currentLocation, setCurrentLocation] = useState(user.location);
+  const [currentLocation, setCurrentLocation] = useState<Location>({
+    id: 1,
+    name: 'Stockholm',
+  });
   const [sendEmail, setSendEmail] = useState(false);
   const [list, setList] = useState<Issue[]>([]);
-  const [otherLocations] = useState(
-    location.filter((el) => el.name !== currentLocation.name),
-  );
+  const [otherLocations, setOtherLocations] = useState([]);
   const {
     register,
     handleSubmit,
@@ -80,6 +110,7 @@ const InspectionForm = () => {
                 (element) => element.name === e.target.value,
               );
               resetField('area');
+              fetchAreas(selectedLocation[0].name);
               setCurrentLocation(selectedLocation[0]);
             },
           })}
@@ -109,7 +140,7 @@ const InspectionForm = () => {
           }
         >
           <option value=''>Select area</option>
-          {currentLocation.area.map((element: Area) => {
+          {areas.map((element: Area) => {
             const { name, id } = element;
             return (
               <option value={name} key={id}>
