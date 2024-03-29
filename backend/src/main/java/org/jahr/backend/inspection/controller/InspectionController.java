@@ -1,7 +1,7 @@
 package org.jahr.backend.inspection.controller;
 
-import org.jahr.backend.area.Area;
-import org.jahr.backend.area.AreaRepository;
+import org.jahr.backend.area.model.Area;
+import org.jahr.backend.area.repository.AreaRepository;
 import org.jahr.backend.inspection.DTO.InspectionListDTO;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
