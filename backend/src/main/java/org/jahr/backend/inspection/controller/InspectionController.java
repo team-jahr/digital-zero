@@ -12,17 +12,13 @@ import org.jahr.backend.location.model.Location;
 import org.jahr.backend.location.repository.LocationRepository;
 import org.jahr.backend.user.model.AppUser;
 import org.jahr.backend.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.List;
 
 @RestController
@@ -82,8 +78,8 @@ public class InspectionController {
         Area area = new Area("An area", location);
         areaRepo.save(area);
 
-        Issue issue1 = new Issue("An issue", "", "warning", "url");
-        Issue issue2 = new Issue("Another issue", "", "warning", "url");
+        Issue issue1 = new Issue("An issue", "", "warning", "dog1.jpeg");
+        Issue issue2 = new Issue("Another issue", "", "warning", "dog1.jpeg");
         issueRepo.save(issue1);
         issueRepo.save(issue2);
 
@@ -106,24 +102,6 @@ public class InspectionController {
 
         inspectionIssueRepo.saveAll(inspection1.getInspectionIssues());
         inspectionIssueRepo.saveAll(inspection2.getInspectionIssues());
-    }
-
-    @Value("azure-blob://inspection-tracker-blob/tes.txt")
-    private Resource blobFile;
-
-    @GetMapping("/readBlobFile")
-    public ResponseEntity<String> readBlobFile() throws IOException {
-        return ResponseEntity.ok(StreamUtils.copyToString(this.blobFile.getInputStream(),
-                                                          Charset.defaultCharset()
-        ));
-    }
-
-    @PostMapping("/writeBlobFile")
-    public ResponseEntity<String> writeBlobFile(@RequestBody String data) throws IOException {
-        try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
-            os.write(data.getBytes());
-        }
-        return ResponseEntity.ok("file was updated");
     }
 
 }
