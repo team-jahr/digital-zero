@@ -1,7 +1,8 @@
-package org.jahr.backend.area;
+package org.jahr.backend.area.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.location.model.Location;
 
@@ -25,12 +26,19 @@ public class Area {
 
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
+    @JsonIgnore
     private Location location;
 
     public Area() {
     }
 
     public Area(String name, Location location) {
+        this.name = name;
+        this.location = location;
+    }
+
+    public Area(int id, String name, Location location) {
+        this.id = id;
         this.name = name;
         this.location = location;
     }

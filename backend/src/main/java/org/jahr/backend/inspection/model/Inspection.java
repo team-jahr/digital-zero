@@ -2,7 +2,7 @@ package org.jahr.backend.inspection.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.jahr.backend.area.Area;
+import org.jahr.backend.area.model.Area;
 import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.user.model.AppUser;
