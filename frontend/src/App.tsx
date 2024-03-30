@@ -37,7 +37,7 @@ const App = () => {
       <Button type='default' onClick={handleNewInspection}>
         New Inspection
       </Button>
-      {showInspectionForm && <InspectionForm />}
+      {showInspectionForm && <InspectionForm id={formId} />}
     </>
   );
 };

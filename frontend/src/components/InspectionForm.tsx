@@ -9,7 +9,11 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { ErrorMessage } from '@hookform/error-message';
 import IssuesList from './IssuesList.tsx';
 
-const InspectionForm = () => {
+type InspectionFormProp = {
+  id: number;
+};
+
+const InspectionForm = ({ id }: InspectionFormProp) => {
   const [location, setLocations] = useState<Location[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
 
@@ -81,7 +85,7 @@ const InspectionForm = () => {
     const responseArea = areas.filter((el) => el.name === data.area)[0];
     const responseEmail = data.email ? data.emails[0].value : null;
     const responseBody = {
-      id: 3,
+      id: id,
       isDraft: draft,
       date: new Date(data.date).toISOString(),
       location: responseLocation,
