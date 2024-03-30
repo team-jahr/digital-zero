@@ -1,23 +1,67 @@
 package org.jahr.backend.inspection.service;
 
+import lombok.RequiredArgsConstructor;
+import org.jahr.backend.area.model.Area;
+import org.jahr.backend.area.repository.AreaRepository;
+import org.jahr.backend.area.exception.AreaNotFoundException;
+import org.jahr.backend.inspection.DTO.InspectionDTO;
+
+import org.jahr.backend.inspection.exception.InspectionNotFoundException;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
+
+import org.jahr.backend.user.exception.UserNotFoundException;
+import org.jahr.backend.user.model.AppUser;
+import org.jahr.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class InspectionService {
 
     private final InspectionRepository repo;
-
-    public InspectionService(InspectionRepository repo) {
-        this.repo = repo;
-    }
+    private final UserRepository userRepository;
+    private final AreaRepository areaRepository;
 
     public List<Inspection> getInspections() {
         return repo.findAll();
     }
 
-    // Full CRUD-functionality
+    public Inspection createInspection() {
+        AppUser user = userRepository.findById(1).orElseThrow(() -> new UserNotFoundException("User not found!"));
+        Area area = areaRepository.findById(1).orElseThrow(() -> new AreaNotFoundException("Area not found"));
+        Inspection inspection = new Inspection(null, null, false, null, area, user);
+        repo.save(inspection);
+        return inspection;
+    }
+
+    public void updateInspection(InspectionDTO inspection) {
+        Inspection findInspection = repo.findById(inspection.id()).orElseThrow(() ->
+                new InspectionNotFoundException("Inspection not found."));
+        findInspection.setArea(inspection.area());
+        findInspection.setDate(inspection.date());
+        findInspection.setReportedTo(inspection.email());
+        findInspection.setSubmitted(inspection.isSubmitted());
+        findInspection.setDescription(inspection.description());
+        repo.save(findInspection);
+//        if (inspection.isSubmitted()) {
+//            // send email
+//        }
+    }
+
+    public List<Inspection> deleteInspection(int id) {
+        Inspection inspection = repo.findById(id)
+                .orElseThrow(() -> new InspectionNotFoundException("Inspection was not found."));
+        repo.delete(inspection);
+        return repo.findAll();
+    }
+
+    public Inspection updateInspection(int id) {
+//       Inspection inspection = repo.findById(id)
+//               .orElseThrow(() -> new InspectionNotFoundException("Inspection was not found."));
+//       return inspection;
+        return null;
+    }
 }

@@ -54,4 +54,5 @@ public class IssueController {
         issueService.deleteIssue(id);
         return ResponseEntity.noContent().build();
     }
+
 }

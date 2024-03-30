@@ -2,11 +2,13 @@ package org.jahr.backend.inspection.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 import org.jahr.backend.area.model.Area;
 import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.user.model.AppUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Inspection {
     private String description;
 
     @Column(name = "date")
-    private String date;
+    private LocalDateTime date;
 
     @Column(name = "submitted")
     private boolean submitted;
@@ -48,18 +50,18 @@ public class Inspection {
 
     public Inspection(
             String description,
-            String date,
+            LocalDateTime date,
             boolean submitted,
             String reportedTo,
             Area area,
-            AppUser appUser
+            AppUser user
     ) {
         this.description = description;
         this.date = date;
         this.submitted = submitted;
         this.reportedTo = reportedTo;
         this.area = area;
-        this.appUser = appUser;
+        this.appUser = user;
     }
 
     public void addIssue(Issue issue) {
