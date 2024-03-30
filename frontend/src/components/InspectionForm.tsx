@@ -47,6 +47,7 @@ const InspectionForm = () => {
     name: 'Stockholm',
   });
   const [sendEmail, setSendEmail] = useState(false);
+  const [draft, setDraft] = useState(false);
   const [list, setList] = useState<Issue[]>([]);
   const [otherLocations, setOtherLocations] = useState([]);
   const {
@@ -67,8 +68,35 @@ const InspectionForm = () => {
   useEffect(() => {
     setList([...listOfIssues]);
   }, []);
+  const handleSaveDraft: SubmitHandler<Inputs> = (data) => {
+    setDraft(true);
+    onSubmit(data);
+  };
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    console.log(data.area);
+    console.log(data.location);
+    const responseLocation = location.filter(
+      (el) => el.name === data.location,
+    )[0];
+    const responseArea = areas.filter((el) => el.name === data.area)[0];
+    const responseEmail = data.email ? data.emails[0].value : null;
+    const responseBody = {
+      id: 3,
+      isDraft: draft,
+      date: new Date(data.date).toISOString(),
+      location: responseLocation,
+      area: responseArea,
+      email: responseEmail,
+      description: data.description,
+    };
+    console.log(JSON.stringify(responseBody));
+    fetch('http://localhost:8080/api/inspections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(responseBody),
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='form'>
@@ -230,7 +258,9 @@ const InspectionForm = () => {
         <textarea {...register('description')} className='form-textarea' />
       </div>
       <div className='buttons-container'>
-        <button className='tertiary-button'>Save draft</button>
+        <button className='tertiary-button' onClick={handleSaveDraft}>
+          Save draft
+        </button>
         <button type='submit' className='success-button'>
           Submit
         </button>
