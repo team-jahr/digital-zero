@@ -1,7 +1,7 @@
 //package org.jahr.backend.inspection.model;
 //
-//import org.jahr.backend.area.Area;
-//import org.jahr.backend.area.AreaRepository;
+//import org.jahr.backend.area.model.Area;
+//import org.jahr.backend.area.repository.AreaRepository;
 //import org.jahr.backend.inspection.repository.InspectionRepository;
 //import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 //import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;

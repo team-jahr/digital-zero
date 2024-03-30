@@ -7,10 +7,9 @@ import java.util.List;
 
 public record InspectionListDTO(List<InspectionDTO> inspectionDTOs) {
 
-    // Temporary for testing deployment
     public static InspectionListDTO fromInspections(List<Inspection> inspections) {
         List<InspectionDTO> dtos = new ArrayList<>();
-        inspections.forEach(inspection -> dtos.add(new InspectionDTO(inspection.getDescription())));
+        inspections.forEach(inspection -> dtos.add(InspectionDTO.fromInspection(inspection)));
         return new InspectionListDTO(dtos);
     }
 }

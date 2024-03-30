@@ -1,6 +1,7 @@
 package org.jahr.backend.area.service;
 
 import lombok.RequiredArgsConstructor;
+import org.jahr.backend.area.controller.ListOfAreasDTO;
 import org.jahr.backend.area.model.Area;
 import org.jahr.backend.area.repository.AreaRepository;
 import org.springframework.stereotype.Service;
