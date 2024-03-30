@@ -10,7 +10,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import IssuesList from './IssuesList.tsx';
 
 type InspectionFormProp = {
-  id: number;
+  id: number | undefined;
 };
 
 const InspectionForm = ({ id }: InspectionFormProp) => {

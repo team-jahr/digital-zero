@@ -7,7 +7,7 @@ import { Button } from 'antd';
 import { useState } from 'react';
 
 const App = () => {
-  const [formId, setFormId] = useState<number>();
+  const [formId, setFormId] = useState<number | undefined>();
   const showInspectionForm = useSelector(
     (state: RootState) => state.app.showInspectionForm,
   );
