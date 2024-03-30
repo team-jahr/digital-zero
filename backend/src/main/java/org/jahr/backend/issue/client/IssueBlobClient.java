@@ -8,8 +8,12 @@ import org.jahr.backend.issue.model.Issue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -24,7 +28,7 @@ public class IssueBlobClient {
     public Issue uploadIssueImages(Issue issue) {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
-
+        System.out.println("Here 1");
         BlobContainerClient blobContainerClient =
                 blobServiceClient.getBlobContainerClient(blobContainerName);
         blobContainerClient.createIfNotExists();
@@ -34,13 +38,16 @@ public class IssueBlobClient {
         List<String> issueImagesNames = new ArrayList<>();
 
         for (int i = 0; i < issueImagesData.size(); i++) {
-            String blobName = ("" + issue.getId()) + i;
+            String blobName = ("" + issue.getId()) + i + ".png";
             issueImagesNames.add(blobName);
             try {
-                InputStream inputStream =
-                        new ByteArrayInputStream(issueImagesData.get(i).getBytes());
+                String imgDataString = issueImagesData.get(i);
+                byte[] imgDataBytes = Base64.getDecoder().decode(imgDataString);
+                InputStream inputStream = new ByteArrayInputStream(imgDataBytes);
+
                 BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
                 blobClient.upload(inputStream);
+
                 inputStream.close();
             } catch (IOException e) {
                 throw new IllegalStateException("Could not convert and upload image data");
@@ -64,33 +71,20 @@ public class IssueBlobClient {
         List<String> issueImagesNames = List.of(issue.getImgRef());
         List<String> issueImagesData = new ArrayList<>();
 
-//        for (int i = 0; i < issueImagesNames.size(); i++) {
-//            String blobName = ("" + issue.getId()) + i;
-//            try {
-//                OutputStream outputStream = new ByteArrayOutputStream();
-//                outputStream.write(blobName.getBytes());
-//                BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
-//                blobClient.downloadStream(outputStream);
-//                String imgData = outputStream.toString();
-//                issueImagesData.add(imgData);
-//            } catch (IOException e) {
-//                throw new IllegalStateException("Could not convert and upload image data");
-//            }
-//        }
-
-        // Should be the for-loop but not all of the data is in the blob so like this for now
-        String blobName = "00";
-        try {
-            OutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(blobName.getBytes());
+        for (int i = 0; i < issueImagesNames.size(); i++) {
+            String blobName = ("" + issue.getId()) + i + ".png";
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             blobClient.downloadStream(outputStream);
-            String imgData = outputStream.toString();
+
+            String imgData = Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            System.out.println("imgData = " + imgData);
+
             issueImagesData.add(imgData);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not convert and upload image data");
         }
 
+        // Should be entire list
         return issueImagesData.get(0);
     }
 

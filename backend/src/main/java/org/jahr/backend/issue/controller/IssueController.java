@@ -5,6 +5,7 @@ import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,20 +26,30 @@ public class IssueController {
 
     @GetMapping
     public ResponseEntity<IssueListDTO> getAllIssues() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
         List<Issue> issues = issueService.getAllIssues();
-        return ResponseEntity.ok(IssueListDTO.fromIssues(issues));
+        return ResponseEntity.ok().headers(headers).body(IssueListDTO.fromIssues(issues));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<IssueDTO> getIssueById(@PathVariable("id") Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
         Issue issue = issueService.getIssueById(id);
-        return ResponseEntity.ok(IssueDTO.fromIssue(issue));
+        return ResponseEntity.ok().headers(headers).body(IssueDTO.fromIssue(issue));
     }
 
     @PostMapping
     public ResponseEntity<IssueDTO> createIssue(@RequestBody Issue issue) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
         Issue createdIssue = issueService.createIssue(issue);
         return ResponseEntity.created(URI.create("/api/issues/" + createdIssue.getId()))
+                .headers(headers)
                 .body(IssueDTO.fromIssue(createdIssue));
     }
 
@@ -46,8 +57,11 @@ public class IssueController {
     public ResponseEntity<IssueDTO> updateIssue(
             @PathVariable("id") Integer id, @RequestBody Issue issue
     ) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
         Issue updatedIssue = issueService.updateIssue(id, issue);
-        return ResponseEntity.accepted().body(IssueDTO.fromIssue(updatedIssue));
+        return ResponseEntity.accepted().headers(headers).body(IssueDTO.fromIssue(updatedIssue));
     }
 
     @DeleteMapping("/{id}")

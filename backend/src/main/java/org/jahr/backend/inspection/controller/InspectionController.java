@@ -8,6 +8,7 @@ import org.jahr.backend.inspection.repository.InspectionRepository;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
+import org.jahr.backend.issue.service.IssueService;
 import org.jahr.backend.location.model.Location;
 import org.jahr.backend.location.repository.LocationRepository;
 import org.jahr.backend.user.model.AppUser;
@@ -19,6 +20,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -28,10 +33,10 @@ public class InspectionController {
 
     private final InspectionRepository inspectionRepo;
     private final AreaRepository areaRepo;
-    private final IssueRepository issueRepo;
     private final InspectionIssueRepository inspectionIssueRepo;
     private final LocationRepository locationRepo;
     private final UserRepository userRepo;
+    private final IssueService issueService;
 
     // Temporary for test of deployment
     public InspectionController(
@@ -40,14 +45,15 @@ public class InspectionController {
             IssueRepository issueRepo,
             InspectionIssueRepository inspectionIssueRepo,
             LocationRepository locationRepo,
-            UserRepository userRepo
+            UserRepository userRepo,
+            IssueService issueService
     ) {
         this.inspectionRepo = inspectionRepo;
         this.areaRepo = areaRepo;
-        this.issueRepo = issueRepo;
         this.inspectionIssueRepo = inspectionIssueRepo;
         this.locationRepo = locationRepo;
         this.userRepo = userRepo;
+        this.issueService = issueService;
     }
 
     // Temporary for test of deployment
@@ -78,10 +84,19 @@ public class InspectionController {
         Area area = new Area("An area", location);
         areaRepo.save(area);
 
-        Issue issue1 = new Issue("An issue", "", "warning", "dog1.jpeg");
-        Issue issue2 = new Issue("Another issue", "", "warning", "dog1.jpeg");
-        issueRepo.save(issue1);
-        issueRepo.save(issue2);
+
+        File imgFile = new File("test.png");
+        String encodedImg;
+        try (FileInputStream fileInputStream = new FileInputStream(imgFile)) {
+            encodedImg = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Could handle test image");
+        }
+
+        Issue issue1 = new Issue(1, "An issue", "", "warning", encodedImg);
+        Issue issue2 = new Issue(2, "Another issue", "", "warning", encodedImg);
+        issueService.createIssue(issue1);
+        issueService.createIssue(issue2);
 
 
         Inspection inspection1 =

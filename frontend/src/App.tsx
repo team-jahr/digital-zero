@@ -1,13 +1,13 @@
-import InspectionForm from "./components/InspectionForm.tsx";
-
+import ImageTestComponent from './components/ImageTestComponent.tsx';
+import InspectionForm from './components/InspectionForm.tsx';
 
 const App = () => {
-
   return (
     <>
-      <InspectionForm/>
+      <ImageTestComponent />
+      <InspectionForm />
     </>
-  )
-}
+  );
+};
 
 export default App;
