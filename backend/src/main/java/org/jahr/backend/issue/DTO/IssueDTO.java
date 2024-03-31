@@ -10,18 +10,19 @@ public record IssueDTO(int id, String title, String description, String severity
 
     public static IssueDTO fromIssue(Issue issue) {
         return new IssueDTO(issue.getId(),
-                            issue.getTitle(),
-                            issue.getDescription(),
-                            issue.getSeverity(),
-                            Arrays.asList(issue.getImgRef().split(","))
+                issue.getTitle(),
+                issue.getDescription(),
+                issue.getSeverity(),
+                Arrays.asList(issue.getImgRef().split(","))
         );
     }
 
     public static Issue toIssue(IssueDTO dto) {
-        return new Issue(dto.title(),
-                         dto.description(),
-                         dto.severity(),
-                         String.join(",", dto.images())
+        return new Issue(
+                dto.title(),
+                dto.description(),
+                dto.severity(),
+                String.join(",", dto.images())
         );
     }
 }

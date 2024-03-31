@@ -1,6 +1,12 @@
 package org.jahr.backend.issue.service;
 
 import lombok.RequiredArgsConstructor;
+import org.jahr.backend.inspection.exception.InspectionNotFoundException;
+import org.jahr.backend.inspection.model.Inspection;
+import org.jahr.backend.inspection.repository.InspectionRepository;
+import org.jahr.backend.inspectionIssue.model.InspectionIssue;
+import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
+import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.client.IssueBlobClient;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
@@ -14,6 +20,8 @@ import java.util.NoSuchElementException;
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    private final InspectionIssueRepository inspectionIssueRepository;
+    private final InspectionRepository inspectionRepository;
     private final IssueBlobClient issueBlobClient;
 
     public List<Issue> getAllIssues() {
@@ -29,12 +37,20 @@ public class IssueService {
         return issue;
     }
 
-    public Issue createIssue(Issue issue) {
-        return issueRepository.save(convertIssueImageDataToNames(issue));
+    public Issue createIssue(IssueDTO issueDTO) {
+        Issue issue = IssueDTO.toIssue(issueDTO);
+        issue.setImgRef("");
+        Issue newIssue = issueRepository.save(issue);
+        newIssue.setImgRef(String.join(",", issueDTO.images()));
+        newIssue = convertIssueImageDataToNames(newIssue);
+        Inspection inspection = inspectionRepository.findById(issueDTO.id()).orElseThrow(()-> new InspectionNotFoundException("Inspection not found."));
+        InspectionIssue inspectionIssue =  new InspectionIssue(inspection,newIssue);
+        inspectionIssueRepository.save(inspectionIssue);
+        return newIssue;
     }
 
-    public Issue updateIssue(Integer id, Issue issue) {
-        issue.setId(id);
+    public Issue updateIssue(Integer id, IssueDTO issueDTO) {
+        Issue issue = IssueDTO.toIssue(issueDTO);
         return issueRepository.save(convertIssueImageDataToNames(issue));
     }
 

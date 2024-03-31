@@ -1,5 +1,6 @@
 package org.jahr.backend.inspection.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.jahr.backend.inspection.DTO.InspectionDTO;
 import org.jahr.backend.inspection.DTO.InspectionListDTO;
 import org.jahr.backend.inspection.DTO.InspectionResponseDTO;
@@ -16,14 +17,10 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/inspections")
+@RequiredArgsConstructor
 public class InspectionController {
     private final InspectionService service;
 
-    public InspectionController(InspectionService service) {
-        this.service = service;
-    }
-
-    // Temporary for test of deployment
 
     @PostMapping("/new-inspection")
     @ResponseStatus(HttpStatus.OK)

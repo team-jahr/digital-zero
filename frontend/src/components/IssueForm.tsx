@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import axios from 'axios';
 import AddPictureButton from './AddPictureButton';
 import './IssueForm.css';
+import { formatImages } from '../api/api.ts';
 
 type Inputs = {
   title: string;
@@ -17,14 +17,25 @@ const IssueForm = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      await axios.post('url backend localhost:8080???', data);
-      console.log('Issue saved successfully!');
-      reset();
-      setPictures([]);
-    } catch (error) {
-      console.error('Error saving issue:', error);
-    }
+    const transformedImages = [...pictures].map((el) => formatImages(el));
+    const body = {
+      id: 1,
+      title: data.title,
+      description: data.description,
+      severity: data.severity,
+      images: transformedImages,
+    };
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/issues`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        console.log(res);
+        reset();
+        setPictures([]);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handlePicturesAdded = (newPictures: string[]) => {
@@ -116,6 +127,7 @@ const IssueForm = () => {
               <img src={picture} alt='Uploaded' />
               <button
                 className='delete-picture-button'
+                type='button'
                 onClick={() => handleDeletePicture(index)}
               >
                 &#10005;
