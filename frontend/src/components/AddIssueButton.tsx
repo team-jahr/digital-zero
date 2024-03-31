@@ -1,21 +1,13 @@
-import { useState } from 'react';
-import { Button, Drawer } from 'antd';
-import IssueForm from './IssueForm';
+import { Button } from 'antd';
 import './IssueForm.css';
+import { useDispatch } from 'react-redux';
+import { setShowDrawer } from '../store/slices/IssueFormSlice.ts';
 
 const AddIssueButton = () => {
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-
-  const showDrawer = () => {
-    setIsDrawerVisible(true);
-  };
-
-  const onCloseDrawer = () => {
-    setIsDrawerVisible(false);
-  };
+  const dispatch = useDispatch();
 
   const handleAddIssue = () => {
-    showDrawer();
+    dispatch(setShowDrawer(true));
   };
 
   return (
@@ -27,16 +19,6 @@ const AddIssueButton = () => {
       >
         Add Issue
       </Button>
-      <Drawer
-        title='Add Issue'
-        placement='right'
-        closable={true}
-        onClose={onCloseDrawer}
-        open={isDrawerVisible}
-        width={500}
-      >
-        <IssueForm />
-      </Drawer>
     </>
   );
 };

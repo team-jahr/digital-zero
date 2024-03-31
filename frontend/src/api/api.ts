@@ -85,6 +85,7 @@ export const submitInspectionForm = (
     email: responseEmail,
     description: data.description,
   };
+  //TODO to remove console.log
   console.log(JSON.stringify(responseBody));
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections`, {
     method: 'POST',

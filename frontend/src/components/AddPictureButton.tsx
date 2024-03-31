@@ -9,8 +9,9 @@ const AddPictureButton = ({ onPicturesAdded }: AddPictureButtonProp) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    event.preventDefault();
     const files = event.target.files;
     if (!!files && files.length > 0) {
       const newPictures: string[] = [];
@@ -25,6 +26,7 @@ const AddPictureButton = ({ onPicturesAdded }: AddPictureButtonProp) => {
               imageDataUrl = decoder.decode(imageDataUrl);
             }
             if (imageDataUrl !== null) {
+              console.log(imageDataUrl);
               newPictures.push(imageDataUrl);
             }
           }
@@ -74,12 +76,15 @@ const AddPictureButton = ({ onPicturesAdded }: AddPictureButtonProp) => {
       />
       <button
         className='add-picture-button'
-        onClick={() => !!fileInputRef.current && fileInputRef.current.click()}
+        type='button'
+        onClick={() => {
+          !!fileInputRef.current && fileInputRef.current.click();
+        }}
       >
         Upload Picture
       </button>
       {/(android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i.test(
-        navigator.userAgent
+        navigator.userAgent,
       ) && (
         <button
           className='add-picture-button'
