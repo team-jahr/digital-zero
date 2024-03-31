@@ -1,24 +1,51 @@
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { listOfIssues, location, user } from '../data/data.ts';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useEffect } from 'react';
 import './InspectionFormStyles.css';
 import AddIssueButton from './AddIssueButton';
-import { Area, Inputs, Issue } from '../types/types.ts';
-import { Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-import { ErrorMessage } from '@hookform/error-message';
+import { Inputs } from '../types/types.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store.ts';
+import {
+  fetchAllAreas,
+  fetchAllIssues,
+  fetchAllLocations,
+  submitInspectionForm,
+} from '../api/api.ts';
+import { setIsDraft } from '../store/slices/InspectionFormSlice.ts';
+import LocationSelectInput from './inspectionFormInputs/LocationSelectInput.tsx';
+import AreaSelectInput from './inspectionFormInputs/AreaSelectInput.tsx';
+import DateInput from './inspectionFormInputs/DateInput.tsx';
+import NameInput from './inspectionFormInputs/NameInput.tsx';
+import EmailCheckbox from './inspectionFormInputs/EmailCheckbox.tsx';
+import EmailFields from './inspectionFormInputs/EmailFields.tsx';
+import DescriptionTextArea from './inspectionFormInputs/DescriptionTextArea.tsx';
 import IssuesList from './IssuesList.tsx';
 
 const InspectionForm = () => {
-  const handleAddIssue = () => {
-    // Logic to handle adding an issue goes here
-  };
-  const [currentLocation, setCurrentLocation] = useState(user.location);
-  const [sendEmail, setSendEmail] = useState(false);
-  const [list, setList] = useState<Issue[]>([]);
-  const [otherLocations] = useState(
-    location.filter((el) => el.name !== currentLocation.name),
+  const selectedLocation = useSelector(
+    (state: RootState) => state.inspectionForm.selectedLocation,
   );
+  const defaultLocation = useSelector(
+    (state: RootState) => state.inspectionForm.defaultLocation,
+  );
+  const locations = useSelector(
+    (state: RootState) => state.inspectionForm.allLocations,
+  );
+  const isDraft = useSelector(
+    (state: RootState) => state.inspectionForm.isDraft,
+  );
+  const listOfIssues = useSelector(
+    (state: RootState) => state.inspectionForm.listOfIssues,
+  );
+  const areas = useSelector((state: RootState) => state.inspectionForm.areas);
+  const dispatch = useDispatch();
+
+  const formId = useSelector((state: RootState) => state.app.formId);
+  useEffect(() => {
+    fetchAllLocations(dispatch, defaultLocation);
+    fetchAllAreas(dispatch, selectedLocation.id);
+    fetchAllIssues(dispatch);
+  }, []);
   const {
     register,
     handleSubmit,
@@ -30,176 +57,32 @@ const InspectionForm = () => {
       emails: [{ value: '' }],
     },
   });
-  const { fields, append, remove } = useFieldArray({
-    name: 'emails',
-    control,
-  });
-  useEffect(() => {
-    setList([...listOfIssues]);
-  }, []);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    if (formId) {
+      submitInspectionForm(data, locations, areas, formId, isDraft, dispatch);
+    }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='form'>
-      <div className='form-field-container'>
-        <label className='form-label name-label' htmlFor='name'>
-          Name
-        </label>
-        <input
-          type='text'
-          id='name'
-          defaultValue={user.name}
-          readOnly
-          className='form-input'
-        />
-      </div>
-
-      <div className='form-field-container'>
-        <label className='form-label' htmlFor='date'>
-          Date
-        </label>
-        <input
-          type='date'
-          id='date'
-          className='form-input'
-          {...register('date', { valueAsDate: true })}
-          defaultValue={new Date().toISOString().substring(0, 10)}
-        />
-      </div>
-
-      <div className='form-field-container'>
-        <label className='form-label' htmlFor='location'>
-          Location
-        </label>
-        <select
-          id='location'
-          {...register('location', {
-            onChange: (e) => {
-              const selectedLocation = location.filter(
-                (element) => element.name === e.target.value,
-              );
-              resetField('area');
-              setCurrentLocation(selectedLocation[0]);
-            },
-          })}
-          className='form-select'
-        >
-          <option value={user.location.name}>{user.location.name}</option>
-          {otherLocations.map((element) => {
-            const { name, id } = element;
-            return (
-              <option value={name} key={id}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-
-      <div className='form-field-container mb-5'>
-        <label className='form-label' htmlFor='area'>
-          Area
-        </label>
-        <select
-          id='area'
-          {...register('area', { required: 'Field is required.' })}
-          className={
-            errors?.area ? 'form-select mb-1 error' : 'form-select mb-1'
-          }
-        >
-          <option value=''>Select area</option>
-          {currentLocation.area.map((element: Area) => {
-            const { name, id } = element;
-            return (
-              <option value={name} key={id}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-        <ErrorMessage
-          errors={errors}
-          name='area'
-          render={({ message }) => <p>{message}</p>}
-        />
-      </div>
-
-      <AddIssueButton onAddIssue={handleAddIssue} />
-      <IssuesList list={list} />
-
-      <label className='email-label'>
-        <input
-          type='checkbox'
-          placeholder='email'
-          {...register('email', {
-            onChange: () => {
-              resetField('emails');
-              setSendEmail(!sendEmail);
-            },
-          })}
-        />
-        Send email
-      </label>
-
-      {sendEmail && (
-        <div className='form-field-container mb-10'>
-          <label className='emails-label'>Enter email(s):</label>
-          {fields.map((field, index) => {
-            return (
-              <div key={field.id} className='mb-3'>
-                <div className='form-email-field'>
-                  <input
-                    {...register(`emails.${index}.value` as const, {
-                      required: 'Field is required',
-                      pattern: {
-                        value: /^\S+@\S+$/i,
-                        message:
-                          "Please enter a valid email address. It should contain an '@' symbol and valid domain extension such as .com or .net.",
-                      },
-                    })}
-                    className={
-                      errors?.emails?.[index]?.value
-                        ? 'form-input mb-0 error'
-                        : 'form-input mb-0'
-                    }
-                  />
-                  {fields.length > 1 && (
-                    <Button
-                      type='default'
-                      shape='circle'
-                      icon={<DeleteOutlined />}
-                      onClick={() => remove(index)}
-                    />
-                  )}
-                </div>
-                <ErrorMessage
-                  errors={errors}
-                  name={`emails.${index}.value` as const}
-                  render={({ message }) => <p>{message}</p>}
-                />
-              </div>
-            );
-          })}
-          <Button
-            type='primary'
-            className='primary-button'
-            onClick={() =>
-              append({
-                value: '',
-              })
-            }
-          >
-            Add another email
-          </Button>
-        </div>
-      )}
-      <div className='form-field-container'>
-        <label className='form-label'>Additional notes</label>
-        <textarea {...register('description')} className='form-textarea' />
-      </div>
+      <NameInput />
+      <DateInput register={register} />
+      <LocationSelectInput register={register} resetField={resetField} />
+      <AreaSelectInput register={register} errors={errors} />
+      <AddIssueButton />
+      <IssuesList list={listOfIssues} />
+      <EmailCheckbox register={register} resetField={resetField} />
+      <EmailFields register={register} errors={errors} control={control} />
+      <DescriptionTextArea register={register} />
       <div className='buttons-container'>
-        <button className='tertiary-button'>Save draft</button>
+        <button
+          className='tertiary-button'
+          type='submit'
+          onClick={() => dispatch(setIsDraft(true))}
+        >
+          Save draft
+        </button>
         <button type='submit' className='success-button'>
           Submit
         </button>

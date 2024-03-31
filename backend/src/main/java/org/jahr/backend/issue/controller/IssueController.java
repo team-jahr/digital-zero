@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/issues")
 @CrossOrigin
 public class IssueController {
@@ -69,4 +70,5 @@ public class IssueController {
         issueService.deleteIssue(id);
         return ResponseEntity.noContent().build();
     }
+
 }

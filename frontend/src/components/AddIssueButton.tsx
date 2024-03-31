@@ -3,11 +3,7 @@ import { Button, Drawer } from 'antd';
 import IssueForm from './IssueForm';
 import './IssueForm.css';
 
-type AddIssueButtonProp = {
-  onAddIssue: () => void;
-};
-
-const AddIssueButton = ({ onAddIssue }: AddIssueButtonProp) => {
+const AddIssueButton = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
   const showDrawer = () => {
@@ -19,7 +15,6 @@ const AddIssueButton = ({ onAddIssue }: AddIssueButtonProp) => {
   };
 
   const handleAddIssue = () => {
-    onAddIssue();
     showDrawer();
   };
 

@@ -1,8 +1,15 @@
 package org.jahr.backend.inspection.controller;
 
-import org.jahr.backend.area.Area;
-import org.jahr.backend.area.AreaRepository;
+import lombok.RequiredArgsConstructor;
+
+import org.jahr.backend.inspection.DTO.InspectionDTO;
 import org.jahr.backend.inspection.DTO.InspectionListDTO;
+import org.jahr.backend.inspection.DTO.InspectionResponseDTO;
+
+import org.jahr.backend.inspection.service.InspectionService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
@@ -19,6 +26,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,8 +36,11 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequiredArgsConstructor
 @RequestMapping("/api/inspections")
 public class InspectionController {
+    private final InspectionService service;
+
 
     private final InspectionRepository inspectionRepo;
     private final AreaRepository areaRepo;
@@ -56,6 +68,18 @@ public class InspectionController {
 
     // Temporary for test of deployment
     @GetMapping
+
+    @PostMapping("/new-inspection")
+    @ResponseStatus(HttpStatus.OK)
+    public InspectionResponseDTO createInspection() {
+        return InspectionResponseDTO.toInspectionResponseDTO(service.createInspection());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public InspectionListDTO updateInspection(@RequestBody InspectionDTO inspection) throws MessagingException {
+        service.updateInspection(inspection);
+        return InspectionListDTO.fromInspections(service.getInspections());
     public ResponseEntity<InspectionListDTO> getInspections() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
@@ -117,4 +141,15 @@ public class InspectionController {
         inspectionIssueRepo.saveAll(inspection2.getInspectionIssues());
     }
 
+//    @PutMapping
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public InspectionResponseDTO updateInspection(@PathVariable int id){
+//        return InspectionResponseDTO.toInspectionResponseDTO(service.updateInspection(id));
+//    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public InspectionListDTO deleteInspection(@PathVariable int id) {
+        return InspectionListDTO.fromInspections(service.deleteInspection(id));
+    }
 }
