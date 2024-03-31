@@ -25,6 +25,7 @@ env:
   DISTRIBUTION: zulu # set this to the Java distribution
   DB_URL: ${{ secrets.DB_URL }}
   BLOB_CONNECTION_STRING: ${{ secrets.BLOB_CONNECTION_STRING }}
+  BLOB_CONTAINER_NAME: ${{ secrets.BLOB_CONTAINER_NAME }}
 
 on:
   push:
