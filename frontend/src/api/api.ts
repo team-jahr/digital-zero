@@ -102,7 +102,11 @@ export const fetchAllIssues = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/issues`)
     .then((res) => res.json())
     .then((res) => {
-      dispatch(setListOfIssues(res.dtos));
+      dispatch(setListOfIssues(res.issues));
     })
     .catch((err) => console.log(err));
+};
+
+export const formatImages = (imgData: string): string => {
+  return imgData.split(',')[1];
 };
