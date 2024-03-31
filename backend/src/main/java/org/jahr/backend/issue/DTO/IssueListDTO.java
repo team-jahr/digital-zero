@@ -11,6 +11,7 @@ public record IssueListDTO(List<IssueDTO> issues) {
     public static IssueListDTO fromIssues(List<Issue> issueList) {
         List<IssueDTO> issues = new ArrayList<>();
         issueList.forEach(issue -> issues.add(new IssueDTO(
+                issue.getId(),
                 issue.getTitle(),
                 issue.getDescription(),
                 issue.getSeverity(),
