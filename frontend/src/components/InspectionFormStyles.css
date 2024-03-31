@@ -19,15 +19,17 @@
 }
 
 
-@media only screen and (min-width: 600px){
+@media only screen and (min-width: 600px) {
     .form {
         @apply my-5 mx-auto flex flex-col relative max-w-2xl;
     }
+
     .buttons-container {
         @apply flex flex-row justify-between items-center;
     }
 }
-.form-field-container{
+
+.form-field-container {
     @apply relative mb-2;
 }
 
@@ -48,7 +50,8 @@
     outline: none;
     font-weight: lighter;
 }
-.form .form-input{
+
+.form .form-input {
     border: 1px solid #dce0e8;
 }
 
@@ -78,7 +81,7 @@
     background: linear-gradient(to bottom, #ffffff 56%, #f3f3f3 44%);
 }
 
-.email-label{
+.email-label {
     color: #9ca3af;
     @apply flex gap-3 my-5 text-sm font-extralight;
 }
@@ -97,7 +100,7 @@
 
 
 .success-button,
-.tertiary-button{
+.tertiary-button {
     text-transform: uppercase;
     border: none;
     margin-top: 20px;
@@ -153,6 +156,7 @@ input:-webkit-autofill:active {
     resize: none;
     padding: 12px;
 }
+
 p {
     color: #bf1650;
     font-size: 10px;
@@ -162,7 +166,6 @@ p::before {
     display: inline;
     content: "⚠ ";
 }
-
 
 
 

@@ -1,5 +1,6 @@
 package org.jahr.backend.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.jahr.backend.inspection.model.Inspection;
@@ -22,15 +23,18 @@ public class AppUser {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonIgnore
     private Location location;
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private List<Inspection> inspections;
 
     public AppUser() {
     }
 
-    public AppUser(String email, Location location) {
+    public AppUser(int id, String email, Location location) {
+        this.id = id;
         this.email = email;
         this.location = location;
     }
