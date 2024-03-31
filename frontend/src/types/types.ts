@@ -16,7 +16,7 @@ export type Inputs = {
 };
 
 export type Issue = {
-  id: string;
+  id: number;
   title: string;
   severityLevel: string;
   description: string;

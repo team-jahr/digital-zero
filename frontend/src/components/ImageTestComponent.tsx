@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-
-type Issue = {
-  title: string;
-  description: string;
-  severity: string;
-  imgRef: string[];
-};
+import { Issue } from '../types/types';
 
 type IssuesDTO = {
   issues: Issue[];
@@ -24,8 +18,10 @@ const ImageTestComponent = () => {
     <div>
       {issueDTOs !== undefined &&
         issueDTOs.issues.map((issue) =>
-          issue.imgRef.map((imgData) => {
-            return <img src={`data:image/png;base64,${imgData}`} />;
+          issue.images.map((imgData, counter) => {
+            return (
+              <img key={counter} src={`data:image/png;base64,${imgData}`} />
+            );
           }),
         )}
     </div>
