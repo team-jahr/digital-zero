@@ -43,7 +43,7 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueDTO> createIssue(@RequestBody Issue issue) {
+    public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueDTO issue) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
@@ -55,7 +55,7 @@ public class IssueController {
 
     @PutMapping("/{id}")
     public ResponseEntity<IssueDTO> updateIssue(
-            @PathVariable("id") Integer id, @RequestBody Issue issue
+            @PathVariable("id") Integer id, @RequestBody IssueDTO issue
     ) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");

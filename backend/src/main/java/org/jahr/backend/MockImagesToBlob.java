@@ -1,5 +1,6 @@
 package org.jahr.backend;
 
+import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.service.IssueService;
@@ -64,8 +65,10 @@ public class MockImagesToBlob {
         Issue issue1 = new Issue(1, "An issue", "", "warning", encodedImg1 + ',' + encodedImg2);
         Issue issue2 =
                 new Issue(2, "Another issue", "", "warning", encodedImg3 + ',' + encodedImg4);
-        service.createIssue(issue1);
-        service.createIssue(issue2);
+        IssueDTO issueDTO1 = IssueDTO.fromIssue(issue1);
+        IssueDTO issueDTO2 = IssueDTO.fromIssue(issue2);
+        service.createIssue(issueDTO1);
+        service.createIssue(issueDTO2);
 
         List<Issue> issues = service.getAllIssues();
         IssueListDTO dto = IssueListDTO.fromIssues(issues);
