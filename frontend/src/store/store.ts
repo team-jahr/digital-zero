@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import appReducer from './AppSlice.ts';
+import appReducer from './slices/AppSlice.ts';
+import inspectionFormReducer from './slices/InspectionFormSlice.ts';
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
+    inspectionForm: inspectionFormReducer,
   },
 });
 

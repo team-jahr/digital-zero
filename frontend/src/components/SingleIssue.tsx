@@ -19,7 +19,7 @@ const SingleIssue = ({ data }: SingleIssueProp) => {
     console.log('edit');
   };
   return (
-    <>
+    <div key={data.id}>
       <div className='single-issue-container'>
         <h1 className='text-sm font-extralight'>{data.title}</h1>
         <div className='buttons-container'>
@@ -39,7 +39,7 @@ const SingleIssue = ({ data }: SingleIssueProp) => {
         </div>
       </div>
       <PopUp open={isModalOpen} setModalOpen={setModalOpen} />
-    </>
+    </div>
   );
 };
 

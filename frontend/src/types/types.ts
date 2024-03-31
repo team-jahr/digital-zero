@@ -3,7 +3,7 @@ export type Location = {
   name: string;
 };
 export type Area = {
-  id: string;
+  id: number;
   name: string;
 };
 export type Inputs = {
