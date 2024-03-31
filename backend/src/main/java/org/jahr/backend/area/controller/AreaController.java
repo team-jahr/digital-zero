@@ -17,7 +17,7 @@ public class AreaController {
     private final AreaService service;
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Area> getAllAreas(@RequestParam String location){
+    public List<Area> getAllAreas(@RequestParam int location){
         return service.getAreas(location);
     }
 }

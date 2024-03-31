@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/issues")
 public class IssueController {
 

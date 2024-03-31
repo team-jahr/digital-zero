@@ -16,3 +16,5 @@ insert into area values (7,'Hall 777', 3) on conflict (id) do nothing;
 insert into area values (8,'Hall 888', 3) on conflict (id) do nothing;
 
 insert into app_user values (1, 'test@gmail.com', 2) on conflict (id) do nothing;
+insert into issue values(1, 'Test1', '', 'Warning', 'No proper shoes') on conflict (id) do nothing;
+insert into issue values(2, 'Test2', '', 'Warning', 'No proper shoes2') on conflict (id) do nothing;
