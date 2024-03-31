@@ -11,7 +11,7 @@ export const submitIssue = async (issueData: Issue): Promise<void> => {
     console.error('Error saving issue:', error);
     throw error;
   }
-}
+};
 export const deleteIssue = async (issueId: number): Promise<void> => {
   try {
     await axios.delete(`${apiUrl}/api/issue/${issueId}`);
@@ -20,9 +20,12 @@ export const deleteIssue = async (issueId: number): Promise<void> => {
     console.error('Error deleting issue:', error);
     throw error;
   }
-}
+};
 
-export const updateIssue = async (issueId: number, updatedIssueData: Issue): Promise<void> => {
+export const updateIssue = async (
+  issueId: number,
+  updatedIssueData: Issue,
+): Promise<void> => {
   try {
     await axios.put(`${apiUrl}/api/issue/${issueId}`, updatedIssueData);
     console.log('Issue updated successfully!');
@@ -30,7 +33,7 @@ export const updateIssue = async (issueId: number, updatedIssueData: Issue): Pro
     console.error('Error updating issue:', error);
     throw error;
   }
-}
+};
 
 export const getIssue = async (issueId: number): Promise<Issue> => {
   try {
@@ -40,9 +43,9 @@ export const getIssue = async (issueId: number): Promise<Issue> => {
     console.error('Error getting issue:', error);
     throw error;
   }
-}
+};
 
-export const getAllIssues=  async (): Promise<Issue[]> => {
+export const getAllIssues = async (): Promise<Issue[]> => {
   try {
     const response = await axios.get(`${apiUrl}/api/issues`);
     return response.data;
@@ -50,5 +53,4 @@ export const getAllIssues=  async (): Promise<Issue[]> => {
     console.error('Error getting all issues:', error);
     throw error;
   }
-}
-
+};
