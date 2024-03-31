@@ -7,7 +7,6 @@ import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
 import org.jahr.backend.issue.model.Issue;
-import org.jahr.backend.issue.repository.IssueRepository;
 import org.jahr.backend.issue.service.IssueService;
 import org.jahr.backend.location.model.Location;
 import org.jahr.backend.location.repository.LocationRepository;
@@ -42,7 +41,6 @@ public class InspectionController {
     public InspectionController(
             InspectionRepository inspectionRepo,
             AreaRepository areaRepo,
-            IssueRepository issueRepo,
             InspectionIssueRepository inspectionIssueRepo,
             LocationRepository locationRepo,
             UserRepository userRepo,
