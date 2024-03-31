@@ -1,8 +1,8 @@
 package org.jahr.backend.area.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.location.model.Location;
 
@@ -22,6 +22,7 @@ public class Area {
     private String name;
 
     @OneToMany(mappedBy = "area")
+    @JsonIgnore
     private List<Inspection> inspections;
 
     @ManyToOne

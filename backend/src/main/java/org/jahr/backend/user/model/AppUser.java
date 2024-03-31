@@ -27,6 +27,7 @@ public class AppUser {
     private Location location;
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private List<Inspection> inspections;
 
     public AppUser() {

@@ -14,7 +14,9 @@ import org.jahr.backend.user.exception.UserNotFoundException;
 import org.jahr.backend.user.model.AppUser;
 import org.jahr.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.jahr.backend.Email;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
@@ -31,13 +33,13 @@ public class InspectionService {
 
     public Inspection createInspection() {
         AppUser user = userRepository.findById(1).orElseThrow(() -> new UserNotFoundException("User not found!"));
-        Area area = areaRepository.findById(1).orElseThrow(() -> new AreaNotFoundException("Area not found"));
+        Area area = areaRepository.findById(2).orElseThrow(() -> new AreaNotFoundException("Area not found"));
         Inspection inspection = new Inspection(null, null, false, null, area, user);
         repo.save(inspection);
         return inspection;
     }
 
-    public void updateInspection(InspectionDTO inspection) {
+    public void updateInspection(InspectionDTO inspection) throws MessagingException {
         Inspection findInspection = repo.findById(inspection.id()).orElseThrow(() ->
                 new InspectionNotFoundException("Inspection not found."));
         findInspection.setArea(inspection.area());
@@ -45,10 +47,14 @@ public class InspectionService {
         findInspection.setReportedTo(inspection.email());
         findInspection.setSubmitted(inspection.isSubmitted());
         findInspection.setDescription(inspection.description());
+        var report = inspection.date() + inspection.description();
         repo.save(findInspection);
-//        if (inspection.isSubmitted()) {
-//            // send email
-//        }
+        if (inspection.isSubmitted()) {
+            Email mail = new Email();
+            mail.setUpServerProperties();
+            mail.draftEmail(inspection.email(),report, inspection.id().toString());
+            mail.sendEmail();
+        }
     }
 
     public List<Inspection> deleteInspection(int id) {

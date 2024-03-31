@@ -2,7 +2,7 @@ package org.jahr.backend.inspection.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jahr.backend.area.model.Area;
 import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.issue.model.Issue;
@@ -36,10 +36,12 @@ public class Inspection {
 
     @ManyToOne
     @JoinColumn(name = "area_id", nullable = false)
+    @JsonIgnore
     private Area area;
 
     @ManyToOne
     @JoinColumn(name = "app_user_id", nullable = false)
+    @JsonIgnore
     private AppUser appUser;
 
     @OneToMany(mappedBy = "inspection", cascade = CascadeType.MERGE)
