@@ -29,7 +29,8 @@ public class IssueBlobClient {
     public Issue uploadIssueImages(Issue issue) {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
-
+        System.out.println("Blob container name: " + blobContainerName);
+        System.out.println("Blob connection string: " + blobConnectionString);
         BlobContainerClient blobContainerClient =
                 blobServiceClient.getBlobContainerClient(blobContainerName);
         blobContainerClient.createIfNotExists();
@@ -76,6 +77,7 @@ public class IssueBlobClient {
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
             String blobName = ("" + issue.getId()) + i + ".png";
+            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
