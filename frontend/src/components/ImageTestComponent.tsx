@@ -1,29 +1,33 @@
 import { useEffect, useState } from 'react';
 
-// type IssueImages = {
-//   issueId: string;
-//   images: string[];
-// };
-type IssueImage = {
-  image: string;
+type Issue = {
+  title: string;
+  description: string;
+  severity: string;
+  imgRef: string[];
+};
+
+type IssuesDTO = {
+  issues: Issue[];
 };
 
 const ImageTestComponent = () => {
-  const [image, setImage] = useState<string>('');
-  // const [test, setTest] = useState();
+  const [issueDTOs, setIssueDTOs] = useState<IssuesDTO>();
+
   useEffect(() => {
     fetch('http://localhost:8080/api/issues')
       .then((res) => res.json())
-      .then((data) => setImage(data.dtos[0].imgRef));
+      .then((data) => setIssueDTOs(data));
   }, []);
-
-  // useEffect(() => {
-  //   setTest(img);
-  // }, [image]);
 
   return (
     <div>
-      <img src={`data:image/png;base64,${image}`} />
+      {issueDTOs !== undefined &&
+        issueDTOs.issues.map((issue) =>
+          issue.imgRef.map((imgData) => {
+            return <img src={`data:image/png;base64,${imgData}`} />;
+          }),
+        )}
     </div>
   );
 };

@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/issues")
-@CrossOrigin
 public class IssueController {
 
     private final IssueService issueService;

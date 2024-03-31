@@ -1,17 +1,13 @@
 package org.jahr.backend.inspection.controller;
 
-import lombok.RequiredArgsConstructor;
-
+import org.jahr.backend.area.model.Area;
+import org.jahr.backend.area.repository.AreaRepository;
 import org.jahr.backend.inspection.DTO.InspectionDTO;
 import org.jahr.backend.inspection.DTO.InspectionListDTO;
 import org.jahr.backend.inspection.DTO.InspectionResponseDTO;
-
-import org.jahr.backend.inspection.service.InspectionService;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.repository.InspectionRepository;
+import org.jahr.backend.inspection.service.InspectionService;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.service.IssueService;
@@ -20,28 +16,24 @@ import org.jahr.backend.location.repository.LocationRepository;
 import org.jahr.backend.user.model.AppUser;
 import org.jahr.backend.user.repository.UserRepository;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping("/api/inspections")
 public class InspectionController {
     private final InspectionService service;
-
-
     private final InspectionRepository inspectionRepo;
     private final AreaRepository areaRepo;
     private final InspectionIssueRepository inspectionIssueRepo;
@@ -51,6 +43,7 @@ public class InspectionController {
 
     // Temporary for test of deployment
     public InspectionController(
+            InspectionService service,
             InspectionRepository inspectionRepo,
             AreaRepository areaRepo,
             InspectionIssueRepository inspectionIssueRepo,
@@ -58,6 +51,7 @@ public class InspectionController {
             UserRepository userRepo,
             IssueService issueService
     ) {
+        this.service = service;
         this.inspectionRepo = inspectionRepo;
         this.areaRepo = areaRepo;
         this.inspectionIssueRepo = inspectionIssueRepo;
@@ -67,7 +61,6 @@ public class InspectionController {
     }
 
     // Temporary for test of deployment
-    @GetMapping
 
     @PostMapping("/new-inspection")
     @ResponseStatus(HttpStatus.OK)
@@ -77,18 +70,22 @@ public class InspectionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public InspectionListDTO updateInspection(@RequestBody InspectionDTO inspection) throws MessagingException {
+    public InspectionListDTO updateInspection(@RequestBody InspectionDTO inspection)
+            throws MessagingException {
         service.updateInspection(inspection);
         return InspectionListDTO.fromInspections(service.getInspections());
+    }
+
+    @GetMapping
     public ResponseEntity<InspectionListDTO> getInspections() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
-        List<Inspection> inspections = inspectionRepo.findAll();
-        if (inspections.size() < 2) {
-            mockInspections();
-            inspections = inspectionRepo.findAll();
-        }
+        List<Inspection> inspections = service.getInspections();
+//        if (inspections.size() < 2) {
+//            mockInspections();
+//            inspections = inspectionRepo.findAll();
+//        }
 
         InspectionListDTO dto = InspectionListDTO.fromInspections(inspections);
 
@@ -100,52 +97,106 @@ public class InspectionController {
         Location location = new Location("A location");
         locationRepo.save(location);
 
-        AppUser appUser = new AppUser("email", location);
+        AppUser appUser = new AppUser(1, "test@gmail.com", location);
         userRepo.save(appUser);
 
         Area area = new Area("An area", location);
         areaRepo.save(area);
 
 
-        File imgFile = new File("test.png");
-        String encodedImg;
-        try (FileInputStream fileInputStream = new FileInputStream(imgFile)) {
-            encodedImg = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+        File imgFile1 = new File("cat1.png");
+        String encodedImg1;
+        try (FileInputStream fileInputStream = new FileInputStream(imgFile1)) {
+            encodedImg1 = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
         } catch (IOException e) {
             throw new RuntimeException("Could handle test image");
         }
 
-        Issue issue1 = new Issue(1, "An issue", "", "warning", encodedImg);
-        Issue issue2 = new Issue(2, "Another issue", "", "warning", encodedImg);
+        File imgFile2 = new File("cat2.png");
+        String encodedImg2;
+        try (FileInputStream fileInputStream = new FileInputStream(imgFile2)) {
+            encodedImg2 = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Could handle test image");
+        }
+
+        File imgFile3 = new File("dog1.png");
+        String encodedImg3;
+        try (FileInputStream fileInputStream = new FileInputStream(imgFile3)) {
+            encodedImg3 = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Could handle test image");
+        }
+
+        File imgFile4 = new File("dog2.png");
+        String encodedImg4;
+        try (FileInputStream fileInputStream = new FileInputStream(imgFile4)) {
+            encodedImg4 = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Could handle test image");
+        }
+
+        Issue issue1 = new Issue(1, "An issue", "", "warning", encodedImg1 + ',' + encodedImg2);
+        Issue issue2 =
+                new Issue(2, "Another issue", "", "warning", encodedImg3 + ',' + encodedImg4);
         issueService.createIssue(issue1);
         issueService.createIssue(issue2);
 
-
-        Inspection inspection1 =
-                new Inspection("An inspection", "yyyy-MM-dd hh:mm", false, null, area, appUser);
-        Inspection inspection2 = new Inspection("Another inspection",
-                                                "yyyy-MM-dd hh:mm",
-                                                false,
-                                                null,
-                                                area,
-                                                appUser
+        InspectionDTO inspectionDTO1 = new InspectionDTO(
+                1,
+                "An inspection",
+                false,
+                LocalDateTime.now(),
+                area,
+                location,
+                "test@gmail.com",
+                appUser
+        );
+        InspectionDTO inspectionDTO2 = new InspectionDTO(
+                2,
+                "Another inspection",
+                false,
+                LocalDateTime.now(),
+                area,
+                location,
+                "test@gmail.com",
+                appUser
         );
 
+//        Inspection inspection2 = new Inspection("Another inspection",
+//                                                LocalDateTime.now(),
+//                                                false,
+//                                                null,
+//                                                area,
+//                                                appUser
+//        );
+
+//        inspection1.addIssue(issue2);
+//        inspection2.addIssue(issue1);
+
+        service.createInspection();
+        service.createInspection();
+        try {
+            service.updateInspection(inspectionDTO1);
+            service.updateInspection(inspectionDTO2);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error saving inspections");
+        }
+//        inspectionRepo.save(inspection1);
+//        inspectionRepo.save(inspection2);
+        Inspection inspection1 = InspectionDTO.toInspection(inspectionDTO1);
+        Inspection inspection2 = InspectionDTO.toInspection(inspectionDTO2);
+
+        inspection1.addIssue(issue1);
         inspection1.addIssue(issue2);
         inspection2.addIssue(issue1);
 
-        inspectionRepo.save(inspection1);
-        inspectionRepo.save(inspection2);
-
+//        InspectionIssue ii1 = new InspectionIssue(inspection1, issue1);
+//        InspectionIssue ii2 = new InspectionIssue(InspectionDTO.toInspection(inspection2),
+//        issue2);
         inspectionIssueRepo.saveAll(inspection1.getInspectionIssues());
         inspectionIssueRepo.saveAll(inspection2.getInspectionIssues());
     }
-
-//    @PutMapping
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public InspectionResponseDTO updateInspection(@PathVariable int id){
-//        return InspectionResponseDTO.toInspectionResponseDTO(service.updateInspection(id));
-//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

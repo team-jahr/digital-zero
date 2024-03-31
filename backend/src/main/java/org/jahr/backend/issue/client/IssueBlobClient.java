@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class IssueBlobClient {
         blobContainerClient.createIfNotExists();
 
         // This should already be a list in issue object
-        List<String> issueImagesData = List.of(issue.getImgRef());
+        List<String> issueImagesData = Arrays.asList(issue.getImgRef().split(","));
         List<String> issueImagesNames = new ArrayList<>();
 
         for (int i = 0; i < issueImagesData.size(); i++) {
@@ -55,7 +56,8 @@ public class IssueBlobClient {
         }
 
         // This should actually be the whole array
-        issue.setImgRef(issueImagesNames.get(0));
+//        issue.setImgRef(issueImagesNames.get(0));
+        issue.setImgRef(String.join(",", issueImagesNames));
         return issue;
     }
 
@@ -68,7 +70,8 @@ public class IssueBlobClient {
         blobContainerClient.createIfNotExists();
 
         // This should already be a list in issue object
-        List<String> issueImagesNames = List.of(issue.getImgRef());
+//        List<String> issueImagesNames = List.of(issue.getImgRef());
+        List<String> issueImagesNames = Arrays.asList(issue.getImgRef().split(","));
         List<String> issueImagesData = new ArrayList<>();
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
@@ -84,7 +87,7 @@ public class IssueBlobClient {
         }
 
         // Should be entire list
-        return issueImagesData.get(0);
+        return String.join(",", issueImagesData);
     }
 
 }

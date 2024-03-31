@@ -1,8 +1,8 @@
 package org.jahr.backend.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.location.model.Location;
 
@@ -33,7 +33,8 @@ public class AppUser {
     public AppUser() {
     }
 
-    public AppUser(String email, Location location) {
+    public AppUser(int id, String email, Location location) {
+        this.id = id;
         this.email = email;
         this.location = location;
     }

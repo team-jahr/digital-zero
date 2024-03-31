@@ -1,4 +1,3 @@
-import InspectionForm from './components/InspectionForm.tsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store.ts';
 import { Toaster } from 'react-hot-toast';
@@ -18,11 +17,11 @@ const App = () => {
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />
+      <ImageTestComponent />
       <Button type='default' onClick={handleNewInspection}>
         New Inspection
       </Button>
       {showInspectionForm && <InspectionForm />}
-      <ImageTestComponent />
       <InspectionForm />
     </>
   );

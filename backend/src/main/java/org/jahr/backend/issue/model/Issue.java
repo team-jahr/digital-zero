@@ -27,6 +27,7 @@ public class Issue {
 
     @Column(name = "img_ref")
     private String imgRef;
+    
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST)
     private List<InspectionIssue> inspectionIssues;
