@@ -9,7 +9,8 @@ const ImageTestComponent = () => {
   const [issueDTOs, setIssueDTOs] = useState<IssuesDTO>();
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/issues')
+    const url = import.meta.env.VITE_API_BASE_URL + '/api/issues';
+    fetch(url)
       .then((res) => res.json())
       .then((data) => setIssueDTOs(data));
   }, []);
