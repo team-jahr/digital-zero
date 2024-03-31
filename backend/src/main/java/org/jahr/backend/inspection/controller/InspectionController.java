@@ -11,6 +11,7 @@ import org.jahr.backend.inspection.service.InspectionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 
 
 @RestController
@@ -18,36 +19,36 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/inspections")
 public class InspectionController {
-
-
     private final InspectionService service;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public InspectionListDTO getInspections(){
+    public InspectionListDTO getInspections() {
         return InspectionListDTO.fromInspections(service.getInspections());
     }
+
     @PostMapping("/new-inspection")
     @ResponseStatus(HttpStatus.OK)
-    public InspectionResponseDTO createInspection(){
+    public InspectionResponseDTO createInspection() {
         return InspectionResponseDTO.toInspectionResponseDTO(service.createInspection());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public InspectionListDTO updateInspection(@RequestBody InspectionDTO inspection){
+    public InspectionListDTO updateInspection(@RequestBody InspectionDTO inspection) throws MessagingException {
         service.updateInspection(inspection);
         return InspectionListDTO.fromInspections(service.getInspections());
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public InspectionResponseDTO updateInspection(@PathVariable int id){
-        return InspectionResponseDTO.toInspectionResponseDTO(service.updateInspection(id));
-    }
+//    @PutMapping
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public InspectionResponseDTO updateInspection(@PathVariable int id){
+//        return InspectionResponseDTO.toInspectionResponseDTO(service.updateInspection(id));
+//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public InspectionListDTO deleteInspection(@PathVariable int id){
+    public InspectionListDTO deleteInspection(@PathVariable int id) {
         return InspectionListDTO.fromInspections(service.deleteInspection(id));
     }
 }
