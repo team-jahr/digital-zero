@@ -1,15 +1,16 @@
-import { Issue } from '../types/types';
+import { useSelector } from 'react-redux';
 import SingleIssue from './SingleIssue';
+import { RootState } from '../store/store';
 
-type ListOfIssuesProp = {
-  list: Issue[];
-};
+const IssuesList = () => {
+  const issues = useSelector(
+    (state: RootState) => state.inspectionForm.listOfIssues,
+  );
 
-const IssuesList = ({ list }: ListOfIssuesProp) => {
   return (
     <>
-      {list.map((el) => {
-        return <SingleIssue data={el} key={el.id} />;
+      {issues.map((el) => {
+        return <SingleIssue issue={el} key={el.id} />;
       })}
     </>
   );

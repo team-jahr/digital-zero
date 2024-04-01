@@ -1,8 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddPictureButton from './AddPictureButton';
 import './IssueForm.css';
 import { formatImages } from '../api/api.ts';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store.ts';
 
 type Inputs = {
   title: string;
@@ -11,10 +13,24 @@ type Inputs = {
 };
 
 const IssueForm = () => {
-  const { handleSubmit, register, reset } = useForm<Inputs>();
+  const { handleSubmit, register, reset, setValue } = useForm<Inputs>();
   const [pictures, setPictures] = useState<string[]>([]);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const editIssue = useSelector(
+    (state: RootState) => state.inspectionForm.editIssue,
+  );
+
+  useEffect(() => {
+    if (editIssue !== null) {
+      setPictures(
+        editIssue.images.map((el) => (el = 'data:image/png;base64,' + el)),
+      );
+      setValue('title', editIssue.title);
+      setValue('description', editIssue.description);
+      setValue('severity', editIssue.severityLevel);
+    }
+  }, [editIssue, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const transformedImages = [...pictures].map((el) => formatImages(el));
@@ -25,11 +41,26 @@ const IssueForm = () => {
       severity: data.severity,
       images: transformedImages,
     };
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/issues`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
+
+    let options;
+    let url;
+    if (editIssue === null) {
+      url = `${import.meta.env.VITE_API_BASE_URL}/api/issues`;
+      options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      };
+    } else {
+      url = `${import.meta.env.VITE_API_BASE_URL}/api/issues/${editIssue.id}`;
+      options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      };
+    }
+
+    fetch(url, options)
       .then((res) => {
         console.log(res);
         reset();

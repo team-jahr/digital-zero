@@ -111,3 +111,11 @@ export const fetchAllIssues = (dispatch: Dispatch<UnknownAction>) => {
 export const formatImages = (imgData: string): string => {
   return imgData.split(',')[1];
 };
+
+export const deleteIssueFromApi = (id: number) => {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/api/issues/${id}`, {
+    method: 'DELETE',
+  })
+    .then((res) => console.log(res.status))
+    .catch(() => console.log('Error when deleting'));
+};

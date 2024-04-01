@@ -10,6 +10,7 @@ interface InspectionFormState {
   isSendEmailChecked: boolean;
   areas: Area[];
   listOfIssues: Issue[];
+  editIssue: Issue | null;
 }
 
 const initialState: InspectionFormState = {
@@ -21,6 +22,7 @@ const initialState: InspectionFormState = {
   isSendEmailChecked: false,
   areas: [],
   listOfIssues: [],
+  editIssue: null,
 };
 const inspectionFormSlice = createSlice({
   name: 'inspectionForm',
@@ -50,6 +52,9 @@ const inspectionFormSlice = createSlice({
     setListOfIssues: (state, action: PayloadAction<Issue[]>) => {
       state.listOfIssues = action.payload;
     },
+    setEditIssue: (state, action: PayloadAction<Issue>) => {
+      state.editIssue = action.payload;
+    },
   },
 });
 
@@ -62,5 +67,6 @@ export const {
   setSendEmail,
   setAllAreas,
   setListOfIssues,
+  setEditIssue,
 } = inspectionFormSlice.actions;
 export default inspectionFormSlice.reducer;

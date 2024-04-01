@@ -34,9 +34,6 @@ const InspectionForm = () => {
   const isDraft = useSelector(
     (state: RootState) => state.inspectionForm.isDraft,
   );
-  const listOfIssues = useSelector(
-    (state: RootState) => state.inspectionForm.listOfIssues,
-  );
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
   const dispatch = useDispatch();
 
@@ -71,7 +68,7 @@ const InspectionForm = () => {
       <LocationSelectInput register={register} resetField={resetField} />
       <AreaSelectInput register={register} errors={errors} />
       <AddIssueButton />
-      <IssuesList list={listOfIssues} />
+      <IssuesList />
       <EmailCheckbox register={register} resetField={resetField} />
       <EmailFields register={register} errors={errors} control={control} />
       <DescriptionTextArea register={register} />

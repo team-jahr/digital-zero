@@ -4,24 +4,31 @@ import PopUp from './PopUp';
 import { FormEvent, useState } from 'react';
 import { Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/store.ts';
+import { setShowDrawer } from '../store/slices/IssueFormSlice.ts';
+import { setEditIssue } from '../store/slices/InspectionFormSlice.ts';
 
 type SingleIssueProp = {
-  data: Issue;
+  issue: Issue;
 };
-const SingleIssue = ({ data }: SingleIssueProp) => {
+const SingleIssue = ({ issue }: SingleIssueProp) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleDelete = (e: FormEvent) => {
     e.preventDefault();
     setModalOpen(true);
   };
   const handleEdit = (e: FormEvent) => {
     e.preventDefault();
-    console.log('edit');
+    dispatch(setEditIssue(issue));
+    dispatch(setShowDrawer(true));
   };
   return (
-    <div key={data.id}>
+    <div key={issue.id}>
       <div className='single-issue-container'>
-        <h1 className='text-sm font-extralight'>{data.title}</h1>
+        <h1 className='text-sm font-extralight'>{issue.title}</h1>
         <div className='buttons-container'>
           <Button
             type='default'
@@ -38,7 +45,7 @@ const SingleIssue = ({ data }: SingleIssueProp) => {
           />
         </div>
       </div>
-      <PopUp open={isModalOpen} setModalOpen={setModalOpen} />
+      <PopUp id={issue.id} open={isModalOpen} setModalOpen={setModalOpen} />
     </div>
   );
 };
