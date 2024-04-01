@@ -52,9 +52,10 @@ const IssueForm = () => {
         body: JSON.stringify(body),
       };
     } else {
+      console.log('Hello');
       url = `${import.meta.env.VITE_API_BASE_URL}/api/issues/${editIssue.id}`;
       options = {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       };

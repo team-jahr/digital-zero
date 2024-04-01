@@ -46,7 +46,6 @@ public class IssueController {
     public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueDTO issue) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-
         Issue createdIssue = issueService.createIssue(issue);
         return ResponseEntity.created(URI.create("/api/issues/" + createdIssue.getId()))
                 .headers(headers)

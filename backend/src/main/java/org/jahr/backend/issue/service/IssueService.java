@@ -38,28 +38,40 @@ public class IssueService {
     }
 
     public Issue createIssue(IssueDTO issueDTO) {
-        Issue issue = IssueDTO.toIssue(issueDTO);
-        issue.setImgRef("");
-        Issue newIssue = issueRepository.save(issue);
-        newIssue.setImgRef(String.join(",", issueDTO.images()));
-        newIssue = convertIssueImageDataToNames(newIssue);
-        Inspection inspection = inspectionRepository.findById(issueDTO.id()).orElseThrow(()-> new InspectionNotFoundException("Inspection not found."));
-        InspectionIssue inspectionIssue =  new InspectionIssue(inspection,newIssue);
+        Issue issue = uploadImagesToBlob(issueDTO);
+        Inspection inspection = inspectionRepository.findById(issueDTO.id())
+                .orElseThrow(() -> new InspectionNotFoundException("Inspection not found."));
+        InspectionIssue inspectionIssue = new InspectionIssue(inspection, issue);
         inspectionIssueRepository.save(inspectionIssue);
-        return newIssue;
+        return issue;
     }
 
     public Issue updateIssue(Integer id, IssueDTO issueDTO) {
-        Issue issue = IssueDTO.toIssue(issueDTO);
-        return issueRepository.save(convertIssueImageDataToNames(issue));
+        Issue issue = uploadImagesToBlob(issueDTO, id);
+        issue.setId(id);
+        return issueRepository.save(issue);
     }
 
     public void deleteIssue(Integer id) {
+        inspectionIssueRepository.findAll()
+                .stream()
+                .filter(el -> el.getId().getIssueId() == id)
+                .forEach(el -> inspectionIssueRepository.deleteById(el.getId()));
         issueRepository.deleteById(id);
     }
 
-    private Issue convertIssueImageDataToNames(Issue issue) {
-        return issueBlobClient.uploadIssueImages(issue);
+    private Issue uploadImagesToBlob(IssueDTO issueDTO) {
+        return uploadImagesToBlob(issueDTO, null);
     }
+
+    private Issue uploadImagesToBlob(IssueDTO issueDTO, Integer id) {
+        Issue issue = IssueDTO.toIssue(issueDTO);
+        if (id != null) issue.setId(id);
+        issue.setImgRef("");
+        Issue newIssue = issueRepository.save(issue);
+        newIssue.setImgRef(String.join(",", issueDTO.images()));
+        return issueBlobClient.uploadIssueImages(newIssue);
+    }
+
 }
 
