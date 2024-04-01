@@ -4,6 +4,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.model.Issue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -91,6 +92,37 @@ public class IssueBlobClient {
         // Should be entire list
         return String.join(",", issueImagesData);
     }
+
+    public String getIssueImagesByList(List<String> images, int id) {
+        BlobServiceClient blobServiceClient =
+                new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
+
+        BlobContainerClient blobContainerClient =
+                blobServiceClient.getBlobContainerClient(blobContainerName);
+        blobContainerClient.createIfNotExists();
+
+        // This should already be a list in issue object
+//        List<String> issueImagesNames = List.of(issue.getImgRef());
+        List<String> issueImagesData = new ArrayList<>();
+        System.out.println("images = " + images);
+
+        for (int i = 0; i < images.size(); i++) {
+            String blobName = ("" + id) + i + ".png";
+            System.out.println("blobName = " + blobName);
+            BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            blobClient.downloadStream(outputStream);
+
+            String imgData = Base64.getEncoder().encodeToString(outputStream.toByteArray());
+
+            issueImagesData.add(imgData);
+        }
+
+        // Should be entire list
+        return String.join(",", issueImagesData);
+    }
+
 
 }
 

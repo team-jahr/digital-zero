@@ -6,7 +6,6 @@ import {
   setAllAreas,
   setAllLocations,
   setDefaultLocation,
-  setIsDraft,
   setListOfIssues,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
@@ -68,17 +67,25 @@ export const submitInspectionForm = (
   locations: Location[],
   areas: Area[],
   formId: number,
-  isDraft: boolean,
-  dispatch: Dispatch<UnknownAction>,
+  isSubmitted: boolean,
 ) => {
   const responseLocation = locations.filter(
     (el: Location) => el.id === +data.location,
   )[0];
+
   const responseArea = areas.filter((el: Area) => el.id == +data.area)[0];
-  const responseEmail = data.email ? data.emails[0].value : null;
+  const createEmailString = () => {
+    let emailList = '';
+    for (let i = 0; i < data.emails.length; i++) {
+      emailList += `${data.emails[i].value},`;
+    }
+    return emailList.substring(0, emailList.length - 1);
+  };
+  const responseEmail = data.email ? createEmailString() : null;
+
   const responseBody = {
     id: formId,
-    isDraft: isDraft,
+    isSubmitted: isSubmitted,
     date: new Date(data.date).toISOString(),
     location: responseLocation,
     area: responseArea,
@@ -94,13 +101,15 @@ export const submitInspectionForm = (
   })
     .then((res) => {
       console.log(res);
-      dispatch(setIsDraft(false));
     })
     .catch((err) => console.log(err));
 };
 
-export const fetchAllIssues = (dispatch: Dispatch<UnknownAction>) => {
-  fetch(`${import.meta.env.VITE_API_BASE_URL}/api/issues`)
+export const fetchAllIssues = (
+  dispatch: Dispatch<UnknownAction>,
+  id: number,
+) => {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/${id}`)
     .then((res) => res.json())
     .then((res) => {
       dispatch(setListOfIssues(res.issues));

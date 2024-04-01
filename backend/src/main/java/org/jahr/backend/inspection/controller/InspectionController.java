@@ -4,8 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.jahr.backend.inspection.DTO.InspectionDTO;
 import org.jahr.backend.inspection.DTO.InspectionListDTO;
 import org.jahr.backend.inspection.DTO.InspectionResponseDTO;
+import org.jahr.backend.inspection.exception.InspectionNotFoundException;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.service.InspectionService;
+import org.jahr.backend.inspectionIssue.model.InspectionIssue;
+import org.jahr.backend.issue.DTO.IssueDTO;
+import org.jahr.backend.issue.DTO.IssueListDTO;
+import org.jahr.backend.issue.model.Issue;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +31,12 @@ public class InspectionController {
     @ResponseStatus(HttpStatus.OK)
     public InspectionResponseDTO createInspection() {
         return InspectionResponseDTO.toInspectionResponseDTO(service.createInspection());
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public IssueListDTO getAllIssues(@PathVariable int id){
+       return service.getIssuesForForm(id);
     }
 
     @PostMapping

@@ -1,8 +1,15 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddPictureButton from './AddPictureButton';
 import './IssueForm.css';
 import { formatImages } from '../api/api.ts';
+import { setListOfIssues } from '../store/slices/InspectionFormSlice.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store.ts';
+import {
+  setEnlargedImage,
+  setPictures,
+} from '../store/slices/IssueFormSlice.ts';
 
 type Inputs = {
   title: string;
@@ -12,14 +19,19 @@ type Inputs = {
 
 const IssueForm = () => {
   const { handleSubmit, register, reset } = useForm<Inputs>();
-  const [pictures, setPictures] = useState<string[]>([]);
-  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const formId = useSelector((state: RootState) => state.app.formId);
+  const pictures = useSelector((state: RootState) => state.issueForm.pictures);
+  const enlargedImage = useSelector(
+    (state: RootState) => state.issueForm.enlargedImage,
+  );
+  const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const transformedImages = [...pictures].map((el) => formatImages(el));
+    const transformedImages =
+      pictures && [...pictures].map((el) => formatImages(el));
     const body = {
-      id: 1,
+      id: formId,
       title: data.title,
       description: data.description,
       severity: data.severity,
@@ -30,24 +42,31 @@ const IssueForm = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
+      .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        dispatch(setListOfIssues(res));
         reset();
-        setPictures([]);
+        dispatch(setPictures([]));
       })
       .catch((err) => console.log(err));
   };
 
   const handlePicturesAdded = (newPictures: string[]) => {
-    setPictures((prevPictures) => [...prevPictures, ...newPictures]);
+    if (pictures) {
+      dispatch(setPictures([...pictures, ...newPictures]));
+    }
   };
 
   const handleDeletePicture = (index: number) => {
-    setPictures((prevPictures) => prevPictures.filter((_, i) => i !== index));
+    if (pictures) {
+      dispatch(setPictures([...pictures].filter((_, i) => i !== index)));
+    }
   };
 
   const handlePictureAdded = (imageDataUrl: string) => {
-    setPictures((prevPictures) => [...prevPictures, imageDataUrl]);
+    if (pictures) {
+      dispatch(setPictures([...pictures, imageDataUrl]));
+    }
   };
 
   const handleCancel = () => {
@@ -56,11 +75,11 @@ const IssueForm = () => {
   };
 
   const handlePictureClick = (pictureUrl: string) => {
-    setEnlargedImage(pictureUrl);
+    dispatch(setEnlargedImage(pictureUrl));
   };
 
   const handleCloseEnlargedImage = () => {
-    setEnlargedImage(null);
+    dispatch(setEnlargedImage(null));
   };
 
   return (
@@ -118,22 +137,23 @@ const IssueForm = () => {
 
         {/* Picture upload logic */}
         <div className='pictures-container'>
-          {pictures.map((picture, index) => (
-            <div
-              key={index}
-              className='picture-item'
-              onClick={() => handlePictureClick(picture)}
-            >
-              <img src={picture} alt='Uploaded' />
-              <button
-                className='delete-picture-button'
-                type='button'
-                onClick={() => handleDeletePicture(index)}
+          {pictures &&
+            pictures.map((picture, index) => (
+              <div
+                key={index}
+                className='picture-item'
+                onClick={() => handlePictureClick(picture)}
               >
-                &#10005;
-              </button>
-            </div>
-          ))}
+                <img src={picture} alt='Uploaded' />
+                <button
+                  className='delete-picture-button'
+                  type='button'
+                  onClick={() => handleDeletePicture(index)}
+                >
+                  &#10005;
+                </button>
+              </div>
+            ))}
         </div>
 
         <AddPictureButton onPicturesAdded={handlePicturesAdded} />

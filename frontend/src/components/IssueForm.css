@@ -1,3 +1,11 @@
+/* @tailwind base;
+
+@layer base {
+  .button {
+    @apply text-red-500 bg-blue-400 hover:bg-blue-800;
+  }
+} */
+
 /* Form Container */
 .issue-form-container {
   max-width: 600px; /* Adjust as needed */
@@ -68,7 +76,7 @@
 
 /* Add Picture Button */
 .add-picture-button {
-  background-color: #007bff;
+  background-color: #007bff !important;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -78,7 +86,7 @@
 }
 
 .add-picture-button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3 !important;
 }
 
 /* Save Issue Button */

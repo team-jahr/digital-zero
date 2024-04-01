@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IssueFormState {
   isDrawerOpen: boolean;
-  pictures: string[];
+  pictures: string[] | null;
   enlargedImage: string | null;
 }
 
@@ -21,8 +21,8 @@ const issueFormSlice = createSlice({
     setPictures: (state, action: PayloadAction<string[]>) => {
       state.pictures = action.payload;
     },
-    setEnlargedImage: (state, action: PayloadAction<string[]>) => {
-      state.pictures = action.payload;
+    setEnlargedImage: (state, action: PayloadAction<string | null>) => {
+      state.enlargedImage = action.payload;
     },
   },
 });
