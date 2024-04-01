@@ -3,7 +3,7 @@ import { RootState } from './store/store.ts';
 import { Toaster } from 'react-hot-toast';
 import { Button, Drawer } from 'antd';
 import { createNewInspectionForm } from './api/api.ts';
-import ImageTestComponent from './components/ImageTestComponent.tsx';
+// import ImageTestComponent from './components/ImageTestComponent.tsx';
 import InspectionForm from './components/InspectionForm.tsx';
 import IssueForm from './components/IssueForm.tsx';
 import { setShowDrawer } from './store/slices/IssueFormSlice.ts';
@@ -25,7 +25,7 @@ const App = () => {
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />
-      <ImageTestComponent />
+      {/* <ImageTestComponent /> */}
       <Button type='default' onClick={handleNewInspection}>
         New Inspection
       </Button>

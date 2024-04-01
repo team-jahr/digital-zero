@@ -26,7 +26,6 @@ const AddPictureButton = ({ onPicturesAdded }: AddPictureButtonProp) => {
               imageDataUrl = decoder.decode(imageDataUrl);
             }
             if (imageDataUrl !== null) {
-              console.log(imageDataUrl);
               newPictures.push(imageDataUrl);
             }
           }

@@ -117,14 +117,15 @@ const IssueForm = () => {
         />
 
         {/* Picture upload logic */}
-        <div className='pictures-container'>
+        <div className='pictures-container flex'>
           {pictures.map((picture, index) => (
-            <div
-              key={index}
-              className='picture-item'
-              onClick={() => handlePictureClick(picture)}
-            >
-              <img src={picture} alt='Uploaded' />
+            <div key={index}>
+              <div
+                className='picture-item'
+                onClick={() => handlePictureClick(picture)}
+              >
+                <img src={picture} alt='Uploaded' />
+              </div>
               <button
                 className='delete-picture-button'
                 type='button'
