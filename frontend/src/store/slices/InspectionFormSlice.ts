@@ -6,7 +6,7 @@ interface InspectionFormState {
   selectedLocation: Location;
   allLocations: Location[];
   otherLocations: Location[];
-  isDraft: boolean;
+  isSubmitted: boolean;
   isSendEmailChecked: boolean;
   areas: Area[];
   listOfIssues: Issue[];
@@ -17,7 +17,7 @@ const initialState: InspectionFormState = {
   selectedLocation: { id: 1, name: 'Stockholm' },
   allLocations: [],
   otherLocations: [],
-  isDraft: false,
+  isSubmitted: false,
   isSendEmailChecked: false,
   areas: [],
   listOfIssues: [],
@@ -38,8 +38,8 @@ const inspectionFormSlice = createSlice({
     setOtherLocations: (state, action: PayloadAction<Location[]>) => {
       state.otherLocations = action.payload;
     },
-    setIsDraft: (state, action: PayloadAction<boolean>) => {
-      state.isDraft = action.payload;
+    setIsSubmitted: (state, action: PayloadAction<boolean>) => {
+      state.isSubmitted = action.payload;
     },
     setSendEmail: (state, action: PayloadAction<boolean>) => {
       state.isSendEmailChecked = action.payload;
@@ -58,7 +58,7 @@ export const {
   setSelectedLocation,
   setDefaultLocation,
   setOtherLocations,
-  setIsDraft,
+  setIsSubmitted,
   setSendEmail,
   setAllAreas,
   setListOfIssues,
