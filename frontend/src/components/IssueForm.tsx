@@ -31,11 +31,18 @@ const IssueForm = () => {
       setValue('severity', editIssue.severityLevel);
     }
   }, [editIssue, setValue]);
+  const formId = useSelector((state: RootState) => state.app.formId);
+  const pictures = useSelector((state: RootState) => state.issueForm.pictures);
+  const enlargedImage = useSelector(
+    (state: RootState) => state.issueForm.enlargedImage,
+  );
+  const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const transformedImages = [...pictures].map((el) => formatImages(el));
+    const transformedImages =
+      pictures && [...pictures].map((el) => formatImages(el));
     const body = {
-      id: 1,
+      id: formId,
       title: data.title,
       description: data.description,
       severity: data.severity,
@@ -63,23 +70,29 @@ const IssueForm = () => {
 
     fetch(url, options)
       .then((res) => {
-        console.log(res);
+        dispatch(setListOfIssues(res));
         reset();
-        setPictures([]);
+        dispatch(setPictures([]));
       })
       .catch((err) => console.log(err));
   };
 
   const handlePicturesAdded = (newPictures: string[]) => {
-    setPictures((prevPictures) => [...prevPictures, ...newPictures]);
+    if (pictures) {
+      dispatch(setPictures([...pictures, ...newPictures]));
+    }
   };
 
   const handleDeletePicture = (index: number) => {
-    setPictures((prevPictures) => prevPictures.filter((_, i) => i !== index));
+    if (pictures) {
+      dispatch(setPictures([...pictures].filter((_, i) => i !== index)));
+    }
   };
 
   const handlePictureAdded = (imageDataUrl: string) => {
-    setPictures((prevPictures) => [...prevPictures, imageDataUrl]);
+    if (pictures) {
+      dispatch(setPictures([...pictures, imageDataUrl]));
+    }
   };
 
   const handleCancel = () => {
@@ -88,11 +101,11 @@ const IssueForm = () => {
   };
 
   const handlePictureClick = (pictureUrl: string) => {
-    setEnlargedImage(pictureUrl);
+    dispatch(setEnlargedImage(pictureUrl));
   };
 
   const handleCloseEnlargedImage = () => {
-    setEnlargedImage(null);
+    dispatch(setEnlargedImage(null));
   };
 
   return (
@@ -149,24 +162,24 @@ const IssueForm = () => {
         />
 
         {/* Picture upload logic */}
-        <div className='pictures-container flex'>
-          {pictures.map((picture, index) => (
-            <div key={index}>
+        <div className='pictures-container'>
+          {pictures &&
+            pictures.map((picture, index) => (
               <div
+                key={index}
                 className='picture-item'
                 onClick={() => handlePictureClick(picture)}
               >
                 <img src={picture} alt='Uploaded' />
+                <button
+                  className='delete-picture-button'
+                  type='button'
+                  onClick={() => handleDeletePicture(index)}
+                >
+                  &#10005;
+                </button>
               </div>
-              <button
-                className='delete-picture-button'
-                type='button'
-                onClick={() => handleDeletePicture(index)}
-              >
-                &#10005;
-              </button>
-            </div>
-          ))}
+            ))}
         </div>
 
         <AddPictureButton onPicturesAdded={handlePicturesAdded} />

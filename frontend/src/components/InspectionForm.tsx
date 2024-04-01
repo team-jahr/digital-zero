@@ -11,7 +11,7 @@ import {
   fetchAllLocations,
   submitInspectionForm,
 } from '../api/api.ts';
-import { setIsDraft } from '../store/slices/InspectionFormSlice.ts';
+import { setIsSubmitted } from '../store/slices/InspectionFormSlice.ts';
 import LocationSelectInput from './inspectionFormInputs/LocationSelectInput.tsx';
 import AreaSelectInput from './inspectionFormInputs/AreaSelectInput.tsx';
 import DateInput from './inspectionFormInputs/DateInput.tsx';
@@ -31,17 +31,20 @@ const InspectionForm = () => {
   const locations = useSelector(
     (state: RootState) => state.inspectionForm.allLocations,
   );
-  const isDraft = useSelector(
-    (state: RootState) => state.inspectionForm.isDraft,
+  const isSubmitted = useSelector(
+    (state: RootState) => state.inspectionForm.isSubmitted,
   );
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
+
   const dispatch = useDispatch();
 
   const formId = useSelector((state: RootState) => state.app.formId);
   useEffect(() => {
     fetchAllLocations(dispatch, defaultLocation);
     fetchAllAreas(dispatch, selectedLocation.id);
-    fetchAllIssues(dispatch);
+    if (formId) {
+      fetchAllIssues(dispatch, formId);
+    }
   }, []);
   const {
     register,
@@ -57,7 +60,7 @@ const InspectionForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (formId) {
-      submitInspectionForm(data, locations, areas, formId, isDraft, dispatch);
+      submitInspectionForm(data, locations, areas, formId, isSubmitted);
     }
   };
 
@@ -76,11 +79,15 @@ const InspectionForm = () => {
         <button
           className='tertiary-button'
           type='submit'
-          onClick={() => dispatch(setIsDraft(true))}
+          onClick={() => dispatch(setIsSubmitted(false))}
         >
           Save draft
         </button>
-        <button type='submit' className='success-button'>
+        <button
+          type='submit'
+          className='success-button'
+          onClick={() => dispatch(setIsSubmitted(true))}
+        >
           Submit
         </button>
       </div>

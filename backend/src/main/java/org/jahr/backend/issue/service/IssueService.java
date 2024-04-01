@@ -7,6 +7,7 @@ import org.jahr.backend.inspection.repository.InspectionRepository;
 import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.inspectionIssue.repository.InspectionIssueRepository;
 import org.jahr.backend.issue.DTO.IssueDTO;
+import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.client.IssueBlobClient;
 import org.jahr.backend.issue.model.Issue;
 import org.jahr.backend.issue.repository.IssueRepository;
@@ -44,6 +45,12 @@ public class IssueService {
         InspectionIssue inspectionIssue = new InspectionIssue(inspection, issue);
         inspectionIssueRepository.save(inspectionIssue);
         return issue;
+    }
+
+    public IssueListDTO getIssuesForForm(IssueDTO issueDTO){
+        Inspection inspection = inspectionRepository.findById(issueDTO.id()).orElseThrow(()-> new InspectionNotFoundException("Inspection not found."));
+        List<Issue> getAllIssues = inspection.getInspectionIssues().stream().map(InspectionIssue::getIssue).toList();
+        return IssueListDTO.fromIssues(getAllIssues);
     }
 
     public Issue updateIssue(Integer id, IssueDTO issueDTO) {

@@ -29,9 +29,10 @@ public class Email {
 
     public MimeMessage draftEmail(String emails, String body, String title) throws MessagingException, IOException {
         String[] emailRecipients = emails.split(",");
-        String emailSubject = "Report from inspection" + title;
+        String emailSubject = "Report from inspection " + title;
         mimeMessage = new MimeMessage(newSession);
         Arrays.stream(emailRecipients).forEach(el-> {
+            System.out.println("email = " + el);
             try {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(el));
             } catch (MessagingException e) {

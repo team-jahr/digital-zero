@@ -40,7 +40,6 @@ const App = () => {
       >
         <IssueForm />
       </Drawer>
-      <InspectionForm />
     </>
   );
 };
