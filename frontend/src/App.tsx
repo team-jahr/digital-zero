@@ -25,7 +25,7 @@ const App = () => {
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />
-      <ImageTestComponent />
+      {/* <ImageTestComponent /> */}
       <Button type='default' onClick={handleNewInspection}>
         New Inspection
       </Button>
