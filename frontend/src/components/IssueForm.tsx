@@ -1,10 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddPictureButton from './AddPictureButton';
 import './IssueForm.css';
 import { formatImages } from '../api/api.ts';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store.ts';
+import { setListOfIssues } from '../store/slices/InspectionFormSlice.ts';
+import {
+  setEnlargedImage,
+  setPictures,
+} from '../store/slices/IssueFormSlice.ts';
 
 type Inputs = {
   title: string;
@@ -14,29 +19,28 @@ type Inputs = {
 
 const IssueForm = () => {
   const { handleSubmit, register, reset, setValue } = useForm<Inputs>();
-  const [pictures, setPictures] = useState<string[]>([]);
-  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editIssue = useSelector(
     (state: RootState) => state.inspectionForm.editIssue,
   );
-
+  const pictures = useSelector((state: RootState) => state.issueForm.pictures);
+  const formId = useSelector((state: RootState) => state.app.formId);
+  const dispatch = useDispatch<AppDispatch>();
+  const enlargedImage = useSelector(
+    (state: RootState) => state.issueForm.enlargedImage,
+  );
   useEffect(() => {
     if (editIssue !== null) {
-      setPictures(
-        editIssue.images.map((el) => (el = 'data:image/png;base64,' + el)),
+      dispatch(
+        setPictures(
+          editIssue.images.map((el) => (el = 'data:image/png;base64,' + el)),
+        ),
       );
       setValue('title', editIssue.title);
       setValue('description', editIssue.description);
       setValue('severity', editIssue.severityLevel);
     }
-  }, [editIssue, setValue]);
-  const formId = useSelector((state: RootState) => state.app.formId);
-  const pictures = useSelector((state: RootState) => state.issueForm.pictures);
-  const enlargedImage = useSelector(
-    (state: RootState) => state.issueForm.enlargedImage,
-  );
-  const dispatch = useDispatch();
+  }, [editIssue, dispatch, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const transformedImages =
@@ -69,10 +73,11 @@ const IssueForm = () => {
     }
 
     fetch(url, options)
+      .then((res) => res.json())
       .then((res) => {
         dispatch(setListOfIssues(res));
         reset();
-        dispatch(setPictures([]));
+        setPictures([]);
       })
       .catch((err) => console.log(err));
   };
