@@ -22,7 +22,7 @@ public class Inspection {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "date")
