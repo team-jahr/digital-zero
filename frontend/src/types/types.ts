@@ -23,16 +23,38 @@ export type Issue = {
   images: string[];
 };
 
+export type AppUser = {
+  id: number;
+  email: string;
+};
+
 export type Inspection = {
   id: number;
-  title: string;
   description: string;
   isSubmitted: boolean;
   date: string;
   area: Area;
   location: Location;
-  issueKeys: InspectionIssueKeys[];
   email: string;
+<<<<<<< Updated upstream
+=======
+  user: AppUser;
+  issueKeys: InspectionIssueKeys[];
+  isSelected?: boolean;
+>>>>>>> Stashed changes
+};
+
+export type InspectionDisplay = {
+  id: number;
+  description: string;
+  isSubmitted: boolean;
+  date: string;
+  locationName: string;
+  areaName: string;
+  userEmail: string;
+  submitEmail: string;
+  issues: Issue[];
+  isSelected: boolean;
 };
 
 export type InspectionIssueKeys = {

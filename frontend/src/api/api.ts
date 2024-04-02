@@ -8,7 +8,20 @@ import {
   setDefaultLocation,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
+<<<<<<< Updated upstream
 import { Area, Inputs, Issue, IssueDTO, Location } from '../types/types.ts';
+=======
+import {
+  Area,
+  Inputs,
+  Issue,
+  IssueDTO,
+  Location,
+  Inspection,
+  InspectionDTO,
+  InspectionDisplay,
+} from '../types/types.ts';
+>>>>>>> Stashed changes
 
 export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
@@ -141,3 +154,57 @@ export const fetchInspectionIssues = async (id: number): Promise<Issue[]> => {
     );
   }
 };
+<<<<<<< Updated upstream
+=======
+
+export const fetchInspections = async (): Promise<Inspection[]> => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/inspections`,
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch inspections');
+    }
+    const data: InspectionDTO = await response.json();
+    return new Promise<Inspection[]>((resolve) => resolve(data.inspectionDTOs));
+  } catch (error) {
+    console.error('Error fetching inspections:', error);
+    throw error;
+  }
+};
+
+export const fetchInspectionDisplays = async (): Promise<
+  InspectionDisplay[]
+> => {
+  try {
+    const inspectionDisplays: InspectionDisplay[] = [];
+    const inspections: Inspection[] = await fetchInspections();
+
+    for (let i = 0; i < inspections.length; i++) {
+      const inspection = inspections[i];
+      const issues: Issue[] = await fetchInspectionIssues(inspection.id);
+
+      const inspectionDisplay: InspectionDisplay = {
+        id: inspection.id,
+        description: inspection.description,
+        isSubmitted: inspection.isSubmitted,
+        date: inspection.date,
+        locationName: inspection.location.name,
+        areaName: inspection.area.name,
+        userEmail: inspection.user.email,
+        submitEmail: inspection.email,
+        issues: issues,
+      };
+      inspectionDisplays.push(inspectionDisplay);
+    }
+
+    return new Promise<InspectionDisplay[]>((resolve) =>
+      resolve(inspectionDisplays),
+    );
+  } catch (err) {
+    return new Promise<InspectionDisplay[]>((_resolve, reject) =>
+      reject(Error('Error when formatting inspections for display')),
+    );
+  }
+};
+>>>>>>> Stashed changes
