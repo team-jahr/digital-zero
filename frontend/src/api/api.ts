@@ -9,7 +9,7 @@ import {
   setListOfIssues,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
-import { Area, Inputs, Location } from '../types/types.ts';
+import { Area, Inputs, Location, Inspection } from '../types/types.ts';
 
 export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
@@ -119,4 +119,18 @@ export const fetchAllIssues = (
 
 export const formatImages = (imgData: string): string => {
   return imgData.split(',')[1];
+};
+
+export const fetchInspections = async (): Promise<Inspection[]> => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch inspections');
+    }
+    const data: Inspection[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching inspections:', error);
+    throw error;
+  }
 };

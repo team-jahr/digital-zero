@@ -22,3 +22,15 @@ export type Issue = {
   description: string;
   images: string[];
 };
+
+export type Inspection = {
+  id: number;
+  title: string;
+  description: string;
+  isSubmitted: boolean;
+  date: string;
+  area: Area;
+  location: Location;
+  issues: Issue[];
+  email: string; 
+}
