@@ -4,10 +4,16 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import org.jahr.backend.Email;
 import org.jahr.backend.issue.model.Issue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.activation.DataHandler;
+import javax.mail.BodyPart;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,6 +35,8 @@ public class IssueBlobClient {
     public Issue uploadIssueImages(Issue issue) {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
+        System.out.println("Blob container name: " + blobContainerName);
+        System.out.println("Blob connection string: " + blobConnectionString);
         BlobContainerClient blobContainerClient =
                 blobServiceClient.getBlobContainerClient(blobContainerName);
         blobContainerClient.createIfNotExists();
@@ -75,6 +83,7 @@ public class IssueBlobClient {
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
             String blobName = ("" + issue.getId()) + i + ".png";
+            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -89,7 +98,7 @@ public class IssueBlobClient {
         return String.join(",", issueImagesData);
     }
 
-    public String getIssueImagesByList(List<String> images, int id) {
+    public void getIssueImagesByList(List<String> images, int id, Email email, String title) throws MessagingException {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
 
@@ -103,21 +112,19 @@ public class IssueBlobClient {
 
         for (int i = 0; i < images.size(); i++) {
             String blobName = ("" + id) + i + ".png";
+            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             blobClient.downloadStream(outputStream);
 
             String imgData = Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            System.out.println("imgData = " + imgData);
 
             issueImagesData.add(imgData);
         }
-
-        // Should be entire list
-        return String.join(",", issueImagesData);
+        email.addImgToEmail(String.join(",", issueImagesData), id, title);
     }
-
-
 }
 
 

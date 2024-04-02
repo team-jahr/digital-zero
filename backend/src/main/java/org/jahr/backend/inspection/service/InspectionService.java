@@ -1,6 +1,8 @@
 package org.jahr.backend.inspection.service;
 
+import com.azure.storage.blob.BlobClient;
 import lombok.RequiredArgsConstructor;
+import org.jahr.backend.Email;
 import org.jahr.backend.area.exception.AreaNotFoundException;
 import org.jahr.backend.area.model.Area;
 import org.jahr.backend.area.repository.AreaRepository;
@@ -19,6 +21,7 @@ import org.jahr.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -50,14 +53,12 @@ public class InspectionService {
     }
 
     public IssueListDTO getIssuesForForm(int id) {
-        Inspection inspection = repo.findById(id)
-                .orElseThrow(() -> new InspectionNotFoundException("Inspection not found."));
-        List<Issue> getAllIssues =
-                inspection.getInspectionIssues().stream().map(InspectionIssue::getIssue).toList();
+        Inspection inspection = repo.findById(id).orElseThrow(() -> new InspectionNotFoundException("Inspection not found."));
+        List<Issue> getAllIssues = inspection.getInspectionIssues().stream().map(InspectionIssue::getIssue).toList();
         return IssueListDTO.fromIssues(getAllIssues);
     }
 
-    public void updateInspection(InspectionDTO inspection) throws MessagingException {
+    public void updateInspection(InspectionDTO inspection) throws MessagingException, IOException {
         Inspection findInspection = repo.findById(inspection.id())
                 .orElseThrow(() -> new InspectionNotFoundException("Inspection not found."));
         findInspection.setArea(inspection.area());
@@ -68,33 +69,33 @@ public class InspectionService {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         List<IssueDTO> inspectionIssues = getIssuesForForm(inspection.id()).issues();
         StringBuilder issuesList = new StringBuilder();
-
+        Email mail = new Email();
+        issuesList.append(String.format("Inspection id: " +  inspection.id() + "%n" +
+                "Inspection date: " + inspection.date().format(myFormatObj) + "%n" +
+                "Inspection description: " + inspection.description() + "%n"));
         for (IssueDTO inspectionIssue : inspectionIssues) {
             issuesList.append(String.format(
-                    "Inspection id: " + inspection.id() + "%n" + "Inspection date: "
-                            + inspection.date().format(myFormatObj) + "%n"
-                            + "Inspection description: " + inspection.description() + "%n"
-                            + "Title: " + inspectionIssue.title() + "%n" + "Severity: "
-                            + inspectionIssue.severity() + "%n" + "Description: "
-                            + inspectionIssue.description() + "%n" + "Images: "
-                            + blobClient.getIssueImagesByList(inspectionIssue.images(),
-                                                              inspectionIssue.id()
-                    )));
+                            "----------------------------------------------" + "%n" +
+                            "Title: " + inspectionIssue.title() + "%n" +
+                            "Severity: " + inspectionIssue.severity() + "%n" +
+                            "Description: " + inspectionIssue.description() + "%n" +
+                            "----------------------------------------------" + "%n"
+            ));
+          blobClient.getIssueImagesByList(inspectionIssue.images(), inspectionIssue.id(), mail, inspectionIssue.title());
+
         }
         repo.save(findInspection);
-//        if (inspection.isSubmitted()) {
-//            try {
-//                Email mail = new Email();
-//                mail.setUpServerProperties();
-//                mail.draftEmail(inspection.email(),
-//                                issuesList.toString(),
-//                                inspection.id().toString()
-//                );
-//                mail.sendEmail();
-//            } catch (IOException e) {
-//                throw new RuntimeException("Error at email");
-//            }
-//        }
+        if (inspection.isSubmitted()) {
+            System.out.println("test = ");
+            try {
+
+                mail.setUpServerProperties();
+                mail.draftEmail(inspection.email(), issuesList.toString(), inspection.id().toString());
+                mail.sendEmail();
+            } catch (IOException e) {
+                throw new RuntimeException("Error at email");
+            }
+        }
     }
 
     public List<Inspection> deleteInspection(int id) {

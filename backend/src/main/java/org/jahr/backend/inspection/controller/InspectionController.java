@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class InspectionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public InspectionListDTO updateInspection(@RequestBody InspectionDTO inspection)
-            throws MessagingException {
+            throws MessagingException, IOException {
         service.updateInspection(inspection);
         return InspectionListDTO.fromInspections(service.getInspections());
     }
