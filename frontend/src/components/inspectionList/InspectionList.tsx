@@ -9,7 +9,7 @@ const InspectionList = () => {
 
   useEffect(() => {
     fetchInspections()
-      .then((data) => setInspections(data.inspectionDTOs))
+      .then((data: any) => setInspections(data.inspectionDTOs))
       .catch((error) => console.error('Error fetching inspections:', error));
   }, []);
 

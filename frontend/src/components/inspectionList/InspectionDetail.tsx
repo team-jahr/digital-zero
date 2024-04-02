@@ -12,7 +12,7 @@ const InspectionDetail = ({ inspection }: InspectionDetailProps) => {
       <h3>Date: {inspection.date}</h3>
       <h3>Title: {inspection.title}</h3>
       <h3>Description: {inspection.description}</h3>
-      <IssuesList list={inspection.issues} />
+      <IssuesList />
     </div>
   );
 };
