@@ -21,8 +21,8 @@ const issueFormSlice = createSlice({
     setPictures: (state, action: PayloadAction<string[]>) => {
       state.pictures = action.payload;
     },
-    setEnlargedImage: (state, action: PayloadAction<string[]>) => {
-      state.pictures = action.payload;
+    setEnlargedImage: (state, action: PayloadAction<string | null>) => {
+      state.enlargedImage = action.payload;
     },
   },
 });

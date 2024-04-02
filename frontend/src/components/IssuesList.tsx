@@ -1,16 +1,20 @@
-import { Issue } from '../types/types';
+import { useSelector } from 'react-redux';
 import SingleIssue from './SingleIssue';
+import { RootState } from '../store/store';
+import { useEffect } from 'react';
 
-type ListOfIssuesProp = {
-  list: Issue[];
-};
+const IssuesList = () => {
+  const listOfIssues = useSelector(
+    (state: RootState) => state.inspectionForm.listOfIssues,
+  );
 
-const IssuesList = ({ list }: ListOfIssuesProp) => {
+  useEffect(() => {}, [listOfIssues]);
   return (
     <>
-      {list.map((el) => {
-        return <SingleIssue data={el} key={el.id} />;
-      })}
+      {listOfIssues !== undefined &&
+        listOfIssues.map((el) => {
+          return <SingleIssue issue={el} key={el.id} />;
+        })}
     </>
   );
 };

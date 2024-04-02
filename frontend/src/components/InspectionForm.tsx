@@ -4,14 +4,17 @@ import './InspectionFormStyles.css';
 import AddIssueButton from './AddIssueButton';
 import { Inputs } from '../types/types.ts';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/store.ts';
+import { AppDispatch, RootState } from '../store/store.ts';
 import {
   fetchAllAreas,
-  fetchAllIssues,
   fetchAllLocations,
+  fetchInspectionIssues,
   submitInspectionForm,
 } from '../api/api.ts';
-import { setIsDraft } from '../store/slices/InspectionFormSlice.ts';
+import {
+  setIsSubmitted,
+  setListOfIssues,
+} from '../store/slices/InspectionFormSlice.ts';
 import LocationSelectInput from './inspectionFormInputs/LocationSelectInput.tsx';
 import AreaSelectInput from './inspectionFormInputs/AreaSelectInput.tsx';
 import DateInput from './inspectionFormInputs/DateInput.tsx';
@@ -20,6 +23,13 @@ import EmailCheckbox from './inspectionFormInputs/EmailCheckbox.tsx';
 import EmailFields from './inspectionFormInputs/EmailFields.tsx';
 import DescriptionTextArea from './inspectionFormInputs/DescriptionTextArea.tsx';
 import IssuesList from './IssuesList.tsx';
+import {
+  setEnlargedImage,
+  setPictures,
+} from '../store/slices/IssueFormSlice.ts';
+import { setFormId } from '../store/slices/AppSlice.ts';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const InspectionForm = () => {
   const selectedLocation = useSelector(
@@ -31,21 +41,29 @@ const InspectionForm = () => {
   const locations = useSelector(
     (state: RootState) => state.inspectionForm.allLocations,
   );
-  const isDraft = useSelector(
-    (state: RootState) => state.inspectionForm.isDraft,
-  );
-  const listOfIssues = useSelector(
-    (state: RootState) => state.inspectionForm.listOfIssues,
+  const isSubmitted = useSelector(
+    (state: RootState) => state.inspectionForm.isSubmitted,
   );
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch<AppDispatch>();
   const formId = useSelector((state: RootState) => state.app.formId);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (formId) {
+      fetchInspectionIssues(formId)
+        .then((issues) => dispatch(setListOfIssues(issues)))
+        .then(() => dispatch(setPictures([])))
+        .then(() => dispatch(setEnlargedImage(null)))
+        .catch(() => console.log('Error when fetching inspection issues'));
+    }
+  }, [formId, dispatch]);
+
   useEffect(() => {
     fetchAllLocations(dispatch, defaultLocation);
     fetchAllAreas(dispatch, selectedLocation.id);
-    fetchAllIssues(dispatch);
-  }, []);
+  }, [defaultLocation, selectedLocation, dispatch]);
+
   const {
     register,
     handleSubmit,
@@ -60,8 +78,21 @@ const InspectionForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (formId) {
-      submitInspectionForm(data, locations, areas, formId, isDraft, dispatch);
+      try {
+        submitInspectionForm(data, locations, areas, formId, isSubmitted);
+        dispatch(setListOfIssues([]));
+        dispatch(setFormId(undefined));
+        toast.success('Success! Redirecting to the home page...');
+      } catch (err) {
+        toast.error('Something went wrong');
+      }
+    } else {
+      toast.error('Error: Unable to connect this inspection to database');
     }
+
+    setTimeout(() => {
+      navigate('/');
+    }, 1500);
   };
 
   return (
@@ -71,7 +102,7 @@ const InspectionForm = () => {
       <LocationSelectInput register={register} resetField={resetField} />
       <AreaSelectInput register={register} errors={errors} />
       <AddIssueButton />
-      <IssuesList list={listOfIssues} />
+      <IssuesList />
       <EmailCheckbox register={register} resetField={resetField} />
       <EmailFields register={register} errors={errors} control={control} />
       <DescriptionTextArea register={register} />
@@ -79,11 +110,16 @@ const InspectionForm = () => {
         <button
           className='tertiary-button'
           type='submit'
-          onClick={() => dispatch(setIsDraft(true))}
+          onClick={() => dispatch(setIsSubmitted(false))}
         >
-          Save draft
+          Save Draft
         </button>
-        <button type='submit' className='success-button'>
+
+        <button
+          type='submit'
+          className='success-button'
+          onClick={() => dispatch(setIsSubmitted(true))}
+        >
           Submit
         </button>
       </div>

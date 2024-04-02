@@ -37,20 +37,19 @@ public class IssueController {
     public ResponseEntity<IssueDTO> getIssueById(@PathVariable("id") Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-
         Issue issue = issueService.getIssueById(id);
         return ResponseEntity.ok().headers(headers).body(IssueDTO.fromIssue(issue));
     }
 
     @PostMapping
-    public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueDTO issue) {
+    public ResponseEntity<List<IssueDTO>> createIssue(@RequestBody IssueDTO issue) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-
         Issue createdIssue = issueService.createIssue(issue);
+        IssueListDTO listOfIssues = issueService.getIssuesForForm(issue);
         return ResponseEntity.created(URI.create("/api/issues/" + createdIssue.getId()))
                 .headers(headers)
-                .body(IssueDTO.fromIssue(createdIssue));
+                .body(listOfIssues.issues());
     }
 
     @PutMapping("/{id}")

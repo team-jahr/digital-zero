@@ -16,7 +16,7 @@ const appSlice = createSlice({
     setShowInspectionForm: (state, action: PayloadAction<boolean>) => {
       state.showInspectionForm = action.payload;
     },
-    setFormId: (state, action: PayloadAction<number>) => {
+    setFormId: (state, action: PayloadAction<number | undefined>) => {
       state.formId = action.payload;
     },
   },

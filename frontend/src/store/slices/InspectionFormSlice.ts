@@ -6,10 +6,11 @@ interface InspectionFormState {
   selectedLocation: Location;
   allLocations: Location[];
   otherLocations: Location[];
-  isDraft: boolean;
+  isSubmitted: boolean;
   isSendEmailChecked: boolean;
   areas: Area[];
   listOfIssues: Issue[];
+  editIssue: Issue | null;
 }
 
 const initialState: InspectionFormState = {
@@ -17,10 +18,11 @@ const initialState: InspectionFormState = {
   selectedLocation: { id: 1, name: 'Stockholm' },
   allLocations: [],
   otherLocations: [],
-  isDraft: false,
+  isSubmitted: false,
   isSendEmailChecked: false,
   areas: [],
   listOfIssues: [],
+  editIssue: null,
 };
 const inspectionFormSlice = createSlice({
   name: 'inspectionForm',
@@ -38,8 +40,8 @@ const inspectionFormSlice = createSlice({
     setOtherLocations: (state, action: PayloadAction<Location[]>) => {
       state.otherLocations = action.payload;
     },
-    setIsDraft: (state, action: PayloadAction<boolean>) => {
-      state.isDraft = action.payload;
+    setIsSubmitted: (state, action: PayloadAction<boolean>) => {
+      state.isSubmitted = action.payload;
     },
     setSendEmail: (state, action: PayloadAction<boolean>) => {
       state.isSendEmailChecked = action.payload;
@@ -50,6 +52,9 @@ const inspectionFormSlice = createSlice({
     setListOfIssues: (state, action: PayloadAction<Issue[]>) => {
       state.listOfIssues = action.payload;
     },
+    setEditIssue: (state, action: PayloadAction<Issue | null>) => {
+      state.editIssue = action.payload;
+    },
   },
 });
 
@@ -58,9 +63,10 @@ export const {
   setSelectedLocation,
   setDefaultLocation,
   setOtherLocations,
-  setIsDraft,
+  setIsSubmitted,
   setSendEmail,
   setAllAreas,
   setListOfIssues,
+  setEditIssue,
 } = inspectionFormSlice.actions;
 export default inspectionFormSlice.reducer;

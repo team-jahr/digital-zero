@@ -6,6 +6,7 @@ import org.jahr.backend.inspection.DTO.InspectionListDTO;
 import org.jahr.backend.inspection.DTO.InspectionResponseDTO;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.service.InspectionService;
+import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,18 @@ public class InspectionController {
     @ResponseStatus(HttpStatus.OK)
     public InspectionResponseDTO createInspection() {
         return InspectionResponseDTO.toInspectionResponseDTO(service.createInspection());
+    }
+
+    @GetMapping("/{id}/issues")
+    @ResponseStatus(HttpStatus.OK)
+    public IssueListDTO getAllIssues(@PathVariable int id) {
+        return service.getIssuesForForm(id);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public InspectionDTO getInspectionById(@PathVariable int id) {
+        return InspectionDTO.fromInspection(service.getInspectionById(id));
     }
 
     @PostMapping
