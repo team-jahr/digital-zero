@@ -182,17 +182,30 @@ p::before {
         background: rgba(255, 255, 255, 1) url(../assets/calendar.png) no-repeat scroll calc(100% - 15px) center/8px auto;
         background-size: 12px;
     }
+
+    .form-input[type='date']::-webkit-calendar-picker-indicator {
+        background: transparent;
+        bottom: 0;
+        color: transparent;
+        cursor: pointer;
+        height: auto;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+    }
+
 }
 
-.form-input[type='date']::-webkit-calendar-picker-indicator {
-    background: transparent;
-    bottom: 0;
-    color: transparent;
-    cursor: pointer;
-    height: auto;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: auto;
+@media only screen and (max-width: 600px) {
+    .form-input[type='date'] {
+        -webkit-appearance: none;
+    }
+
+    .form-input[type='date']::-webkit-inner-spin-button,
+    .form-input[type='date']::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+    }
 }
