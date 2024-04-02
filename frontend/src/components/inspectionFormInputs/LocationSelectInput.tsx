@@ -42,7 +42,7 @@ const LocationSelectInput = ({
         })}
         className='form-select'
       >
-        <option value={defaultLocation.name}>{defaultLocation.name}</option>
+        <option value={defaultLocation.id}>{defaultLocation.name}</option>
         {otherLocations.map((element) => {
           const { name, id } = element;
           return (
