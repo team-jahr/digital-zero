@@ -2,14 +2,19 @@ import { useRef, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddPictureButton from './AddPictureButton';
 import './IssueForm.css';
-import { formatImages } from '../api/api.ts';
+import { fetchInspectionIssues, formatImages } from '../api/api.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
-import { setListOfIssues } from '../store/slices/InspectionFormSlice.ts';
+import {
+  setEditIssue,
+  setListOfIssues,
+} from '../store/slices/InspectionFormSlice.ts';
 import {
   setEnlargedImage,
   setPictures,
 } from '../store/slices/IssueFormSlice.ts';
+import { Issue } from '../types/types.ts';
+import toast from 'react-hot-toast';
 
 type Inputs = {
   title: string;
@@ -29,6 +34,7 @@ const IssueForm = () => {
   const enlargedImage = useSelector(
     (state: RootState) => state.issueForm.enlargedImage,
   );
+
   useEffect(() => {
     if (editIssue !== null) {
       dispatch(
@@ -38,20 +44,27 @@ const IssueForm = () => {
       );
       setValue('title', editIssue.title);
       setValue('description', editIssue.description);
-      setValue('severity', editIssue.severityLevel);
+      setValue('severity', editIssue.severity);
     }
   }, [editIssue, dispatch, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const transformedImages =
-      pictures && [...pictures].map((el) => formatImages(el));
-    const body = {
-      id: formId,
+    let transformedImages: string[];
+    if (pictures.length > 0) {
+      transformedImages =
+        pictures && [...pictures].map((el) => formatImages(el));
+    } else {
+      transformedImages = [];
+    }
+    const issue: Issue = {
+      id: formId!,
       title: data.title,
       description: data.description,
       severity: data.severity,
       images: transformedImages,
     };
+
+    const body = issue;
 
     let options;
     let url;
@@ -63,7 +76,6 @@ const IssueForm = () => {
         body: JSON.stringify(body),
       };
     } else {
-      console.log('Hello');
       url = `${import.meta.env.VITE_API_BASE_URL}/api/issues/${editIssue.id}`;
       options = {
         method: 'PUT',
@@ -72,14 +84,27 @@ const IssueForm = () => {
       };
     }
 
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch(setListOfIssues(res));
-        reset();
-        setPictures([]);
-      })
-      .catch((err) => console.log(err));
+    if (formId !== undefined) {
+      fetch(url, options)
+        .then((res) => res.json())
+        .then(() => {
+          reset();
+          dispatch(setPictures([]));
+          dispatch(setEnlargedImage(null));
+        })
+        .catch(() => toast.error('Failed to submit issue'))
+        .then(() => fetchInspectionIssues(formId))
+        .then((issues) => dispatch(setListOfIssues(issues)))
+        .then(() => {
+          if (editIssue === null) {
+            toast.success('Issue has been added!');
+          } else {
+            toast.success('Issue has been updated!');
+          }
+          dispatch(setEditIssue(null));
+        })
+        .catch(() => toast.error('Failed to re-fetch updated issues'));
+    }
   };
 
   const handlePicturesAdded = (newPictures: string[]) => {
@@ -102,7 +127,8 @@ const IssueForm = () => {
 
   const handleCancel = () => {
     reset();
-    setPictures([]);
+    dispatch(setPictures([]));
+    dispatch(setEnlargedImage(null));
   };
 
   const handlePictureClick = (pictureUrl: string) => {
@@ -167,15 +193,22 @@ const IssueForm = () => {
         />
 
         {/* Picture upload logic */}
-        <div className='pictures-container'>
+        <div className='grid grid-cols-2 gap-4 mb-4'>
           {pictures &&
+            pictures.length > 0 &&
             pictures.map((picture, index) => (
-              <div
-                key={index}
-                className='picture-item'
-                onClick={() => handlePictureClick(picture)}
-              >
-                <img src={picture} alt='Uploaded' />
+              <div className='col-span-1' key={index}>
+                <div
+                  key={index}
+                  className=''
+                  onClick={() => handlePictureClick(picture)}
+                >
+                  <img
+                    src={picture}
+                    alt='Uploaded'
+                    className='max-h-28 max-w-full'
+                  />
+                </div>
                 <button
                   className='delete-picture-button'
                   type='button'

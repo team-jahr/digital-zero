@@ -4,7 +4,6 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.model.Issue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,8 +29,6 @@ public class IssueBlobClient {
     public Issue uploadIssueImages(Issue issue) {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
-        System.out.println("Blob container name: " + blobContainerName);
-        System.out.println("Blob connection string: " + blobConnectionString);
         BlobContainerClient blobContainerClient =
                 blobServiceClient.getBlobContainerClient(blobContainerName);
         blobContainerClient.createIfNotExists();
@@ -78,7 +75,6 @@ public class IssueBlobClient {
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
             String blobName = ("" + issue.getId()) + i + ".png";
-            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -104,11 +100,9 @@ public class IssueBlobClient {
         // This should already be a list in issue object
 //        List<String> issueImagesNames = List.of(issue.getImgRef());
         List<String> issueImagesData = new ArrayList<>();
-        System.out.println("images = " + images);
 
         for (int i = 0; i < images.size(); i++) {
             String blobName = ("" + id) + i + ".png";
-            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

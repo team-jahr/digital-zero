@@ -6,7 +6,11 @@ import { Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store.ts';
-import { setShowDrawer } from '../store/slices/IssueFormSlice.ts';
+import {
+  setEnlargedImage,
+  setPictures,
+  setShowDrawer,
+} from '../store/slices/IssueFormSlice.ts';
 import { setEditIssue } from '../store/slices/InspectionFormSlice.ts';
 
 type SingleIssueProp = {
@@ -23,6 +27,8 @@ const SingleIssue = ({ issue }: SingleIssueProp) => {
   const handleEdit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(setEditIssue(issue));
+    dispatch(setPictures([]));
+    dispatch(setEnlargedImage(null));
     dispatch(setShowDrawer(true));
   };
   return (

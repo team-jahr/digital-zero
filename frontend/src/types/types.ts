@@ -18,7 +18,28 @@ export type Inputs = {
 export type Issue = {
   id: number;
   title: string;
-  severityLevel: string;
+  severity: string;
   description: string;
   images: string[];
+};
+
+export type Inspection = {
+  id: number;
+  title: string;
+  description: string;
+  isSubmitted: boolean;
+  date: string;
+  area: Area;
+  location: Location;
+  issueKeys: InspectionIssueKeys[];
+  email: string;
+};
+
+export type InspectionIssueKeys = {
+  inspectionId: number;
+  issueId: number;
+};
+
+export type IssueDTO = {
+  issues: Issue[];
 };

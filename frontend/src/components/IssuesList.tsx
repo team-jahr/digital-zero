@@ -1,17 +1,20 @@
 import { useSelector } from 'react-redux';
 import SingleIssue from './SingleIssue';
 import { RootState } from '../store/store';
+import { useEffect } from 'react';
 
 const IssuesList = () => {
-  const issues = useSelector(
+  const listOfIssues = useSelector(
     (state: RootState) => state.inspectionForm.listOfIssues,
   );
 
+  useEffect(() => {}, [listOfIssues]);
   return (
     <>
-      {issues.map((el) => {
-        return <SingleIssue issue={el} key={el.id} />;
-      })}
+      {listOfIssues !== undefined &&
+        listOfIssues.map((el) => {
+          return <SingleIssue issue={el} key={el.id} />;
+        })}
     </>
   );
 };

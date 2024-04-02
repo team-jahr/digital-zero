@@ -2,8 +2,14 @@ package org.jahr.backend;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,15 +30,14 @@ public class Email {
         transport.connect(emailHost, user, userPassword);
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         transport.close();
-        System.out.println("Email sent");
     }
 
-    public MimeMessage draftEmail(String emails, String body, String title) throws MessagingException, IOException {
+    public MimeMessage draftEmail(String emails, String body, String title)
+            throws MessagingException, IOException {
         String[] emailRecipients = emails.split(",");
         String emailSubject = "Report from inspection " + title;
         mimeMessage = new MimeMessage(newSession);
-        Arrays.stream(emailRecipients).forEach(el-> {
-            System.out.println("email = " + el);
+        Arrays.stream(emailRecipients).forEach(el -> {
             try {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(el));
             } catch (MessagingException e) {

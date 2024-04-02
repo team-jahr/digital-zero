@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store';
 import { setListOfIssues } from '../store/slices/InspectionFormSlice';
 import { deleteIssueFromApi } from '../api/api';
+import toast from 'react-hot-toast';
 
 type PopUpProps = {
   id: number;
@@ -14,12 +15,18 @@ const PopUp = ({ id, open, setModalOpen }: PopUpProps) => {
   const issues = useSelector(
     (state: RootState) => state.inspectionForm.listOfIssues,
   );
+  // const images = useSelector((state: RootState) => state.issueForm.pictures);
   const dispatchIssues = useDispatch<AppDispatch>();
 
   const handleOk = () => {
-    dispatchIssues(setListOfIssues(issues.filter((el) => el.id !== id)));
-    deleteIssueFromApi(id);
-    setModalOpen(false);
+    try {
+      dispatchIssues(setListOfIssues(issues.filter((el) => el.id !== id)));
+      deleteIssueFromApi(id);
+      setModalOpen(false);
+      toast.success('Issue deleted');
+    } catch (err) {
+      toast.error('Failed to delete issue');
+    }
   };
   const handleCancel = () => {
     setModalOpen(false);

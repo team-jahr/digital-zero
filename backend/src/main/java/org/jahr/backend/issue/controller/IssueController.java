@@ -1,7 +1,5 @@
 package org.jahr.backend.issue.controller;
 
-import org.jahr.backend.inspection.DTO.InspectionListDTO;
-import org.jahr.backend.inspectionIssue.model.InspectionIssue;
 import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.model.Issue;
@@ -49,7 +47,6 @@ public class IssueController {
         headers.set("Content-Type", "application/json");
         Issue createdIssue = issueService.createIssue(issue);
         IssueListDTO listOfIssues = issueService.getIssuesForForm(issue);
-        System.out.println("listOfIssues = " + listOfIssues.issues());
         return ResponseEntity.created(URI.create("/api/issues/" + createdIssue.getId()))
                 .headers(headers)
                 .body(listOfIssues.issues());

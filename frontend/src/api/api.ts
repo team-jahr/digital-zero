@@ -6,10 +6,9 @@ import {
   setAllAreas,
   setAllLocations,
   setDefaultLocation,
-  setListOfIssues,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
-import { Area, Inputs, Location } from '../types/types.ts';
+import { Area, Inputs, Issue, IssueDTO, Location } from '../types/types.ts';
 
 export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
@@ -25,7 +24,6 @@ export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
     .then((res) => {
       dispatch(setFormId(res.id));
       dispatch(setDefaultLocation(res.location));
-      toast.success('Successfully created new inspection!');
       dispatch(setShowInspectionForm(true));
     })
     .catch((err) => {
@@ -92,29 +90,12 @@ export const submitInspectionForm = (
     email: responseEmail,
     description: data.description,
   };
-  //TODO to remove console.log
-  console.log(JSON.stringify(responseBody));
+
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(responseBody),
-  })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => console.log(err));
-};
-
-export const fetchAllIssues = (
-  dispatch: Dispatch<UnknownAction>,
-  id: number,
-) => {
-  fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/${id}`)
-    .then((res) => res.json())
-    .then((res) => {
-      dispatch(setListOfIssues(res.issues));
-    })
-    .catch((err) => console.log(err));
+  }).catch((err) => console.log(err));
 };
 
 export const formatImages = (imgData: string): string => {
@@ -124,7 +105,39 @@ export const formatImages = (imgData: string): string => {
 export const deleteIssueFromApi = (id: number) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/issues/${id}`, {
     method: 'DELETE',
-  })
-    .then((res) => console.log(res.status))
-    .catch(() => console.log('Error when deleting'));
+  }).catch(() => console.log('Error when deleting'));
+};
+
+export const fetchInspectionIssues = async (id: number): Promise<Issue[]> => {
+  try {
+    const inspectionIssuesResponse: Response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/inspections/${id}/issues`,
+    );
+    const inspectionIssuesData: IssueDTO =
+      await inspectionIssuesResponse.json();
+    const inspectionIssues: Issue[] = inspectionIssuesData.issues;
+    const inspectionIssuesIds: number[] = inspectionIssues.map((el) => el.id);
+
+    const issuesResponse: Response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/issues`,
+    );
+    const issuesData: IssueDTO = await issuesResponse.json();
+    const issues: Issue[] = issuesData.issues;
+
+    const relevantIssues: Issue[] = issues.filter((issue) =>
+      inspectionIssuesIds.includes(issue.id),
+    );
+
+    relevantIssues.map((el) => {
+      if (el.images.length === 1 && el.images[0] === '') {
+        el.images = [];
+      }
+    });
+
+    return new Promise<Issue[]>((resolve) => resolve(relevantIssues));
+  } catch (err) {
+    return new Promise<Issue[]>((_resolve, reject) =>
+      reject(Error('Error while fetching inspection')),
+    );
+  }
 };

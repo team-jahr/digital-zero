@@ -52,7 +52,7 @@ const inspectionFormSlice = createSlice({
     setListOfIssues: (state, action: PayloadAction<Issue[]>) => {
       state.listOfIssues = action.payload;
     },
-    setEditIssue: (state, action: PayloadAction<Issue>) => {
+    setEditIssue: (state, action: PayloadAction<Issue | null>) => {
       state.editIssue = action.payload;
     },
   },

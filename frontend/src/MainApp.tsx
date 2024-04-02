@@ -5,6 +5,7 @@ import { Drawer } from 'antd';
 import InspectionForm from './components/InspectionForm.tsx';
 import IssueForm from './components/IssueForm.tsx';
 import { setShowDrawer } from './store/slices/IssueFormSlice.ts';
+import { setEditIssue } from './store/slices/InspectionFormSlice.ts';
 
 const MainApp = () => {
   const isDrawerVisible = useSelector(
@@ -15,6 +16,7 @@ const MainApp = () => {
 
   const onCloseDrawer = () => {
     dispatch(setShowDrawer(false));
+    dispatch(setEditIssue(null));
   };
 
   return (
