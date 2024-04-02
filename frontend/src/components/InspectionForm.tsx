@@ -71,6 +71,7 @@ const InspectionForm = () => {
     control,
     formState: { errors },
   } = useForm<Inputs>({
+    mode: 'onChange',
     defaultValues: {
       emails: [{ value: '' }],
     },
@@ -105,7 +106,7 @@ const InspectionForm = () => {
       <IssuesList />
       <EmailCheckbox register={register} resetField={resetField} />
       <EmailFields register={register} errors={errors} control={control} />
-      <DescriptionTextArea register={register} />
+      <DescriptionTextArea register={register} errors={errors} />
       <div className='buttons-container'>
         <button
           className='tertiary-button'

@@ -188,7 +188,7 @@ const IssueForm = () => {
         <label htmlFor='description'>Description</label>
         <textarea
           id='description'
-          {...register('description', { required: true })}
+          {...register('description', { required: true, maxLength: 500 })}
           className='description-textarea'
         />
 

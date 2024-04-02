@@ -70,6 +70,14 @@ button[type='submit'] {
     text-align: left;
 }
 
+.text-area-inspection__counter {
+    position: absolute;
+    bottom: 0;
+    font-size: 12px;
+    right: 10px;
+    background: white;
+}
+
 .form-label {
     background: white;
     position: absolute;
