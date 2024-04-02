@@ -8,7 +8,7 @@ import {
   setDefaultLocation,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
-import { Area, Inputs, Issue, IssueDTO, Location } from '../types/types.ts';
+import { Area, Inputs, Issue, IssueDTO, Location, Inspection } from '../types/types.ts';
 
 export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
@@ -139,5 +139,19 @@ export const fetchInspectionIssues = async (id: number): Promise<Issue[]> => {
     return new Promise<Issue[]>((_resolve, reject) =>
       reject(Error('Error while fetching inspection')),
     );
+  }
+};
+
+export const fetchInspections = async (): Promise<Inspection[]> => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch inspections');
+    }
+    const data: Inspection[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching inspections:', error);
+    throw error;
   }
 };
