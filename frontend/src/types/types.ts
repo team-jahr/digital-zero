@@ -33,6 +33,7 @@ export type Inspection = {
   location: Location;
   issueKeys: InspectionIssueKeys[];
   email: string;
+  isSelected?: boolean;
 };
 
 export type InspectionIssueKeys = {
@@ -42,4 +43,8 @@ export type InspectionIssueKeys = {
 
 export type IssueDTO = {
   issues: Issue[];
+};
+
+export type InspectionDTO = {
+  inspectionDTOs: Inspection[];
 };
