@@ -9,16 +9,36 @@ const InspectionList = () => {
 
   useEffect(() => {
     fetchInspections()
-      .then((data: any) => setInspections(data.inspectionDTOs))
+      .then((data) => {
+        const inspectionsWithSelection = data.map((inspection) => ({
+          ...inspection,
+          isSelected: false,
+        }));
+        setInspections(inspectionsWithSelection);
+      })
       .catch((error) => console.error('Error fetching inspections:', error));
   }, []);
+
+  const handleViewDetails = (clickedInspection: Inspection) => {
+    setInspections((prevInspections) =>
+      prevInspections.map((inspection) => ({
+        ...inspection,
+        isSelected:
+          inspection.id === clickedInspection.id && !inspection.isSelected,
+      })),
+    );
+  };
 
   return (
     <div className='inspection-list-container'>
       <h1 className='title-inspection-list'>Inspection List</h1>
       <ul className='inspection-list'>
         {inspections.map((inspection) => (
-          <InspectionListItem key={inspection.id} inspection={inspection} />
+          <InspectionListItem
+            key={inspection.id}
+            inspection={inspection}
+            onViewDetails={handleViewDetails}
+          />
         ))}
       </ul>
     </div>

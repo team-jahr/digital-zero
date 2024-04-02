@@ -1,18 +1,21 @@
 import { Inspection } from '../../types/types';
-import IssuesList from '../IssuesList';
 
 type InspectionDetailProps = {
   inspection: Inspection;
 };
 
 const InspectionDetail = ({ inspection }: InspectionDetailProps) => {
+  const inspectionDate = new Date(inspection.date);
+  const formattedDate = inspectionDate.toISOString().split('T')[0]; // Get yyyy-MM-DD format
+
   return (
-    <div>
+    <div className='inspection-detail'>
       <h2>Inspection Detail</h2>
-      <h3>Date: {inspection.date}</h3>
-      <h3>Title: {inspection.title}</h3>
-      <h3>Description: {inspection.description}</h3>
-      <IssuesList />
+      <p>ID: {inspection.id}</p>
+      <p>Description: {inspection.description}</p>
+      <p>Date: {formattedDate}</p>
+      <p>Is Submitted: {inspection.isSubmitted ? 'Yes' : 'No'}</p>
+      {/* Add more details here as needed */}
     </div>
   );
 };

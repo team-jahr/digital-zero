@@ -8,7 +8,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   const handleListInspections = () => {
-    navigate('/list-inspections');
+    navigate('/');
   };
 
   const handleNewInspection = () => {
