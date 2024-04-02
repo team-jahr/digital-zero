@@ -1,0 +1,102 @@
+.home-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background-color: #024804;
+  z-index: -1;
+}
+
+.article-container {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 20px;
+  color: white;
+  overflow-y: auto;
+  max-height: 400px;
+  z-index: 1;
+}
+
+.article-container h1 {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.article-container h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.article-container ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.article-container li {
+  margin-bottom: 5px;
+}
+
+.button-articles-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  width: 80%;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.button-articles-container h2 {
+  font-size: 30px;
+}
+
+.button-article {
+  width: 100%;
+  height: 300px;
+  background-color: rgb(246, 251, 246);
+  padding: 20px;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.1), 0 -10px 12px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+.description {
+  margin: 10px;
+}
+
+.action-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+@media screen and (max-width: 500px) {
+  .home-page-container {
+    padding: 0;
+    margin: 7px;
+  }
+  .button-articles-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: none;
+    margin-bottom: 5px;
+  }
+}

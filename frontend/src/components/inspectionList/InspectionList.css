@@ -26,3 +26,55 @@
 li {
   display: block;
 }
+.transparent-button {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  background-color: rgb(246, 251, 246);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.transparent-button:hover {
+  background-color: #015d24;
+  color: white;
+  font-size: large;
+  cursor: pointer;
+}
+
+.transparent-button .icon {
+  margin-right: 5px;
+}
+.transparent-button-icon {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  .transparent-button {
+    display: none;
+  }
+  .transparent-button-icon {
+    display: inline;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    background-color: rgb(246, 251, 246);
+    border: 1px solid #015d24;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  .transparent-button-icon:hover {
+    background-color: #015d24;
+    color: white;
+    font-size: large;
+    cursor: pointer;
+  }
+}
