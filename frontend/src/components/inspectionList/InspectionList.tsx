@@ -70,12 +70,15 @@ const InspectionList = () => {
           >
             <FontAwesomeIcon icon={faSearch} />
           </button>
-          {showInspections?.length == 0 && (
-            <div className='main-title'>No items found.</div>
-          )}
           <Spin spinning={loading}>
             <div className=''>
-              <ul className='inspection-list'>
+              <ul
+                className={
+                  showInspections && showInspections.length > 0
+                    ? 'inspection-list'
+                    : 'inspection-list no-grid'
+                }
+              >
                 {showInspections !== undefined &&
                   showInspections.map((inspection: InspectionDisplay) => (
                     <InspectionListItem
@@ -84,6 +87,10 @@ const InspectionList = () => {
                       onViewDetails={handleViewDetails}
                     />
                   ))}
+                {showInspections !== undefined &&
+                  showInspections.length == 0 && (
+                    <div className='main-title spread'>No items found.</div>
+                  )}
               </ul>
               <button
                 className='primary-button'
