@@ -14,6 +14,7 @@ import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.client.IssueBlobClient;
 import org.jahr.backend.issue.model.Issue;
+import org.jahr.backend.location.model.Location;
 import org.jahr.backend.user.exception.UserNotFoundException;
 import org.jahr.backend.user.model.AppUser;
 import org.jahr.backend.user.repository.UserRepository;
@@ -84,9 +85,9 @@ public class InspectionService {
                             + inspectionIssue.description() + "%n"
                             + "----------------------------------------------" + "%n"));
             blobClient.getIssueImagesByList(inspectionIssue.images(),
-                                            inspectionIssue.id(),
-                                            mail,
-                                            inspectionIssue.title()
+                    inspectionIssue.id(),
+                    mail,
+                    inspectionIssue.title()
             );
 
         }
@@ -97,8 +98,8 @@ public class InspectionService {
 
                 mail.setUpServerProperties();
                 mail.draftEmail(InspectionDTO.joinEmail(inspection.reportedTo()),
-                                issuesList.toString(),
-                                inspection.id().toString()
+                        issuesList.toString(),
+                        inspection.id().toString()
                 );
                 mail.sendEmail();
             } catch (IOException e) {
@@ -114,10 +115,23 @@ public class InspectionService {
         return repo.findAll();
     }
 
-    public Inspection updateInspection(int id) {
-//       Inspection inspection = repo.findById(id)
-//               .orElseThrow(() -> new InspectionNotFoundException("Inspection was not found."));
-//       return inspection;
-        return null;
+
+    public List<Inspection> getIssuesSortedByLocation(Integer location, boolean submitted, LocalDateTime date) {
+        System.out.println("date = " + date);
+        if (location != null && date != null) {
+            return getInspections().stream().filter(el ->{
+                System.out.println("el.getDate() = " + el.getDate());
+               return el.getArea().getLocation().getId() == location &&
+                        el.getDate().equals(date) && el.isSubmitted() == submitted;
+            }).toList();
+        }
+        else if(location == null && date != null){
+            return getInspections().stream().filter(el -> el.getDate().equals(date) && el.isSubmitted() == submitted).toList();
+        } else if(location != null && date == null) {
+            return getInspections().stream().filter(el -> el.isSubmitted() == submitted && el.getArea().getLocation().getId() == location).toList();
+        }
+        else{
+            return getInspections().stream().filter(el -> el.isSubmitted() == submitted).toList();
+        }
     }
 }

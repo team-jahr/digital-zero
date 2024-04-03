@@ -34,13 +34,17 @@ insert into inspection (description, date, submitted, reported_to, area_id, app_
 values ('No issues found', '2021-03-02', false, '', 5, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('No issues found', '2021-03-01', false, '', 6, 1);
+values ('No issues found', '2021-03-01', true, '', 6, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
 values ('No issues found', '2021-03-04', false, '', 7, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
+<<<<<<< Updated upstream
 values ('No issues found', '2021-03-04', false, '', 8, 1);
+=======
+values ('No issues found', '2021-03-04', true, '', 8, 1);
+>>>>>>> Stashed changes
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
 values ('No issues found', '2021-03-02', false, '', 1, 1);
