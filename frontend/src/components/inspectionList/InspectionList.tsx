@@ -22,42 +22,40 @@ const InspectionList = () => {
   const inspections = useSelector(
     (state: RootState) => state.inspectionDisplays.inspectionsDisplays,
   );
-  // const [inspectionDisplays, setInspectionDisplays] =
-  // useState<InspectionDisplay[]>();
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const [showAll, setShowAll] = useState(false);
+  const [showInspections, setShowInspections] = useState<InspectionDisplay[]>();
 
   useEffect(() => {
     setLoading(true);
 
     getInspectionDisplays()
-      .then((inspections) => dispatch(setInspectionDisplays(inspections)))
+      .then((data) => data.sort((a, b) => b.date.localeCompare(a.date)))
+      .then((data) => dispatch(setInspectionDisplays(data)))
       .then(() => setLoading(false))
       .catch(() => {
         setLoading(false);
         toast.error('Failed to fetch inspections');
       });
+  }, [dispatch]);
 
-    // fetchInspections()
-    //   .then((newInspections: Inspection[]) => {
-    //     dispatch(setInspections([...inspections, ...newInspections]));
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching inspections:', error);
-    //     setLoading(false);
-    //     toast.error('Failed to fetch inspections');
-    //   });
-  }, [currentPage, dispatch]);
+  useEffect(() => {
+    if (showAll) {
+      setShowInspections([...inspections]);
+    } else {
+      setShowInspections(inspections.slice(0, 5));
+    }
+  }, [inspections, showAll]);
 
   const toggleFilterDrawer = () => {
     setFilterDrawerVisible(!filterDrawerVisible);
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  // const handlePageChange = (page: number) => {
+  //   setCurrentPage(page);
+  // };
 
   const handleNewInspection = () => {
     createNewInspectionForm(dispatch, navigate);
@@ -66,38 +64,54 @@ const InspectionList = () => {
   const handleViewDetails = () => {};
 
   return (
-    <div className='inspection-list-container'>
-      <h1 className='title-inspection-list'>Inspection List</h1>
-      <div className='filter-button-container'>
-        <FilterButton onClick={toggleFilterDrawer} />
-      </div>
-      <button className='transparent-button' onClick={handleNewInspection}>
-        <FontAwesomeIcon icon={faSearch} />
-        New Inspection
-      </button>
-      <button className='transparent-button-icon' onClick={handleNewInspection}>
-        <FontAwesomeIcon icon={faSearch} />
-      </button>
-      <Spin spinning={loading}>
-        <ul className='inspection-list'>
-          {inspections.map((inspection: InspectionDisplay) => (
-            <InspectionListItem
-              key={inspection.id}
-              inspection={inspection}
-              onViewDetails={handleViewDetails}
-            />
-          ))}
-        </ul>
-        <Pagination
+    <div className='flex justify-center'>
+      <div className='mx-2 max-w-5xl w-full grid grid-cols-12'>
+        <div className='col-span-full sm:col-start-2 sm:col-span-10'>
+          <h1 className='title-inspection-list'>Inspection List</h1>
+          <div className='filter-button-container'>
+            <FilterButton onClick={toggleFilterDrawer} />
+          </div>
+          <button className='transparent-button' onClick={handleNewInspection}>
+            <FontAwesomeIcon icon={faSearch} />
+            New Inspection
+          </button>
+          <button
+            className='transparent-button-icon'
+            onClick={handleNewInspection}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+          <Spin spinning={loading}>
+            <div className=''>
+              <ul className='inspection-list'>
+                {showInspections !== undefined &&
+                  showInspections.map((inspection: InspectionDisplay) => (
+                    <InspectionListItem
+                      key={inspection.id}
+                      inspection={inspection}
+                      onViewDetails={handleViewDetails}
+                    />
+                  ))}
+              </ul>
+              <button
+                className='primary-button'
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll ? 'Show less' : 'Show more'}
+              </button>
+            </div>
+            {/* <Pagination
           current={currentPage}
           total={inspections.length * 10}
           onChange={handlePageChange}
-        />
-      </Spin>
-      <FilterDrawer
-        visible={filterDrawerVisible}
-        onClose={toggleFilterDrawer}
-      />
+        /> */}
+          </Spin>
+          <FilterDrawer
+            visible={filterDrawerVisible}
+            onClose={toggleFilterDrawer}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -7,7 +7,7 @@ interface FilterButtonProps {
 
 const FilterButton: React.FC<FilterButtonProps> = ({ onClick }) => {
   return (
-    <button type='button' onClick={onClick} className='filter-button'>
+    <button type='button' onClick={onClick} className='primary-button'>
       Filter
     </button>
   );
