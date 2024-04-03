@@ -31,8 +31,27 @@ export type Inspection = {
   date: string;
   area: Area;
   location: Location;
-  issueKeys: InspectionIssueKeys[];
+  inspectionIssueKeys: InspectionIssueKeys[];
+  reportedTo: string[];
+  user: User;
+  isSelected?: boolean;
+};
+
+export type User = {
+  id: number;
   email: string;
+};
+
+export type InspectionDisplay = {
+  id: number;
+  userEmail: string;
+  date: string;
+  isSubmitted: boolean;
+  description: string;
+  locationName: string;
+  areaName: string;
+  reportedToEmails: string[] | null;
+  issues: Issue[];
   isSelected?: boolean;
 };
 

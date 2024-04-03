@@ -16,6 +16,7 @@ import {
   Location,
   Inspection,
   InspectionDTO,
+  InspectionDisplay,
 } from '../types/types.ts';
 import { NavigateFunction } from 'react-router-dom';
 
@@ -168,4 +169,46 @@ export const fetchInspections = async (): Promise<Inspection[]> => {
     console.error('Error fetching inspections:', error);
     throw error;
   }
+};
+
+export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
+  let allInspections: Inspection[];
+  let allIssues: Issue[];
+  try {
+    allInspections = await fetchInspections();
+    const issuesResponse: Response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/issues`,
+    );
+    const issuesData: IssueDTO = await issuesResponse.json();
+    allIssues = issuesData.issues;
+  } catch (err) {
+    return new Promise((_resolve, reject) =>
+      reject(Error('Unable to fetch inspections and/or issues')),
+    );
+  }
+
+  const inspectionDisplays: InspectionDisplay[] = [];
+  allInspections.forEach((inspection) => {
+    const relevantIssueIds = inspection.inspectionIssueKeys.map(
+      (el) => el.issueId,
+    );
+    const relevantIssues = allIssues.filter((issue) =>
+      relevantIssueIds.includes(issue.id),
+    );
+    const inspectionDisplay: InspectionDisplay = {
+      id: inspection.id,
+      userEmail: inspection.user.email,
+      date: inspection.date,
+      isSubmitted: inspection.isSubmitted,
+      description: inspection.description,
+      locationName: inspection.location.name,
+      areaName: inspection.area.name,
+      reportedToEmails: inspection.reportedTo,
+      issues: relevantIssues,
+      isSelected: false,
+    };
+    inspectionDisplays.push(inspectionDisplay);
+  });
+
+  return new Promise((resolve) => resolve(inspectionDisplays));
 };
