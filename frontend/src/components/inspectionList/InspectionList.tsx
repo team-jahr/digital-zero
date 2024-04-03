@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInspections } from '../../api/api';
-import { setInspections } from '../../store/slices/InspectionsSlice';
-import { Inspection } from '../../types/types';
+import { getInspectionDisplays } from '../../api/api';
+import { InspectionDisplay } from '../../types/types';
 import FilterDrawer from './FilterDrawer';
 import { Pagination, Spin } from 'antd';
 import FilterButton from './FilterButton';
@@ -15,29 +14,41 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import toast from 'react-hot-toast';
 import './InspectionList.css';
 import './DetailButton.css';
+import { setInspectionDisplays } from '../../store/slices/InspectionDisplaysSlice';
 
 const InspectionList = () => {
   const dispatch = useDispatch();
   const [filterDrawerVisible, setFilterDrawerVisible] = useState(false);
   const inspections = useSelector(
-    (state: RootState) => state.inspections.inspections,
+    (state: RootState) => state.inspectionDisplays.inspectionsDisplays,
   );
+  // const [inspectionDisplays, setInspectionDisplays] =
+  // useState<InspectionDisplay[]>();
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    fetchInspections()
-      .then((newInspections: Inspection[]) => {
-        dispatch(setInspections([...inspections, ...newInspections]));
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching inspections:', error);
+
+    getInspectionDisplays()
+      .then((inspections) => dispatch(setInspectionDisplays(inspections)))
+      .then(() => setLoading(false))
+      .catch(() => {
         setLoading(false);
         toast.error('Failed to fetch inspections');
       });
+
+    // fetchInspections()
+    //   .then((newInspections: Inspection[]) => {
+    //     dispatch(setInspections([...inspections, ...newInspections]));
+    //     setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching inspections:', error);
+    //     setLoading(false);
+    //     toast.error('Failed to fetch inspections');
+    //   });
   }, [currentPage, dispatch]);
 
   const toggleFilterDrawer = () => {
@@ -69,7 +80,7 @@ const InspectionList = () => {
       </button>
       <Spin spinning={loading}>
         <ul className='inspection-list'>
-          {inspections.map((inspection: Inspection) => (
+          {inspections.map((inspection: InspectionDisplay) => (
             <InspectionListItem
               key={inspection.id}
               inspection={inspection}

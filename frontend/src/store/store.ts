@@ -3,9 +3,9 @@ import appReducer from './slices/AppSlice.ts';
 import inspectionFormReducer from './slices/InspectionFormSlice.ts';
 import issueFormReducer from './slices/IssueFormSlice.ts';
 import popUpReducer from './slices/PopUpSlice.ts';
-import inspectionsReducer from './slices/InspectionsSlice.ts'; 
+import inspectionsReducer from './slices/InspectionsSlice.ts';
 import filterReducer from './slices/FilterSlice.ts';
-
+import inspectionDisplaysReducer from './slices/InspectionDisplaysSlice.ts';
 
 export const store = configureStore({
   reducer: {
@@ -13,8 +13,9 @@ export const store = configureStore({
     inspectionForm: inspectionFormReducer,
     issueForm: issueFormReducer,
     popUp: popUpReducer,
-    inspections: inspectionsReducer, 
+    inspections: inspectionsReducer,
     filter: filterReducer,
+    inspectionDisplays: inspectionDisplaysReducer,
   },
 });
 
