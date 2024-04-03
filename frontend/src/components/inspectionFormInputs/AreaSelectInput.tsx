@@ -1,8 +1,12 @@
 import { Area, InspectionFormInputs } from '../../types/types.ts';
 import { ErrorMessage } from '@hookform/error-message';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store.ts';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import {
+  setAreaValue,
+  setIsAreaDisabled,
+} from '../../store/slices/InspectionFormSlice.ts';
 
 type AreaSelectInputProp = {
   register: UseFormRegister<InspectionFormInputs>;
@@ -10,14 +14,28 @@ type AreaSelectInputProp = {
 };
 const AreaSelectInput = ({ register, errors }: AreaSelectInputProp) => {
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
+  const dispatch = useDispatch<AppDispatch>();
+  const areaDisabled = useSelector(
+    (state: RootState) => state.inspectionForm.areaDisabled,
+  );
   return (
     <div className='form-field-container mb-5'>
-      <label className='form-label' htmlFor='area'>
+      <label
+        className={areaDisabled ? 'form-label disabled' : 'form-label'}
+        htmlFor='area'
+      >
         Area
       </label>
       <select
         id='area'
-        {...register('area', { required: 'Field is required.' })}
+        disabled={areaDisabled}
+        {...register('area', {
+          required: 'Field is required.',
+          onChange: (e) => {
+            if (e.target.value !== '') dispatch(setIsAreaDisabled(true));
+            dispatch(setAreaValue(e.target.value));
+          },
+        })}
         className={errors?.area ? 'form-select mb-1 error' : 'form-select mb-1'}
       >
         <option value=''>Select area</option>
@@ -30,6 +48,15 @@ const AreaSelectInput = ({ register, errors }: AreaSelectInputProp) => {
           );
         })}
       </select>
+      {areaDisabled && (
+        <button
+          type='button'
+          className='tertiary-button'
+          onClick={() => dispatch(setIsAreaDisabled(false))}
+        >
+          Edit section
+        </button>
+      )}
       <ErrorMessage
         errors={errors}
         name='area'
