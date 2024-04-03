@@ -49,8 +49,7 @@ const InspectionList = () => {
   };
 
   const handleNewInspection = () => {
-    createNewInspectionForm(dispatch);
-    navigate('/new-inspection');
+    createNewInspectionForm(dispatch, navigate);
   };
 
   const handleViewDetails = () => {};

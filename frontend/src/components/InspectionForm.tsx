@@ -109,7 +109,12 @@ const InspectionForm = () => {
       <h1 className='section-title'>
         <span>Additional informations</span>
       </h1>
-      <EmailFields register={register} errors={errors} control={control} />
+      <EmailFields
+        register={register}
+        errors={errors}
+        control={control}
+        isSubmitted={isSubmitted}
+      />
       <DescriptionTextArea register={register} errors={errors} />
       <div className='buttons-container'>
         <button

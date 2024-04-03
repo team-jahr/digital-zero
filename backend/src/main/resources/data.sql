@@ -16,5 +16,3 @@ insert into area (id, name, location_id) values (7,'Hall 777', 3) on conflict (i
 insert into area (id, name, location_id) values (8,'Hall 888', 3) on conflict (id) do nothing;
 
 insert into app_user (id, email, location_id) values (1, 'test@gmail.com', 2) on conflict (id) do nothing;
-insert into issue (title, img_ref, severity, description) values('Test1', '10.png,20.png', 'Warning', 'No proper shoes') on conflict (id) do nothing;
-insert into issue (title, img_ref, severity, description) values('Test2', '20.png,10.png', 'Warning', 'No proper shoes2') on conflict (id) do nothing;

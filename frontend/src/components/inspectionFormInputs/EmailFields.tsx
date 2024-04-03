@@ -13,9 +13,15 @@ type EmailFieldsProp = {
   register: UseFormRegister<InspectionFormInputs>;
   errors: FieldErrors<InspectionFormInputs>;
   control: Control<InspectionFormInputs>;
+  isSubmitted: boolean;
 };
 
-const EmailFields = ({ register, errors, control }: EmailFieldsProp) => {
+const EmailFields = ({
+  register,
+  errors,
+  control,
+  isSubmitted,
+}: EmailFieldsProp) => {
   const { fields, append, remove } = useFieldArray({
     name: 'emails',
     control,
@@ -29,7 +35,10 @@ const EmailFields = ({ register, errors, control }: EmailFieldsProp) => {
             <div className='form-email-field'>
               <input
                 {...register(`emails.${index}.value` as const, {
-                  required: 'Field is required',
+                  required: {
+                    value: isSubmitted,
+                    message: 'Field is required',
+                  },
                   pattern: {
                     value: /^\S+@\S+$/i,
                     message:
