@@ -69,31 +69,31 @@ public class InspectionService {
         findInspection.setDescription(inspection.description());
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         List<IssueDTO> inspectionIssues = getIssuesForForm(inspection.id()).issues();
-        StringBuilder issuesList = new StringBuilder();
-        Email mail = new Email();
-        issuesList.append(String.format(
-                "Inspection id: " + inspection.id() + "%n" + "Inspection date: " + inspection.date()
-                        .format(myFormatObj) + "%n" + "Inspection description: "
-                        + inspection.description() + "%n"));
-        for (IssueDTO inspectionIssue : inspectionIssues) {
-            issuesList.append(String.format(
-                    "----------------------------------------------" + "%n" + "Title: "
-                            + inspectionIssue.title() + "%n" + "Severity: "
-                            + inspectionIssue.severity() + "%n" + "Description: "
-                            + inspectionIssue.description() + "%n"
-                            + "----------------------------------------------" + "%n"));
-            blobClient.getIssueImagesByList(inspectionIssue.images(),
-                                            inspectionIssue.id(),
-                                            mail,
-                                            inspectionIssue.title()
-            );
 
-        }
         repo.save(findInspection);
         if (inspection.isSubmitted()) {
             System.out.println("test = ");
             try {
+                StringBuilder issuesList = new StringBuilder();
+                Email mail = new Email();
+                issuesList.append(String.format(
+                        "Inspection id: " + inspection.id() + "%n" + "Inspection date: " + inspection.date()
+                                .format(myFormatObj) + "%n" + "Inspection description: "
+                                + inspection.description() + "%n"));
+                for (IssueDTO inspectionIssue : inspectionIssues) {
+                    issuesList.append(String.format(
+                            "----------------------------------------------" + "%n" + "Title: "
+                                    + inspectionIssue.title() + "%n" + "Severity: "
+                                    + inspectionIssue.severity() + "%n" + "Description: "
+                                    + inspectionIssue.description() + "%n"
+                                    + "----------------------------------------------" + "%n"));
+                    blobClient.getIssueImagesByList(inspectionIssue.images(),
+                            inspectionIssue.id(),
+                            mail,
+                            inspectionIssue.title()
+                    );
 
+                }
                 mail.setUpServerProperties();
                 mail.draftEmail(InspectionDTO.joinEmail(inspection.reportedTo()),
                                 issuesList.toString(),
