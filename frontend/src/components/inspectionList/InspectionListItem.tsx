@@ -1,9 +1,9 @@
-import { InspectionDisplay } from '../../types/types';
+import { Inspection } from '../../types/types';
 import DetailButton from './DetailButton';
 
 type InspectionListItemProps = {
-  inspection: InspectionDisplay;
-  onViewDetails: (inspection: InspectionDisplay) => void;
+  inspection: Inspection;
+  onViewDetails: (inspection: Inspection) => void;
 };
 
 const InspectionListItem = ({
