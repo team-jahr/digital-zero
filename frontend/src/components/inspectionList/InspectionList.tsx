@@ -10,7 +10,7 @@ import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
 import { createNewInspectionForm } from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import toast from 'react-hot-toast';
 import './InspectionList.css';
 import './DetailButton.css';
@@ -65,19 +65,22 @@ const InspectionList = () => {
       <div className='mx-2 max-w-5xl w-full grid grid-cols-12'>
         <div className='col-span-full sm:col-start-2 sm:col-span-10'>
           <h1 className='title-inspection-list'>Inspection List</h1>
-          <div className='filter-button-container'>
-            <FilterButton onClick={toggleFilterDrawer} />
-          </div>
-          <button className='transparent-button' onClick={handleNewInspection}>
-            <FontAwesomeIcon icon={faSearch} />
-            New Inspection
-          </button>
           <button
+            className='transparent-button-2'
+            onClick={handleNewInspection}
+          >
+            <FontAwesomeIcon
+              icon={faPlus}
+              className='transparent-button__icon'
+            />
+            <p className='transparent-button-2__text'>New Inspection</p>
+          </button>
+          {/* <button
             className='transparent-button-icon'
             onClick={handleNewInspection}
           >
             <FontAwesomeIcon icon={faSearch} />
-          </button>
+          </button> */}
           <Spin spinning={loading}>
             <div className=''>
               <div className='inspection-item--summary font-bold'>
@@ -100,6 +103,7 @@ const InspectionList = () => {
               >
                 {showAll ? 'Show less' : 'Show more'}
               </button>
+              <div className='mb-2'></div>
             </div>
           </Spin>
           <FilterDrawer
