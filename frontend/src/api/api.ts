@@ -8,7 +8,15 @@ import {
   setDefaultLocation,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
-import { Area, Inputs, Issue, IssueDTO, Location, Inspection, InspectionDTO} from '../types/types.ts';
+import {
+  Area,
+  InspectionFormInputs,
+  Issue,
+  IssueDTO,
+  Location,
+  Inspection,
+  InspectionDTO,
+} from '../types/types.ts';
 
 export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
@@ -61,7 +69,7 @@ export const fetchAllAreas = (
 };
 
 export const submitInspectionForm = (
-  data: Inputs,
+  data: InspectionFormInputs,
   locations: Location[],
   areas: Area[],
   formId: number,
@@ -79,7 +87,7 @@ export const submitInspectionForm = (
     }
     return emailList.substring(0, emailList.length - 1);
   };
-  const responseEmail = data.email ? createEmailString() : null;
+  const responseEmail = createEmailString();
 
   const responseBody = {
     id: formId,
@@ -144,7 +152,9 @@ export const fetchInspectionIssues = async (id: number): Promise<Issue[]> => {
 
 export const fetchInspections = async (): Promise<Inspection[]> => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections`);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/inspections`,
+    );
     if (!response.ok) {
       throw new Error('Failed to fetch inspections');
     }

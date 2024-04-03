@@ -1,13 +1,13 @@
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { InspectionFormInputs } from '../../types/types.ts';
-import { useState } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
+import { useState } from 'react';
+import { IssueFormInputs } from '../../types/types.ts';
 
-type DescriptionTextAreaProp = {
-  register: UseFormRegister<InspectionFormInputs>;
-  errors: FieldErrors<InspectionFormInputs>;
+type IssueDescriptionInput = {
+  register: UseFormRegister<IssueFormInputs>;
+  errors: FieldErrors<IssueFormInputs>;
 };
-const DescriptionTextArea = ({ register, errors }: DescriptionTextAreaProp) => {
+const IssueDescriptionInput = ({ register, errors }: IssueDescriptionInput) => {
   const [descriptionLength, setDescriptionLength] = useState(500);
   const handleAmountOfChars = (e: KeyboardEvent) => {
     if (descriptionLength < 0) {
@@ -19,10 +19,15 @@ const DescriptionTextArea = ({ register, errors }: DescriptionTextAreaProp) => {
   };
   return (
     <div className='form-field-container'>
-      <label className='form-label'>Additional notes</label>
+      <label className='form-label'>Description</label>
       <textarea
+        id='description'
         onKeyDown={() => handleAmountOfChars}
         {...register('description', {
+          required: {
+            value: true,
+            message: 'Description cannot be empty.',
+          },
           maxLength: {
             value: 500,
             message: 'Maximum amount of characters has been reached.',
@@ -37,7 +42,11 @@ const DescriptionTextArea = ({ register, errors }: DescriptionTextAreaProp) => {
             }
           },
         })}
-        className='form-textarea'
+        className={
+          errors?.description
+            ? 'form-textarea mb-0 error'
+            : 'form-textarea mb-0'
+        }
       />
       <ErrorMessage
         errors={errors}
@@ -48,4 +57,4 @@ const DescriptionTextArea = ({ register, errors }: DescriptionTextAreaProp) => {
   );
 };
 
-export default DescriptionTextArea;
+export default IssueDescriptionInput;

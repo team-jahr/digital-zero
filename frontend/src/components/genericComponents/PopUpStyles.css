@@ -1,0 +1,7 @@
+.modal-title {
+    @apply mx-5 my-2;
+}
+
+.modal-buttons-container {
+    @apply flex flex-row justify-around w-full items-center;
+}

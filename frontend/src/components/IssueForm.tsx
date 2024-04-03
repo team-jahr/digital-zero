@@ -1,7 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AddPictureButton from './AddPictureButton';
-import './IssueForm.css';
 import { fetchInspectionIssues, formatImages } from '../api/api.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
@@ -13,27 +12,47 @@ import {
   setEnlargedImage,
   setPictures,
 } from '../store/slices/IssueFormSlice.ts';
-import { Issue } from '../types/types.ts';
+import { Issue, IssueFormInputs } from '../types/types.ts';
 import toast from 'react-hot-toast';
-
-type Inputs = {
-  title: string;
-  severity: string;
-  description: string;
-};
+import IssueDescriptionInput from './issueFormInputs/IssueDescriptionInput.tsx';
+import IssueSeverityLevelInput from './issueFormInputs/IssueSeverityLevelInput.tsx';
+import IssueTitleInput from './issueFormInputs/IssueTitleInput.tsx';
+import PopUp from './genericComponents/PopUp.tsx';
+import {
+  setIsModalOpen,
+  setPopUpCancelButton,
+  setPopUpConfirmButton,
+  setPopUpMessage,
+} from '../store/slices/PopUpSlice.ts';
+import PictureUpload from './issueFormInputs/PictureUpload.tsx';
+import PictureEnlarge from './issueFormInputs/PictureEnlarge.tsx';
 
 const IssueForm = () => {
-  const { handleSubmit, register, reset, setValue } = useForm<Inputs>();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const isModalOpen = useSelector(
+    (state: RootState) => state.popUp.isModalOpen,
+  );
+  const {
+    handleSubmit,
+    register,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<IssueFormInputs>({
+    mode: 'onChange',
+  });
+
   const editIssue = useSelector(
     (state: RootState) => state.inspectionForm.editIssue,
   );
   const pictures = useSelector((state: RootState) => state.issueForm.pictures);
   const formId = useSelector((state: RootState) => state.app.formId);
   const dispatch = useDispatch<AppDispatch>();
-  const enlargedImage = useSelector(
-    (state: RootState) => state.issueForm.enlargedImage,
-  );
+  const onResetButton = () => {
+    dispatch(setIsModalOpen(true));
+    dispatch(setPopUpMessage('Are you sure you want to reset form?'));
+    dispatch(setPopUpConfirmButton('Yes'));
+    dispatch(setPopUpCancelButton('No'));
+  };
 
   useEffect(() => {
     if (editIssue !== null) {
@@ -48,7 +67,7 @@ const IssueForm = () => {
     }
   }, [editIssue, dispatch, setValue]);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<IssueFormInputs> = async (data) => {
     let transformedImages: string[];
     if (pictures.length > 0) {
       transformedImages =
@@ -113,135 +132,41 @@ const IssueForm = () => {
     }
   };
 
-  const handleDeletePicture = (index: number) => {
-    if (pictures) {
-      dispatch(setPictures([...pictures].filter((_, i) => i !== index)));
-    }
-  };
-
-  const handlePictureAdded = (imageDataUrl: string) => {
-    if (pictures) {
-      dispatch(setPictures([...pictures, imageDataUrl]));
-    }
-  };
-
-  const handleCancel = () => {
+  const handleReset = () => {
     reset();
     dispatch(setPictures([]));
     dispatch(setEnlargedImage(null));
-  };
-
-  const handlePictureClick = (pictureUrl: string) => {
-    dispatch(setEnlargedImage(pictureUrl));
-  };
-
-  const handleCloseEnlargedImage = () => {
-    dispatch(setEnlargedImage(null));
+    dispatch(setIsModalOpen(false));
   };
 
   return (
     <>
-      <div
-        className='enlarged-image-overlay'
-        style={{ display: enlargedImage ? 'block' : 'none' }}
-        onClick={handleCloseEnlargedImage}
-      >
-        <div className='enlarged-image-container'>
-          {enlargedImage && (
-            <img
-              src={enlargedImage}
-              alt='Enlarged'
-              className='enlarged-image'
-            />
-          )}
+      <PictureEnlarge />
+      <form onSubmit={handleSubmit(onSubmit)} className='form'>
+        <IssueTitleInput register={register} errors={errors} />
+        <IssueSeverityLevelInput register={register} />
+        <IssueDescriptionInput register={register} errors={errors} />
+        <AddPictureButton onPicturesAdded={handlePicturesAdded} />
+        <PictureUpload />
+
+        <div className='buttons-container-fixed'>
           <button
-            className='close-enlarged-image-button'
-            onClick={handleCloseEnlargedImage}
+            className='danger-button'
+            type='button'
+            onClick={onResetButton}
           >
-            &#10005;
+            Reset
+          </button>
+          <button className='save-issue-button' type='submit'>
+            Save Issue
           </button>
         </div>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className='issue-form-container'>
-        <label htmlFor='title'>Title</label>
-        <input
-          id='title'
-          type='text'
-          {...register('title', { required: true })}
-          className='form-input'
-        />
-
-        <label htmlFor='severity'>Severity Level</label>
-        <select
-          id='severity'
-          {...register('severity', { required: true })}
-          className='severity-select'
-        >
-          <option value='notification'>Notification</option>
-          <option value='warning'>Warning</option>
-          <option value='critical'>Critical</option>
-          <option value='alert'>Alert</option>
-          <option value='emergency'>Emergency</option>
-        </select>
-
-        <label htmlFor='description'>Description</label>
-        <textarea
-          id='description'
-          {...register('description', { required: true })}
-          className='description-textarea'
-        />
-
-        {/* Picture upload logic */}
-        <div className='grid grid-cols-2 gap-4 mb-4'>
-          {pictures &&
-            pictures.length > 0 &&
-            pictures.map((picture, index) => (
-              <div className='col-span-1' key={index}>
-                <div
-                  key={index}
-                  className=''
-                  onClick={() => handlePictureClick(picture)}
-                >
-                  <img
-                    src={picture}
-                    alt='Uploaded'
-                    className='max-h-28 max-w-full'
-                  />
-                </div>
-                <button
-                  className='delete-picture-button'
-                  type='button'
-                  onClick={() => handleDeletePicture(index)}
-                >
-                  &#10005;
-                </button>
-              </div>
-            ))}
-        </div>
-
-        <AddPictureButton onPicturesAdded={handlePicturesAdded} />
-
-        <button className='save-issue-button' type='submit'>
-          Save Issue
-        </button>
-
-        <button className='cancel-button' onClick={handleCancel}>
-          Cancel
-        </button>
-
-        {/* Hidden file input field */}
-        <input
-          type='file'
-          accept='image/*'
-          style={{ display: 'none' }}
-          ref={fileInputRef}
-          onChange={(e) =>
-            e.target.files !== null &&
-            handlePictureAdded(URL.createObjectURL(e.target.files[0]))
-          }
-        />
       </form>
+      <PopUp
+        open={isModalOpen}
+        handleOk={handleReset}
+        setModalOpen={() => dispatch(setIsModalOpen(false))}
+      />
     </>
   );
 };

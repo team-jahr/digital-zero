@@ -3,11 +3,11 @@ import { setSelectedLocation } from '../../store/slices/InspectionFormSlice.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store.ts';
 import { UseFormRegister, UseFormResetField } from 'react-hook-form';
-import { Inputs } from '../../types/types.ts';
+import { InspectionFormInputs } from '../../types/types.ts';
 
 type LocationSelectInputProp = {
-  register: UseFormRegister<Inputs>;
-  resetField: UseFormResetField<Inputs>;
+  register: UseFormRegister<InspectionFormInputs>;
+  resetField: UseFormResetField<InspectionFormInputs>;
 };
 const LocationSelectInput = ({
   register,
