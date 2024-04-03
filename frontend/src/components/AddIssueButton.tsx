@@ -1,5 +1,3 @@
-import { Button } from 'antd';
-import './IssueForm.css';
 import { useDispatch } from 'react-redux';
 import { setShowDrawer } from '../store/slices/IssueFormSlice.ts';
 
@@ -12,13 +10,9 @@ const AddIssueButton = () => {
 
   return (
     <>
-      <Button
-        type='primary'
-        className='primary-button'
-        onClick={handleAddIssue}
-      >
-        Add Issue
-      </Button>
+      <button type='button' className='primary-button' onClick={handleAddIssue}>
+        Create new issue
+      </button>
     </>
   );
 };

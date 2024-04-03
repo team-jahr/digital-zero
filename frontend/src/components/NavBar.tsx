@@ -8,12 +8,13 @@ const NavBar = () => {
     <nav>
       <ul className='nav-list'>
         <li>
-          <Link to='/'>The Inspection Tracker</Link>
+          <Link to='/'>Inspection tracker</Link>
         </li>
         <li className={location.pathname === '/about' ? 'active' : ''}>
           <Link to='/about'>About</Link>
         </li>
       </ul>
+      <div className='nav-user'>Johan Hedberg</div>
     </nav>
   );
 };

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import About from './About';
-import MainApp from './MainApp';
+import About from './views/About.tsx';
+import MainApp from './views/MainApp.tsx';
 import NavBar from './components/NavBar';
 import InspectionList from './components/inspectionList/InspectionList';
 

@@ -1,8 +1,8 @@
 import { UseFormRegister } from 'react-hook-form';
-import { Inputs } from '../../types/types.ts';
+import { InspectionFormInputs } from '../../types/types.ts';
 
 type DateInputProp = {
-  register: UseFormRegister<Inputs>;
+  register: UseFormRegister<InspectionFormInputs>;
 };
 
 const DateInput = ({ register }: DateInputProp) => {

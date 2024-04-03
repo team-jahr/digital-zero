@@ -6,7 +6,7 @@ export type Area = {
   id: number;
   name: string;
 };
-export type Inputs = {
+export type InspectionFormInputs = {
   date: string;
   location: Location[];
   area: Area;
@@ -47,4 +47,10 @@ export type IssueDTO = {
 
 export type InspectionDTO = {
   inspectionDTOs: Inspection[];
+};
+
+export type IssueFormInputs = {
+  title: string;
+  severity: string;
+  description: string;
 };

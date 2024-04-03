@@ -1,0 +1,9 @@
+.ant-drawer-close {
+    position: absolute;
+    top: 20px;
+    right: 0;
+}
+
+.main-title {
+    @apply text-xl text-gray-700 text-center mt-20 font-extralight;
+}

@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import './IssueForm.css';
 
 type AddPictureButtonProp = {
   onPicturesAdded: (p1: string[]) => void;
@@ -73,25 +72,28 @@ const AddPictureButton = ({ onPicturesAdded }: AddPictureButtonProp) => {
         style={{ display: 'none' }}
         onChange={handleFileInputChange}
       />
-      <button
-        className='add-picture-button'
-        type='button'
-        onClick={() => {
-          !!fileInputRef.current && fileInputRef.current.click();
-        }}
-      >
-        Upload Picture
-      </button>
-      {/(android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i.test(
-        navigator.userAgent,
-      ) && (
+      <div className='buttons-upload-container'>
         <button
-          className='add-picture-button'
-          onClick={handleCameraButtonClick}
+          className='primary-button'
+          type='button'
+          onClick={() => {
+            !!fileInputRef.current && fileInputRef.current.click();
+          }}
         >
-          Take Picture
+          Upload Picture
         </button>
-      )}
+        {/(android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i.test(
+          navigator.userAgent,
+        ) && (
+          <button
+            className='primary-button'
+            type='button'
+            onClick={handleCameraButtonClick}
+          >
+            Take Picture
+          </button>
+        )}
+      </div>
     </div>
   );
 };
