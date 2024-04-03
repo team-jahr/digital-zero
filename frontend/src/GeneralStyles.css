@@ -126,6 +126,19 @@ input:-webkit-autofill:active {
     @apply border-l-pink-700 border-l-4;
 }
 
+/*-------- SECTIONS -------*/
+
+.section-title {
+    border-bottom: 1px solid #dfdede;
+    line-height: 0.1em;
+    margin: 30px auto;
+    @apply w-full text-center text-pink-800;
+}
+
+.section-title span {
+    @apply bg-white py-0 px-4;
+}
+
 
 /*-------- RESPONSIVE -------*/
 
@@ -142,6 +155,10 @@ input:-webkit-autofill:active {
     .form-input[type="date"] {
         background: rgba(255, 255, 255, 1) url(./assets/calendar.png) no-repeat scroll calc(100% - 15px) center/8px auto;
         background-size: 12px;
+    }
+
+    .section-title {
+        @apply w-3/5;
     }
 
     .form-input[type='date']::-webkit-calendar-picker-indicator {
@@ -175,16 +192,3 @@ input:-webkit-autofill:active {
     @apply my-3 font-extralight text-sm;
 }
 
-.section-title {
-    width: 40%;
-    text-align: center;
-    border-bottom: 1px solid #dfdede;
-    line-height: 0.1em;
-    color: #bf1650;
-    margin: 30px auto;
-}
-
-.section-title span {
-    background: #fff;
-    padding: 0 10px;
-}
