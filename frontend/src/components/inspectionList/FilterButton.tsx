@@ -1,14 +1,13 @@
-import React from 'react';
 import './FilterButton.css';
 
 interface FilterButtonProps {
   onClick: () => void;
 }
 
-const FilterButton: React.FC<FilterButtonProps> = ({ onClick }) => {
+const FilterButton = ({ onClick }: FilterButtonProps) => {
   return (
     <button type='button' onClick={onClick} className='primary-button'>
-      Filter
+      Open filter
     </button>
   );
 };

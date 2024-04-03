@@ -73,3 +73,9 @@ export type IssueFormInputs = {
   severity: string;
   description: string;
 };
+
+export type FilterInspectionsFormInputs = {
+  location: number;
+  date: string;
+  submitted: string;
+};

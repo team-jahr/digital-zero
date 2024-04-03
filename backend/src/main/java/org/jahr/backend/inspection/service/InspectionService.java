@@ -14,6 +14,7 @@ import org.jahr.backend.issue.DTO.IssueDTO;
 import org.jahr.backend.issue.DTO.IssueListDTO;
 import org.jahr.backend.issue.client.IssueBlobClient;
 import org.jahr.backend.issue.model.Issue;
+import org.jahr.backend.location.model.Location;
 import org.jahr.backend.user.exception.UserNotFoundException;
 import org.jahr.backend.user.model.AppUser;
 import org.jahr.backend.user.repository.UserRepository;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -84,9 +86,9 @@ public class InspectionService {
                             + inspectionIssue.description() + "%n"
                             + "----------------------------------------------" + "%n"));
             blobClient.getIssueImagesByList(inspectionIssue.images(),
-                                            inspectionIssue.id(),
-                                            mail,
-                                            inspectionIssue.title()
+                    inspectionIssue.id(),
+                    mail,
+                    inspectionIssue.title()
             );
 
         }
@@ -97,8 +99,8 @@ public class InspectionService {
 
                 mail.setUpServerProperties();
                 mail.draftEmail(InspectionDTO.joinEmail(inspection.reportedTo()),
-                                issuesList.toString(),
-                                inspection.id().toString()
+                        issuesList.toString(),
+                        inspection.id().toString()
                 );
                 mail.sendEmail();
             } catch (IOException e) {
@@ -114,10 +116,29 @@ public class InspectionService {
         return repo.findAll();
     }
 
-    public Inspection updateInspection(int id) {
-//       Inspection inspection = repo.findById(id)
-//               .orElseThrow(() -> new InspectionNotFoundException("Inspection was not found."));
-//       return inspection;
-        return null;
+
+    public List<Inspection> getIssuesSortedByLocation(Integer location, boolean submitted, String date) {
+        if (location != null && date != null) {
+            return getInspections().stream().filter(el -> {
+                return el.getArea().getLocation().getId() == location &&
+                        el.getDate().equals(parsedDate(date)) && el.isSubmitted() == submitted;
+            }).toList();
+        } else if (location == null && date != null) {
+
+            return getInspections().stream().filter(el ->
+                    el.getDate().equals(parsedDate(date)) && el.isSubmitted() == submitted
+            ).toList();
+        } else if (location != null && date == null) {
+            return getInspections().stream().filter(el -> el.isSubmitted() == submitted && el.getArea().getLocation().getId() == location).toList();
+        } else {
+            return getInspections().stream().filter(el -> el.isSubmitted() == submitted).toList();
+        }
+    }
+
+    public LocalDateTime parsedDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'")
+                .withZone(ZoneId.of("UTC"));
+        LocalDateTime dateParsed = LocalDateTime.parse(date, formatter);
+        return dateParsed;
     }
 }
