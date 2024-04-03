@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInspectionDisplays } from '../../api/api';
 import { InspectionDisplay } from '../../types/types';
-import FilterDrawer from './FilterDrawer';
 import { Spin } from 'antd';
-import FilterButton from './FilterButton';
 import InspectionListItem from './InspectionListItem';
 import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +13,10 @@ import toast from 'react-hot-toast';
 import './InspectionList.css';
 import './DetailButton.css';
 import { setInspectionDisplays } from '../../store/slices/InspectionDisplaysSlice';
+import FilterContainer from './FilterContainer.tsx';
 
 const InspectionList = () => {
   const dispatch = useDispatch();
-  const [filterDrawerVisible, setFilterDrawerVisible] = useState(false);
   const inspections = useSelector(
     (state: RootState) => state.inspectionDisplays.inspectionsDisplays,
   );
@@ -48,14 +46,6 @@ const InspectionList = () => {
     }
   }, [inspections, showAll]);
 
-  const toggleFilterDrawer = () => {
-    setFilterDrawerVisible(!filterDrawerVisible);
-  };
-
-  // const handlePageChange = (page: number) => {
-  //   setCurrentPage(page);
-  // };
-
   const handleNewInspection = () => {
     createNewInspectionForm(dispatch, navigate);
   };
@@ -68,7 +58,7 @@ const InspectionList = () => {
         <div className='col-span-full sm:col-start-2 sm:col-span-10'>
           <h1 className='title-inspection-list'>Inspection List</h1>
           <div className='filter-button-container'>
-            <FilterButton onClick={toggleFilterDrawer} />
+            <FilterContainer />
           </div>
           <button className='transparent-button' onClick={handleNewInspection}>
             <FontAwesomeIcon icon={faSearch} />
@@ -105,10 +95,6 @@ const InspectionList = () => {
           onChange={handlePageChange}
         /> */}
           </Spin>
-          <FilterDrawer
-            visible={filterDrawerVisible}
-            onClose={toggleFilterDrawer}
-          />
         </div>
       </div>
     </div>

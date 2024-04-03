@@ -1,0 +1,24 @@
+@media only screen and (min-width: 720px) {
+
+    .form.filter-form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        flex-direction: row;
+        gap: 10px;
+        justify-content: space-around;
+    }
+
+    .form.filter-form div {
+        min-width: 180px;
+        margin-bottom: 0;
+    }
+
+    .form.filter-form div .form-select {
+        overflow-x: hidden;
+    }
+
+    .form.filter-form .primary-button {
+        grid-column: 3;
+        justify-self: flex-end;
+    }
+}

@@ -88,7 +88,8 @@ button.danger-button {
 }
 
 .form-input[type="date"] {
-    @apply bg-white w-full py-2.5 px-4 text-left;
+    padding: 11px 15px;
+    @apply bg-white w-full text-left;
 }
 
 .form-label {
@@ -183,7 +184,6 @@ input:-webkit-autofill:active {
         top: 0;
         width: auto;
     }
-
 }
 
 @media only screen and (max-width: 600px) {
@@ -193,8 +193,8 @@ input:-webkit-autofill:active {
 
     .form-input[type='date']::-webkit-inner-spin-button,
     .form-input[type='date']::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
+        color: white;
+        background-color: white;
     }
 }
 
