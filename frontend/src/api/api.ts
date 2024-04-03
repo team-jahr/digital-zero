@@ -159,7 +159,7 @@ export const fetchInspections = async (): Promise<Inspection[]> => {
       throw new Error('Failed to fetch inspections');
     }
     const data: InspectionDTO = await response.json();
-    return new Promise<Inspection[]>((resolve) => resolve(data.inspectionDTOs));
+    return data.inspectionDTOs; 
   } catch (error) {
     console.error('Error fetching inspections:', error);
     throw error;
