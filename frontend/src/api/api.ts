@@ -17,8 +17,12 @@ import {
   Inspection,
   InspectionDTO,
 } from '../types/types.ts';
+import { NavigateFunction } from 'react-router-dom';
 
-export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
+export const createNewInspectionForm = (
+  dispatch: Dispatch<UnknownAction>,
+  navigate: NavigateFunction,
+) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
     method: 'POST',
   })
@@ -33,6 +37,7 @@ export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
       dispatch(setFormId(res.id));
       dispatch(setDefaultLocation(res.location));
       dispatch(setShowInspectionForm(true));
+      navigate(`/new-inspection/${res.id}`);
     })
     .catch((err) => {
       toast.error(err.message);

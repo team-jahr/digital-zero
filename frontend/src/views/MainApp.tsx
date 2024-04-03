@@ -7,6 +7,8 @@ import IssueForm from '../components/IssueForm.tsx';
 import { setShowDrawer } from '../store/slices/IssueFormSlice.ts';
 import { setEditIssue } from '../store/slices/InspectionFormSlice.ts';
 import './MainApp.css';
+import { setFormId } from '../store/slices/AppSlice.ts';
+import { useEffect } from 'react';
 
 const MainApp = () => {
   const isDrawerVisible = useSelector(
@@ -19,6 +21,15 @@ const MainApp = () => {
     dispatch(setShowDrawer(false));
     dispatch(setEditIssue(null));
   };
+
+  const getId = () => {
+    const id = window.location.pathname.split('/')[2];
+    dispatch(setFormId(+id));
+    return id;
+  };
+  useEffect(() => {
+    getId();
+  }, []);
 
   return (
     <>
