@@ -11,6 +11,8 @@ import {
   submitInspectionForm,
 } from '../api/api.ts';
 import {
+  setAreaValue,
+  setIsAreaDisabled,
   setIsSubmitted,
   setListOfIssues,
 } from '../store/slices/InspectionFormSlice.ts';
@@ -76,14 +78,14 @@ const InspectionForm = () => {
 
   const onSubmit: SubmitHandler<InspectionFormInputs> = (data) => {
     if (formId) {
-      try {
-        submitInspectionForm(data, locations, areas, formId, isSubmitted);
-        dispatch(setListOfIssues([]));
-        dispatch(setFormId(undefined));
-        toast.success('Success! Redirecting to the home page...');
-      } catch (err) {
-        toast.error('Something went wrong');
-      }
+      // try {
+      submitInspectionForm(data, locations, areas, formId, isSubmitted);
+      dispatch(setListOfIssues([]));
+      dispatch(setFormId(undefined));
+      toast.success('Success! Redirecting to the home page...');
+      dispatch(setIsAreaDisabled(false));
+      dispatch(setAreaValue(''));
+      // }
     } else {
       toast.error('Error: Unable to connect this inspection to database');
     }

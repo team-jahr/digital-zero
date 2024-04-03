@@ -1,5 +1,9 @@
 import { fetchAllAreas } from '../../api/api.ts';
-import { setSelectedLocation } from '../../store/slices/InspectionFormSlice.ts';
+import {
+  setAreaValue,
+  setIsAreaDisabled,
+  setSelectedLocation,
+} from '../../store/slices/InspectionFormSlice.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store.ts';
 import { UseFormRegister, UseFormResetField } from 'react-hook-form';
@@ -22,20 +26,29 @@ const LocationSelectInput = ({
   const otherLocations = useSelector(
     (state: RootState) => state.inspectionForm.otherLocations,
   );
+  const areaDisabled = useSelector(
+    (state: RootState) => state.inspectionForm.areaDisabled,
+  );
   const dispatch = useDispatch();
   return (
     <div className='form-field-container'>
-      <label className='form-label' htmlFor='location'>
+      <label
+        className={areaDisabled ? 'form-label disabled' : 'form-label'}
+        htmlFor='location'
+      >
         Location
       </label>
       <select
         id='location'
+        disabled={areaDisabled}
         {...register('location', {
           onChange: (e) => {
             const selectedLocation = locations.filter(
               (element) => element.id === +e.target.value,
             );
+            dispatch(setIsAreaDisabled(false));
             resetField('area');
+            dispatch(setAreaValue(''));
             fetchAllAreas(dispatch, selectedLocation[0].id);
             dispatch(setSelectedLocation(selectedLocation[0]));
           },

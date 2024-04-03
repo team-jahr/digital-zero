@@ -11,6 +11,8 @@ interface InspectionFormState {
   areas: Area[];
   listOfIssues: Issue[];
   editIssue: Issue | null;
+  areaDisabled: boolean;
+  areaValue: string;
 }
 
 const initialState: InspectionFormState = {
@@ -23,6 +25,8 @@ const initialState: InspectionFormState = {
   areas: [],
   listOfIssues: [],
   editIssue: null,
+  areaDisabled: false,
+  areaValue: '',
 };
 const inspectionFormSlice = createSlice({
   name: 'inspectionForm',
@@ -55,6 +59,12 @@ const inspectionFormSlice = createSlice({
     setEditIssue: (state, action: PayloadAction<Issue | null>) => {
       state.editIssue = action.payload;
     },
+    setIsAreaDisabled: (state, action: PayloadAction<boolean>) => {
+      state.areaDisabled = action.payload;
+    },
+    setAreaValue: (state, action: PayloadAction<string>) => {
+      state.areaValue = action.payload;
+    },
   },
 });
 
@@ -68,5 +78,7 @@ export const {
   setAllAreas,
   setListOfIssues,
   setEditIssue,
+  setIsAreaDisabled,
+  setAreaValue,
 } = inspectionFormSlice.actions;
 export default inspectionFormSlice.reducer;

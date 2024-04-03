@@ -94,7 +94,6 @@ export const submitInspectionForm = (
     return emailList.substring(0, emailList.length - 1);
   };
   const responseEmail = createEmailString();
-
   const responseBody = {
     id: formId,
     isSubmitted: isSubmitted,
