@@ -73,9 +73,6 @@ const InspectionList = () => {
           <Spin spinning={loading}>
             <div className=''>
               <ul className='inspection-list'>
-                {showInspections?.length == 0 && (
-                  <div className='main-title'>No items found.</div>
-                )}
                 {showInspections !== undefined &&
                   showInspections.map((inspection: InspectionDisplay) => (
                     <InspectionListItem
@@ -84,6 +81,10 @@ const InspectionList = () => {
                       onViewDetails={handleViewDetails}
                     />
                   ))}
+                {showInspections !== undefined &&
+                  showInspections.length == 0 && (
+                    <div className='main-title'>No items found.</div>
+                  )}
               </ul>
               <button
                 className='primary-button'
