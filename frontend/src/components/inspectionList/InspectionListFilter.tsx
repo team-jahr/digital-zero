@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setInspectionDisplays } from '../../store/slices/InspectionDisplaysSlice.ts';
 import './InspectionListFilterStyles.css';
+import { setShowDrawer } from '../../store/slices/IssueFormSlice.ts';
 
 const InspectionListFilter = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const InspectionListFilter = () => {
       .then((res) => {
         dispatch(setInspectionDisplays(res.inspectionDTOs));
         navigate(`/filtered/${url}`);
+        dispatch(setShowDrawer(false));
       })
       .catch((err) => console.log(err));
   };
