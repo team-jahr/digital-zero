@@ -101,7 +101,7 @@ export const submitInspectionForm = (
     date: new Date(data.date).toISOString(),
     location: responseLocation,
     area: responseArea,
-    email: responseEmail,
+    reportedTo: responseEmail.split(','),
     description: data.description,
   };
 
@@ -165,7 +165,7 @@ export const fetchInspections = async (): Promise<Inspection[]> => {
       throw new Error('Failed to fetch inspections');
     }
     const data: InspectionDTO = await response.json();
-    return data.inspectionDTOs; 
+    return data.inspectionDTOs;
   } catch (error) {
     console.error('Error fetching inspections:', error);
     throw error;
