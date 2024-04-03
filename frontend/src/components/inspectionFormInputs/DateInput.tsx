@@ -5,7 +5,7 @@ import { RootState } from '../../store/store.ts';
 import { setIsAreaDisabled } from '../../store/slices/InspectionFormSlice.ts';
 
 type DateInputProp = {
-  dateDefault: string;
+  dateDefault: string | undefined;
   register: UseFormRegister<InspectionFormInputs>;
 };
 
@@ -17,7 +17,6 @@ const DateInput = ({ dateDefault, register }: DateInputProp) => {
     (state: RootState) => state.inspectionForm.areaValue,
   );
   const dispatch = useDispatch();
-  // console.log(dateDefault);
 
   return (
     <div className='form-field-container'>

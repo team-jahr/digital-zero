@@ -53,9 +53,8 @@ const InspectionForm = () => {
 
   const editMode = useSelector((state: RootState) => state.editMode.value);
   const [areaDefault, setAreaDefault] = useState<string>('Select Area');
-  const [dateDefault, setDateDefault] = useState<string>(
-    new Date().toISOString().substring(0, 10),
-  );
+  const [dateDefault, setDateDefault] = useState<string>();
+  const [descriptionDefault, setDescriptionDefault] = useState<string>('');
 
   useEffect(() => {
     if (editMode === true && formId !== undefined) {
@@ -63,15 +62,20 @@ const InspectionForm = () => {
         .then((inspection) => {
           const date = new Date(inspection.date).toISOString().substring(0, 10);
           setDateDefault(date);
+
           dispatch(setDefaultLocation(inspection.location));
           dispatch(setAreaValue(inspection.area.name));
           setAreaDefault(inspection.area.name);
           dispatch(setIsAreaDisabled(true));
+
+          setDescriptionDefault(inspection.description);
         })
         .then(() => dispatch(setEditMode(false)));
+    } else {
+      const date = new Date().toISOString().substring(0, 10);
+      setDateDefault(date);
     }
-  });
-  console.log(dateDefault);
+  }, [editMode, dispatch, formId]);
 
   useEffect(() => {
     if (formId) {
@@ -125,7 +129,7 @@ const InspectionForm = () => {
       <h1 className='section-title'>
         <span>Basic data</span>
       </h1>
-      <DateInput dateDefault={dateDefault} register={register} />
+      {<DateInput dateDefault={dateDefault} register={register} />}
       <LocationSelectInput register={register} resetField={resetField} />
       <AreaSelectInput
         register={register}
@@ -146,7 +150,11 @@ const InspectionForm = () => {
         control={control}
         isSubmitted={isSubmitted}
       />
-      <DescriptionTextArea register={register} errors={errors} />
+      <DescriptionTextArea
+        descriptionDefault={descriptionDefault}
+        register={register}
+        errors={errors}
+      />
       <div className='buttons-container'>
         <button
           className='tertiary-button'
