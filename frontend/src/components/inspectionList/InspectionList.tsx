@@ -15,6 +15,8 @@ import toast from 'react-hot-toast';
 import './InspectionList.css';
 import './DetailButton.css';
 import { setInspectionDisplays } from '../../store/slices/InspectionDisplaysSlice';
+import { setEditMode } from '../../store/slices/EditModeSlice';
+import { setIsAreaDisabled } from '../../store/slices/InspectionFormSlice';
 
 const InspectionList = () => {
   const dispatch = useDispatch();
@@ -53,6 +55,8 @@ const InspectionList = () => {
   };
 
   const handleNewInspection = () => {
+    dispatch(setEditMode(false));
+    dispatch(setIsAreaDisabled(false));
     createNewInspectionForm(dispatch, navigate);
   };
 
@@ -76,6 +80,11 @@ const InspectionList = () => {
           </button>
           <Spin spinning={loading}>
             <div className=''>
+              <div className='inspection-item--summary font-bold'>
+                <h2 className='col-start-1'>Date</h2>
+                <h2 className='col-start-2'>Location</h2>
+                <h2 className='col-start-3'>Reported</h2>
+              </div>
               <ul className='inspection-list'>
                 {showInspections !== undefined &&
                   showInspections.map((inspection: InspectionDisplay) => (

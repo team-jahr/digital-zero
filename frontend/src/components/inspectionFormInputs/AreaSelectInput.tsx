@@ -11,8 +11,13 @@ import {
 type AreaSelectInputProp = {
   register: UseFormRegister<InspectionFormInputs>;
   errors: FieldErrors<InspectionFormInputs>;
+  defaultValue: string;
 };
-const AreaSelectInput = ({ register, errors }: AreaSelectInputProp) => {
+const AreaSelectInput = ({
+  register,
+  errors,
+  defaultValue,
+}: AreaSelectInputProp) => {
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
   const dispatch = useDispatch<AppDispatch>();
   const areaDisabled = useSelector(
@@ -38,7 +43,7 @@ const AreaSelectInput = ({ register, errors }: AreaSelectInputProp) => {
         })}
         className={errors?.area ? 'form-select mb-1 error' : 'form-select mb-1'}
       >
-        <option value=''>Select area</option>
+        <option value=''>{defaultValue}</option>
         {areas.map((element: Area) => {
           const { name, id } = element;
           return (

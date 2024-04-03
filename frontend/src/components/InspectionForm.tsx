@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AddIssueButton from './AddIssueButton';
 import { InspectionFormInputs } from '../types/types.ts';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,10 +8,12 @@ import {
   fetchAllAreas,
   fetchAllLocations,
   fetchInspectionIssues,
+  getInspection,
   submitInspectionForm,
 } from '../api/api.ts';
 import {
   setAreaValue,
+  setDefaultLocation,
   setIsAreaDisabled,
   setIsSubmitted,
   setListOfIssues,
@@ -29,6 +31,7 @@ import {
 import { setFormId } from '../store/slices/AppSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { setEditMode } from '../store/slices/EditModeSlice.ts';
 
 const InspectionForm = () => {
   const selectedLocation = useSelector(
@@ -47,6 +50,28 @@ const InspectionForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const formId = useSelector((state: RootState) => state.app.formId);
   const navigate = useNavigate();
+
+  const editMode = useSelector((state: RootState) => state.editMode.value);
+  const [areaDefault, setAreaDefault] = useState<string>('Select Area');
+  const [dateDefault, setDateDefault] = useState<string>(
+    new Date().toISOString().substring(0, 10),
+  );
+
+  useEffect(() => {
+    if (editMode === true && formId !== undefined) {
+      getInspection(formId)
+        .then((inspection) => {
+          const date = new Date(inspection.date).toISOString().substring(0, 10);
+          setDateDefault(date);
+          dispatch(setDefaultLocation(inspection.location));
+          dispatch(setAreaValue(inspection.area.name));
+          setAreaDefault(inspection.area.name);
+          dispatch(setIsAreaDisabled(true));
+        })
+        .then(() => dispatch(setEditMode(false)));
+    }
+  });
+  console.log(dateDefault);
 
   useEffect(() => {
     if (formId) {
@@ -100,9 +125,13 @@ const InspectionForm = () => {
       <h1 className='section-title'>
         <span>Basic data</span>
       </h1>
-      <DateInput register={register} />
+      <DateInput dateDefault={dateDefault} register={register} />
       <LocationSelectInput register={register} resetField={resetField} />
-      <AreaSelectInput register={register} errors={errors} />
+      <AreaSelectInput
+        register={register}
+        errors={errors}
+        defaultValue={areaDefault}
+      />
       <h1 className='section-title'>
         <span>List of issues</span>
       </h1>

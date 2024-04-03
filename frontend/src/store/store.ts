@@ -6,6 +6,7 @@ import popUpReducer from './slices/PopUpSlice.ts';
 import inspectionsReducer from './slices/InspectionsSlice.ts';
 import filterReducer from './slices/FilterSlice.ts';
 import inspectionDisplaysReducer from './slices/InspectionDisplaysSlice.ts';
+import editModeReducer from './slices/EditModeSlice.ts';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     inspections: inspectionsReducer,
     filter: filterReducer,
     inspectionDisplays: inspectionDisplaysReducer,
+    editMode: editModeReducer,
   },
 });
 

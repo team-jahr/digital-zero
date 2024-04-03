@@ -33,7 +33,7 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({ visible, onClose }) => {
       title='Filter'
       placement='right'
       onClose={onClose}
-      visible={visible}
+      open={visible}
       width={500}
     >
       <div>

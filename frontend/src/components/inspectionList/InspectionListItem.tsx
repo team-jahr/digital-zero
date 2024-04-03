@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { InspectionDisplay } from '../../types/types';
 import InspectionItemDetails from './InspectionItemDetails';
+import { formatDate } from '../../api/api';
 
 type InspectionListItemProps = {
   inspection: InspectionDisplay;
@@ -8,10 +9,7 @@ type InspectionListItemProps = {
 
 const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
   const inspectionDate = new Date(inspection.date);
-  const year = inspectionDate.getFullYear();
-  const month = String(inspectionDate.getMonth() + 1).padStart(2, '0');
-  const day = String(inspectionDate.getDate()).padStart(2, '0');
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = formatDate(inspectionDate);
   const [detailed, setDetailed] = useState<boolean>(false);
   // if (detailed) console.log(inspection);
 
@@ -23,15 +21,13 @@ const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
     <li className='inspection-item'>
       {/* <h3 className='font-bold text-xl'>Summary:</h3> */}
       <div className='inspection-item--summary'>
-        <article>
-          <h4>Date:</h4> <p>{formattedDate}</p>
-        </article>
-        <article>
-          <h4>Location:</h4> <p>{inspection.locationName}</p>
-        </article>
-        <article>
-          <p>{inspection.isSubmitted ? 'yes' : 'no'}</p>
-        </article>
+        <article>{formattedDate}</article>
+        <article>{inspection.locationName}</article>
+        {inspection.isSubmitted ? (
+          <article className='text-green-600 font-semibold'>Yes</article>
+        ) : (
+          <article className='text-red-600 font-semibold'>No</article>
+        )}
 
         <button
           className='col-start-2 sm:col-start-4 max-w-28 primary-button'
