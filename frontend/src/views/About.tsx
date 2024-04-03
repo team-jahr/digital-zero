@@ -56,7 +56,7 @@ const About = () => {
             property, or equipment. Create detailed reports, track progress, and
             manage tasks efficiently.
           </h3>
-          <button className='action-button' onClick={handleNewInspection}>
+          <button className='primary-button' onClick={handleNewInspection}>
             New Inspection
           </button>
         </div>
@@ -67,7 +67,7 @@ const About = () => {
             organization. Access detailed reports, review findings, and track
             historical data to ensure compliance and quality standards.
           </h3>
-          <button className='action-button' onClick={handleListInspections}>
+          <button className='primary-button' onClick={handleListInspections}>
             List Inspections
           </button>
         </div>
