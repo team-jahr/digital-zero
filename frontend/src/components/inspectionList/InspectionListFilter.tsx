@@ -12,7 +12,6 @@ const InspectionListFilter = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FilterInspectionsFormInputs>({});
   const onSubmit: SubmitHandler<FilterInspectionsFormInputs> = (data) => {
-    console.log(!isNaN(+data.date));
     getInspectionsFilteredByLocation(data);
   };
   const locations = useSelector(
@@ -31,7 +30,6 @@ const InspectionListFilter = () => {
       url += `&location=${data.location}`;
     } else if (!isNaN(+data.date)) {
       const date = new Date(data.date).toISOString();
-      console.log(date);
       url += `&date=${date}`;
     }
 
@@ -40,7 +38,6 @@ const InspectionListFilter = () => {
     )
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         dispatch(setInspectionDisplays(res.inspectionDTOs));
         navigate(`/filtered/${url}`);
       })
