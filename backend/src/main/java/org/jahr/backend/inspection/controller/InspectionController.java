@@ -42,7 +42,7 @@ public class InspectionController {
     @ResponseStatus(HttpStatus.OK)
     public InspectionListDTO getInspectionsFilteredByLocation(@RequestParam(required = false) Integer location,
                                                               @RequestParam(required = false, defaultValue = "false") boolean submitted,
-                                                              @RequestParam(required = false) LocalDateTime date
+                                                              @RequestParam(required = false) String date
                                                               ){
         return InspectionListDTO.fromInspections(service.getIssuesSortedByLocation(location, submitted, date));
     }

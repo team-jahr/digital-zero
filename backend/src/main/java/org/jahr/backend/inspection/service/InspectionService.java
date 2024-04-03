@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -116,22 +117,28 @@ public class InspectionService {
     }
 
 
-    public List<Inspection> getIssuesSortedByLocation(Integer location, boolean submitted, LocalDateTime date) {
-        System.out.println("date = " + date);
+    public List<Inspection> getIssuesSortedByLocation(Integer location, boolean submitted, String date) {
         if (location != null && date != null) {
-            return getInspections().stream().filter(el ->{
-                System.out.println("el.getDate() = " + el.getDate());
-               return el.getArea().getLocation().getId() == location &&
-                        el.getDate().equals(date) && el.isSubmitted() == submitted;
+            return getInspections().stream().filter(el -> {
+                return el.getArea().getLocation().getId() == location &&
+                        el.getDate().equals(parsedDate(date)) && el.isSubmitted() == submitted;
             }).toList();
-        }
-        else if(location == null && date != null){
-            return getInspections().stream().filter(el -> el.getDate().equals(date) && el.isSubmitted() == submitted).toList();
-        } else if(location != null && date == null) {
+        } else if (location == null && date != null) {
+
+            return getInspections().stream().filter(el ->
+                    el.getDate().equals(parsedDate(date)) && el.isSubmitted() == submitted
+            ).toList();
+        } else if (location != null && date == null) {
             return getInspections().stream().filter(el -> el.isSubmitted() == submitted && el.getArea().getLocation().getId() == location).toList();
-        }
-        else{
+        } else {
             return getInspections().stream().filter(el -> el.isSubmitted() == submitted).toList();
         }
+    }
+
+    public LocalDateTime parsedDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'")
+                .withZone(ZoneId.of("UTC"));
+        LocalDateTime dateParsed = LocalDateTime.parse(date, formatter);
+        return dateParsed;
     }
 }
