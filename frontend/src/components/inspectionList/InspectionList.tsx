@@ -38,7 +38,7 @@ const InspectionList = () => {
         setLoading(false);
         toast.error('Failed to fetch inspections');
       });
-  }, [currentPage, dispatch, inspections]);
+  }, [currentPage, dispatch]);
 
   const toggleFilterDrawer = () => {
     setFilterDrawerVisible(!filterDrawerVisible);
