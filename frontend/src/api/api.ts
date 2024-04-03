@@ -205,7 +205,6 @@ export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
       areaName: inspection.area.name,
       reportedToEmails: inspection.reportedTo,
       issues: relevantIssues,
-      isSelected: false,
     };
     inspectionDisplays.push(inspectionDisplay);
   });

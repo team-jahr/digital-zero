@@ -1,7 +1,15 @@
-.inspection-list {
+@tailwind base;
+
+@layer base {
+  .inspection-item--summary {
+    @apply w-full grid grid-cols-3 items-center text-center sm:grid-cols-4;
+  }
+}
+
+/* .inspection-list {
   list-style-type: none;
   padding: 0;
-}
+} */
 
 .inspection-item {
   border: 1px solid #ccc;
@@ -10,22 +18,16 @@
   padding: 10px;
   margin: 10px 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* width: 90%; */
 }
-/* 
-@media screen and (max-width: 700px) {
-  .inspection-item {
-    width: 95%;
-  }
-} */
+
 .title-inspection-list {
   text-align: center;
   font-size: 2.5rem;
   border-bottom: double 2px;
 }
-li {
+/* li {
   display: block;
-}
+} */
 .transparent-button {
   position: fixed;
   bottom: 50px;

@@ -52,15 +52,9 @@ const InspectionList = () => {
     setFilterDrawerVisible(!filterDrawerVisible);
   };
 
-  // const handlePageChange = (page: number) => {
-  //   setCurrentPage(page);
-  // };
-
   const handleNewInspection = () => {
     createNewInspectionForm(dispatch, navigate);
   };
-
-  const handleViewDetails = () => {};
 
   return (
     <div className='flex justify-center'>
@@ -88,7 +82,6 @@ const InspectionList = () => {
                     <InspectionListItem
                       key={inspection.id}
                       inspection={inspection}
-                      onViewDetails={handleViewDetails}
                     />
                   ))}
               </ul>
@@ -99,11 +92,6 @@ const InspectionList = () => {
                 {showAll ? 'Show less' : 'Show more'}
               </button>
             </div>
-            {/* <Pagination
-          current={currentPage}
-          total={inspections.length * 10}
-          onChange={handlePageChange}
-        /> */}
           </Spin>
           <FilterDrawer
             visible={filterDrawerVisible}
