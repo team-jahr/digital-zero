@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public record InspectionDTO(Integer id, String description, boolean isSubmitted, LocalDateTime date,
-                            Area area, Location location, String email, AppUser user,
+                            Area area, Location location, List<String> reportedTo, AppUser user,
                             List<InspectionIssueKey> inspectionIssueKeys) {
 
 
@@ -26,7 +26,7 @@ public record InspectionDTO(Integer id, String description, boolean isSubmitted,
                 inspection.getDate(),
                 inspection.getArea(),
                 inspection.getArea().getLocation(),
-                inspection.getReportedTo(),
+                InspectionDTO.splitEmail(inspection.getReportedTo()),
                 inspection.getAppUser(),
                 keys
         );
@@ -37,9 +37,23 @@ public record InspectionDTO(Integer id, String description, boolean isSubmitted,
                 dto.description(),
                 dto.date(),
                 dto.isSubmitted(),
-                dto.email(),
+                InspectionDTO.joinEmail(dto.reportedTo()),
                 dto.area(),
                 dto.user()
         );
+    }
+
+    public static List<String> splitEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+        return List.of(email.split(","));
+    }
+
+    public static String joinEmail(List<String> email) {
+        if (email == null) {
+            return null;
+        }
+        return String.join(",", email);
     }
 }

@@ -9,11 +9,7 @@ import org.jahr.backend.issue.model.Issue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.activation.DataHandler;
-import javax.mail.BodyPart;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -79,6 +75,7 @@ public class IssueBlobClient {
         // This should already be a list in issue object
 //        List<String> issueImagesNames = List.of(issue.getImgRef());
         List<String> issueImagesNames = Arrays.asList(issue.getImgRef().split(","));
+        System.out.println("issueImagesNames = " + issueImagesNames);
         List<String> issueImagesData = new ArrayList<>();
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
@@ -98,7 +95,8 @@ public class IssueBlobClient {
         return String.join(",", issueImagesData);
     }
 
-    public void getIssueImagesByList(List<String> images, int id, Email email, String title) throws MessagingException {
+    public void getIssueImagesByList(List<String> images, int id, Email email, String title)
+            throws MessagingException {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
 

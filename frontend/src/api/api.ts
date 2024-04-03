@@ -8,7 +8,16 @@ import {
   setDefaultLocation,
   setOtherLocations,
 } from '../store/slices/InspectionFormSlice.ts';
-import { Area, Inputs, Issue, IssueDTO, Location, Inspection, InspectionDTO} from '../types/types.ts';
+import {
+  Area,
+  Inputs,
+  Issue,
+  IssueDTO,
+  Location,
+  Inspection,
+  InspectionDTO,
+  InspectionDisplay,
+} from '../types/types.ts';
 
 export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
@@ -144,7 +153,9 @@ export const fetchInspectionIssues = async (id: number): Promise<Issue[]> => {
 
 export const fetchInspections = async (): Promise<Inspection[]> => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections`);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/inspections`,
+    );
     if (!response.ok) {
       throw new Error('Failed to fetch inspections');
     }
@@ -154,4 +165,47 @@ export const fetchInspections = async (): Promise<Inspection[]> => {
     console.error('Error fetching inspections:', error);
     throw error;
   }
+};
+
+export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
+  let allInspections: Inspection[];
+  let allIssues: Issue[];
+  try {
+    allInspections = await fetchInspections();
+    const issuesResponse: Response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/issues`,
+    );
+    const issuesData: IssueDTO = await issuesResponse.json();
+    allIssues = issuesData.issues;
+  } catch (err) {
+    return new Promise((_resolve, reject) =>
+      reject(Error('Unable to fetch inspections and/or issues')),
+    );
+  }
+
+  const inspectionDisplays: InspectionDisplay[] = [];
+  allInspections.forEach((inspection) => {
+    const relevantIssueIds = inspection.inspectionIssueKeys.map(
+      (el) => el.issueId,
+    );
+    const relevantIssues = allIssues.filter((issue) =>
+      relevantIssueIds.includes(issue.id),
+    );
+    const inspectionDisplay: InspectionDisplay = {
+      id: inspection.id,
+      userEmail: inspection.user.email,
+      date: inspection.date,
+      isSubmitted: inspection.isSubmitted,
+      description: inspection.description,
+      locationName: inspection.location.name,
+      areaName: inspection.area.name,
+      reportedToEmails: inspection.reportedTo,
+      issues: relevantIssues,
+      isSelected: false,
+    };
+    inspectionDisplays.push(inspectionDisplay);
+  });
+
+  console.log('Please: ', inspectionDisplays);
+  return new Promise((resolve) => resolve(inspectionDisplays));
 };
