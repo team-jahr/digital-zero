@@ -40,13 +40,13 @@ public class Issue {
         this.title = title;
         this.description = description;
         this.severity = severity;
-//        this.imgRef = imgRef;
+        this.imgRef = imgRef;
     }
 
     public Issue(String title, String description, String severity, String imgRef) {
         this.title = title;
         this.description = description;
         this.severity = severity;
-//        this.imgRef = imgRef;
+        this.imgRef = imgRef;
     }
 }

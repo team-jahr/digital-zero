@@ -36,7 +36,13 @@ public class IssueBlobClient {
         blobContainerClient.createIfNotExists();
 
         // This should already be a list in issue object
-        List<String> issueImagesData = Arrays.asList(issue.getImgRef().split(","));
+        List<String> issueImagesData;
+        if (issue.getImgRef().isEmpty()) {
+            issueImagesData = new ArrayList<>();
+        } else {
+            issueImagesData = Arrays.asList(issue.getImgRef().split(","));
+        }
+
         List<String> issueImagesNames = new ArrayList<>();
 
         for (int i = 0; i < issueImagesData.size(); i++) {
@@ -72,7 +78,12 @@ public class IssueBlobClient {
 
         // This should already be a list in issue object
 //        List<String> issueImagesNames = List.of(issue.getImgRef());
-        List<String> issueImagesNames = Arrays.asList(issue.getImgRef().split(","));
+        List<String> issueImagesNames;
+        if (issue.getImgRef().isEmpty()) {
+            issueImagesNames = new ArrayList<>();
+        } else {
+            issueImagesNames = Arrays.asList(issue.getImgRef().split(","));
+        }
         List<String> issueImagesData = new ArrayList<>();
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
