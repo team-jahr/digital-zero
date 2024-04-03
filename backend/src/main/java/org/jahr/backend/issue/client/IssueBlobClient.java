@@ -31,8 +31,6 @@ public class IssueBlobClient {
     public Issue uploadIssueImages(Issue issue) {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
-        System.out.println("Blob container name: " + blobContainerName);
-        System.out.println("Blob connection string: " + blobConnectionString);
         BlobContainerClient blobContainerClient =
                 blobServiceClient.getBlobContainerClient(blobContainerName);
         blobContainerClient.createIfNotExists();
@@ -75,12 +73,10 @@ public class IssueBlobClient {
         // This should already be a list in issue object
 //        List<String> issueImagesNames = List.of(issue.getImgRef());
         List<String> issueImagesNames = Arrays.asList(issue.getImgRef().split(","));
-        System.out.println("issueImagesNames = " + issueImagesNames);
         List<String> issueImagesData = new ArrayList<>();
 
         for (int i = 0; i < issueImagesNames.size(); i++) {
             String blobName = ("" + issue.getId()) + i + ".png";
-            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -110,14 +106,12 @@ public class IssueBlobClient {
 
         for (int i = 0; i < images.size(); i++) {
             String blobName = ("" + id) + i + ".png";
-            System.out.println("blobName = " + blobName);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             blobClient.downloadStream(outputStream);
 
             String imgData = Base64.getEncoder().encodeToString(outputStream.toByteArray());
-            System.out.println("imgData = " + imgData);
 
             issueImagesData.add(imgData);
         }

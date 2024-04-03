@@ -21,7 +21,6 @@ const InspectionList = () => {
       .then((res) => setInspections(res))
       .catch(() => toast.error('Failed to fetch inspections'));
   }, []);
-  console.log('InspectionDisplays: ', inspections);
   const handleViewDetails = (clickedInspection: InspectionDisplay) => {
     setInspections((prevInspections) =>
       prevInspections.map((inspection) => ({

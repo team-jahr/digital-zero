@@ -211,6 +211,5 @@ export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
     inspectionDisplays.push(inspectionDisplay);
   });
 
-  console.log('Please: ', inspectionDisplays);
   return new Promise((resolve) => resolve(inspectionDisplays));
 };
