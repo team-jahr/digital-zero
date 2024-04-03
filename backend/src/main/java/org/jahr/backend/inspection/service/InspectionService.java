@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class InspectionService {
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
         Area area = areaRepository.findById(2)
                 .orElseThrow(() -> new AreaNotFoundException("Area not found"));
-        Inspection inspection = new Inspection(null, null, false, null, area, user);
+        Inspection inspection = new Inspection(null, LocalDateTime.now(), false, null, area, user);
         repo.save(inspection);
         return inspection;
     }

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInspectionDisplays } from '../../api/api';
 import { InspectionDisplay } from '../../types/types';
 import FilterDrawer from './FilterDrawer';
-import { Pagination, Spin } from 'antd';
+import { Spin } from 'antd';
 import FilterButton from './FilterButton';
 import InspectionListItem from './InspectionListItem';
 import { RootState } from '../../store/store';
@@ -23,7 +23,6 @@ const InspectionList = () => {
     (state: RootState) => state.inspectionDisplays.inspectionsDisplays,
   );
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const [showAll, setShowAll] = useState(false);
   const [showInspections, setShowInspections] = useState<InspectionDisplay[]>();
