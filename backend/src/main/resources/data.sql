@@ -22,31 +22,31 @@ insert into inspection (description, date, submitted, reported_to, area_id, app_
 values ('', '2021-03-04', false, '', 1, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('No issues found', '2021-03-04', false, '', 2, 1);
+values ('No issues found', '2021-03-04', true, 'jimmyhampussoderberg@gmail.com', 2, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('', '2021-02-01', false, '', 3, 1);
+values ('', '2021-02-01', true, 'jimmyhampussoderberg@gmail.com', 3, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
 values ('', '2021-03-03', false, '', 4, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('No issues found', '2021-03-02', false, '', 5, 1);
+values ('No issues found', '2021-03-02', true, 'jimmyhampussoderberg@gmail.com', 5, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
 values ('No issues found', '2021-03-01', false, '', 6, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('No issues found', '2021-03-02', false, '', 7, 1);
+values ('No issues found', '2021-03-02', true, 'jimmyhampussoderberg@gmail.com', 7, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
 values ('No issues found', '2021-03-03', false, '', 8, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('No issues found', '2021-03-01', false, '', 1, 1);
+values ('No issues found', '2021-03-01', true, 'jimmyhampussoderberg@gmail.com', 1, 1);
 
 insert into inspection (description, date, submitted, reported_to, area_id, app_user_id)
-values ('No issues found', '2021-03-02', false, '', 1, 1);
+values ('No issues found', '2021-03-02', true, 'jimmyhampussoderberg@gmail.com', 1, 1);
 
 -------------------------------------------------------------------------------------------------
 insert into issue (title, description, severity, img_ref)
