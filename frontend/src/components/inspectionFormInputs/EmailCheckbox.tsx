@@ -1,12 +1,12 @@
 import { UseFormRegister, UseFormResetField } from 'react-hook-form';
-import { Inputs } from '../../types/types.ts';
+import { InspectionFormInputs } from '../../types/types.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store.ts';
 import { setSendEmail } from '../../store/slices/InspectionFormSlice.ts';
 
 type EmailCheckboxProp = {
-  register: UseFormRegister<Inputs>;
-  resetField: UseFormResetField<Inputs>;
+  register: UseFormRegister<InspectionFormInputs>;
+  resetField: UseFormResetField<InspectionFormInputs>;
 };
 
 const EmailCheckbox = ({ register, resetField }: EmailCheckboxProp) => {

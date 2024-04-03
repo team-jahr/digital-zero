@@ -1,12 +1,12 @@
-import { Area, Inputs } from '../../types/types.ts';
+import { Area, InspectionFormInputs } from '../../types/types.ts';
 import { ErrorMessage } from '@hookform/error-message';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store.ts';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 type AreaSelectInputProp = {
-  register: UseFormRegister<Inputs>;
-  errors: FieldErrors<Inputs>;
+  register: UseFormRegister<InspectionFormInputs>;
+  errors: FieldErrors<InspectionFormInputs>;
 };
 const AreaSelectInput = ({ register, errors }: AreaSelectInputProp) => {
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);

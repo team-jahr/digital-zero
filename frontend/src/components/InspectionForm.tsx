@@ -1,8 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
-import './InspectionFormStyles.css';
 import AddIssueButton from './AddIssueButton';
-import { Inputs } from '../types/types.ts';
+import { InspectionFormInputs } from '../types/types.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
 import {
@@ -18,8 +17,6 @@ import {
 import LocationSelectInput from './inspectionFormInputs/LocationSelectInput.tsx';
 import AreaSelectInput from './inspectionFormInputs/AreaSelectInput.tsx';
 import DateInput from './inspectionFormInputs/DateInput.tsx';
-import NameInput from './inspectionFormInputs/NameInput.tsx';
-import EmailCheckbox from './inspectionFormInputs/EmailCheckbox.tsx';
 import EmailFields from './inspectionFormInputs/EmailFields.tsx';
 import DescriptionTextArea from './inspectionFormInputs/DescriptionTextArea.tsx';
 import IssuesList from './IssuesList.tsx';
@@ -70,13 +67,14 @@ const InspectionForm = () => {
     resetField,
     control,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<InspectionFormInputs>({
+    mode: 'onChange',
     defaultValues: {
       emails: [{ value: '' }],
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<InspectionFormInputs> = (data) => {
     if (formId) {
       try {
         submitInspectionForm(data, locations, areas, formId, isSubmitted);
@@ -97,15 +95,27 @@ const InspectionForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='form'>
-      <NameInput />
+      <h1 className='section-title'>
+        <span>Basic data</span>
+      </h1>
       <DateInput register={register} />
       <LocationSelectInput register={register} resetField={resetField} />
       <AreaSelectInput register={register} errors={errors} />
-      <AddIssueButton />
+      <h1 className='section-title'>
+        <span>List of issues</span>
+      </h1>
       <IssuesList />
-      <EmailCheckbox register={register} resetField={resetField} />
-      <EmailFields register={register} errors={errors} control={control} />
-      <DescriptionTextArea register={register} />
+      <AddIssueButton />
+      <h1 className='section-title'>
+        <span>Additional informations</span>
+      </h1>
+      <EmailFields
+        register={register}
+        errors={errors}
+        control={control}
+        isSubmitted={isSubmitted}
+      />
+      <DescriptionTextArea register={register} errors={errors} />
       <div className='buttons-container'>
         <button
           className='tertiary-button'

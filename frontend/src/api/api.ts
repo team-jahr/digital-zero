@@ -10,7 +10,7 @@ import {
 } from '../store/slices/InspectionFormSlice.ts';
 import {
   Area,
-  Inputs,
+  InspectionFormInputs,
   Issue,
   IssueDTO,
   Location,
@@ -18,8 +18,12 @@ import {
   InspectionDTO,
   InspectionDisplay,
 } from '../types/types.ts';
+import { NavigateFunction } from 'react-router-dom';
 
-export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
+export const createNewInspectionForm = (
+  dispatch: Dispatch<UnknownAction>,
+  navigate: NavigateFunction,
+) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/inspections/new-inspection`, {
     method: 'POST',
   })
@@ -34,6 +38,7 @@ export const createNewInspectionForm = (dispatch: Dispatch<UnknownAction>) => {
       dispatch(setFormId(res.id));
       dispatch(setDefaultLocation(res.location));
       dispatch(setShowInspectionForm(true));
+      navigate(`/new-inspection/${res.id}`);
     })
     .catch((err) => {
       toast.error(err.message);
@@ -70,7 +75,7 @@ export const fetchAllAreas = (
 };
 
 export const submitInspectionForm = (
-  data: Inputs,
+  data: InspectionFormInputs,
   locations: Location[],
   areas: Area[],
   formId: number,
@@ -88,7 +93,7 @@ export const submitInspectionForm = (
     }
     return emailList.substring(0, emailList.length - 1);
   };
-  const responseEmail = data.email ? createEmailString() : null;
+  const responseEmail = createEmailString();
 
   const responseBody = {
     id: formId,

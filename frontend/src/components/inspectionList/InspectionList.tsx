@@ -32,8 +32,7 @@ const InspectionList = () => {
     );
   };
   const handleNewInspection = () => {
-    createNewInspectionForm(dispatch);
-    navigate('/new-inspection');
+    createNewInspectionForm(dispatch, navigate);
   };
 
   return (

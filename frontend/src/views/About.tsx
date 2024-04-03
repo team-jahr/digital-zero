@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { createNewInspectionForm } from './api/api.ts';
+import { createNewInspectionForm } from '../api/api.ts';
 import './About.css';
 
 const About = () => {
@@ -12,8 +12,7 @@ const About = () => {
   };
 
   const handleNewInspection = () => {
-    createNewInspectionForm(dispatch);
-    navigate('/new-inspection');
+    createNewInspectionForm(dispatch, navigate);
   };
 
   return (

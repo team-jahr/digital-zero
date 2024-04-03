@@ -11,10 +11,13 @@ const IssuesList = () => {
   useEffect(() => {}, [listOfIssues]);
   return (
     <>
-      {listOfIssues !== undefined &&
+      {listOfIssues.length > 0 ? (
         listOfIssues.map((el) => {
           return <SingleIssue issue={el} key={el.id} />;
-        })}
+        })
+      ) : (
+        <div className='listOfIssues-title'>List of issues is empty</div>
+      )}
     </>
   );
 };
