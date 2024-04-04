@@ -88,7 +88,7 @@ const InspectionList = () => {
                     />
                   ))}
                 {showInspections !== undefined &&
-                  showInspections.length == 0 && (
+                  showInspections.length > 0 && (
                     <div className='main-title spread'>No items found.</div>
                   )}
               </ul>
