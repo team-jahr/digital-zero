@@ -19,6 +19,7 @@ const InspectionListFilter = () => {
   const onSubmit: SubmitHandler<FilterInspectionsFormInputs> = (data) => {
     getInspectionsFilteredByLocation(data);
   };
+
   const locations = useSelector(
     (state: RootState) => state.inspectionForm.allLocations,
   );
