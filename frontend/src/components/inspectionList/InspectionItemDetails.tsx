@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { setEditMode } from '../../store/slices/EditModeSlice';
+import { setFormId } from '../../store/slices/AppSlice';
 
 interface Props {
   inspectionDisplay: InspectionDisplay;
@@ -21,6 +22,7 @@ const InspectionItemDetails = ({
 
   const handleEdit = () => {
     dispatch(setEditMode(true));
+    dispatch(setFormId(inspectionDisplay.id));
     navigate(`/new-inspection/${inspectionDisplay.id}`);
     window.scrollTo(0, 0);
   };
