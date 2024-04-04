@@ -4,9 +4,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import javax.activation.DataHandler;
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
@@ -28,15 +30,14 @@ public class Email {
         transport.connect(emailHost, user, userPassword);
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         transport.close();
-        System.out.println("Email sent");
     }
 
-    public MimeMessage draftEmail(String emails, String body, String title) throws MessagingException, IOException {
+    public MimeMessage draftEmail(String emails, String body, String title)
+            throws MessagingException, IOException {
         String[] emailRecipients = emails.split(",");
         String emailSubject = "Report from inspection " + title;
         mimeMessage = new MimeMessage(newSession);
         Arrays.stream(emailRecipients).forEach(el -> {
-            System.out.println("email = " + el);
             try {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(el));
             } catch (MessagingException e) {
@@ -53,7 +54,8 @@ public class Email {
         return mimeMessage;
     }
 
-    public void addImgToEmail(String base64ImageStrings, int id, String title) throws MessagingException {
+    public void addImgToEmail(String base64ImageStrings, int id, String title)
+            throws MessagingException {
         String[] base64Image = base64ImageStrings.split(",");
         for (int i = 0; i < base64Image.length; i++) {
             byte[] rawImage = Base64.getDecoder().decode(base64Image[i]);
@@ -64,7 +66,6 @@ public class Email {
             imagePart.setFileName(title + i + ".png");
             multipart.addBodyPart(imagePart);
         }
-        System.out.println("multipart = " + multipart.toString());
     }
 
     public void setUpServerProperties() {
