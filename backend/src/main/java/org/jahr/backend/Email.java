@@ -45,7 +45,7 @@ public class Email {
         });
         mimeMessage.setSubject(emailSubject);
         MimeBodyPart bodyPart = new MimeBodyPart();
-        bodyPart.setText(body, "UTF-8");
+        bodyPart.setContent(body, "text/html; charset=utf-8");
 //        MimeBodyPart attachmentPart = new MimeBodyPart();
 //        attachmentPart.attachFile(new File(""));
         multipart.addBodyPart(bodyPart);
@@ -55,13 +55,13 @@ public class Email {
 
     public void addImgToEmail(String base64ImageStrings, int id, String title) throws MessagingException {
         String[] base64Image = base64ImageStrings.split(",");
-        for(int i=0; i < base64Image.length; i++){
+        for (int i = 0; i < base64Image.length; i++) {
             byte[] rawImage = Base64.getDecoder().decode(base64Image[i]);
             BodyPart imagePart = new MimeBodyPart();
             ByteArrayDataSource imageDataSource = new ByteArrayDataSource(rawImage, "image/png");
             imagePart.setDataHandler(new DataHandler(imageDataSource));
-            imagePart.setHeader("Content-ID", "<"+ title + id +">");
-            imagePart.setFileName(title + id + ".png");
+            imagePart.setHeader("Content-ID", "<" + title + i + ">");
+            imagePart.setFileName(title + i + ".png");
             multipart.addBodyPart(imagePart);
         }
         System.out.println("multipart = " + multipart.toString());
