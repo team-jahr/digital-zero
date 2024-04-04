@@ -47,7 +47,7 @@ export const createNewInspectionForm = (
 
 export const fetchAllLocations = (
   dispatch: Dispatch<UnknownAction>,
-  defaultLocation: Location,
+  defaultLocation?: Location,
 ) => {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations`)
     .then((res) => res.json())
@@ -57,7 +57,7 @@ export const fetchAllLocations = (
     })
     .then((res) => {
       const otherLocations = res.filter(
-        (el: Location) => el.name !== defaultLocation.name,
+        (el: Location) => el.name !== defaultLocation?.name,
       );
       dispatch(setOtherLocations(otherLocations));
     })

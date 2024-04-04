@@ -7,6 +7,7 @@ import org.jahr.backend.inspection.DTO.InspectionResponseDTO;
 import org.jahr.backend.inspection.model.Inspection;
 import org.jahr.backend.inspection.service.InspectionService;
 import org.jahr.backend.issue.DTO.IssueListDTO;
+import org.jahr.backend.location.model.Location;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -34,6 +36,15 @@ public class InspectionController {
     @ResponseStatus(HttpStatus.OK)
     public IssueListDTO getAllIssues(@PathVariable int id) {
         return service.getIssuesForForm(id);
+    }
+
+    @GetMapping("/filterBy")
+    @ResponseStatus(HttpStatus.OK)
+    public InspectionListDTO getInspectionsFilteredByLocation(@RequestParam(required = false) Integer location,
+                                                              @RequestParam(required = false, defaultValue = "false") boolean submitted,
+                                                              @RequestParam(required = false) String date
+                                                              ){
+        return InspectionListDTO.fromInspections(service.getIssuesSortedByLocation(location, submitted, date));
     }
 
     @GetMapping("/{id}")

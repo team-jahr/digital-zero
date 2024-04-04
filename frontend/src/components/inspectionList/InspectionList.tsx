@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInspectionDisplays } from '../../api/api';
 import { InspectionDisplay } from '../../types/types';
-import FilterDrawer from './FilterDrawer';
 import { Spin } from 'antd';
-import FilterButton from './FilterButton';
 import InspectionListItem from './InspectionListItem';
 import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
@@ -17,10 +15,10 @@ import './DetailButton.css';
 import { setInspectionDisplays } from '../../store/slices/InspectionDisplaysSlice';
 import { setEditMode } from '../../store/slices/EditModeSlice';
 import { setIsAreaDisabled } from '../../store/slices/InspectionFormSlice';
+import FilterContainer from './FilterContainer.tsx';
 
 const InspectionList = () => {
   const dispatch = useDispatch();
-  const [filterDrawerVisible, setFilterDrawerVisible] = useState(false);
   const inspections = useSelector(
     (state: RootState) => state.inspectionDisplays.inspectionsDisplays,
   );
@@ -50,10 +48,6 @@ const InspectionList = () => {
     }
   }, [inspections, showAll]);
 
-  const toggleFilterDrawer = () => {
-    setFilterDrawerVisible(!filterDrawerVisible);
-  };
-
   const handleNewInspection = () => {
     dispatch(setEditMode(false));
     dispatch(setIsAreaDisabled(false));
@@ -65,6 +59,9 @@ const InspectionList = () => {
       <div className='mx-2 max-w-5xl w-full grid grid-cols-12'>
         <div className='col-span-full sm:col-start-2 sm:col-span-10'>
           <h1 className='title-inspection-list'>Inspection List</h1>
+          <div className='filter-button-container'>
+            <FilterContainer />
+          </div>
           <button
             className='transparent-button-2'
             onClick={handleNewInspection}
@@ -88,14 +85,26 @@ const InspectionList = () => {
                 <h2 className='col-start-2'>Location</h2>
                 <h2 className='col-start-3'>Reported</h2>
               </div>
-              <ul className='inspection-list'>
+              <ul
+                className={
+                  showInspections && showInspections.length > 0
+                    ? 'inspection-list'
+                    : 'inspection-list no-grid'
+                }
+              >
                 {showInspections !== undefined &&
+                  !loading &&
                   showInspections.map((inspection: InspectionDisplay) => (
                     <InspectionListItem
                       key={inspection.id}
                       inspection={inspection}
                     />
                   ))}
+                {showInspections !== undefined &&
+                  showInspections.length === 0 &&
+                  !loading && (
+                    <div className='main-title spread'>No items found.</div>
+                  )}
               </ul>
               <button
                 className='primary-button'
@@ -106,10 +115,6 @@ const InspectionList = () => {
               <div className='mb-2'></div>
             </div>
           </Spin>
-          <FilterDrawer
-            visible={filterDrawerVisible}
-            onClose={toggleFilterDrawer}
-          />
         </div>
       </div>
     </div>
