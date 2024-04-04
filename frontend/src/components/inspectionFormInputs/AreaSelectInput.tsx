@@ -11,13 +11,14 @@ import {
 type AreaSelectInputProp = {
   register: UseFormRegister<InspectionFormInputs>;
   errors: FieldErrors<InspectionFormInputs>;
-  defaultValue: string;
+  defaultValue: Area;
 };
 const AreaSelectInput = ({
   register,
   errors,
   defaultValue,
 }: AreaSelectInputProp) => {
+  console.log(defaultValue);
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
   const dispatch = useDispatch<AppDispatch>();
   const areaDisabled = useSelector(
@@ -37,13 +38,15 @@ const AreaSelectInput = ({
         {...register('area', {
           required: 'Field is required.',
           onChange: (e) => {
-            if (e.target.value !== '') dispatch(setIsAreaDisabled(true));
-            dispatch(setAreaValue(e.target.value));
+            if (e.target.value !== '') {
+              dispatch(setIsAreaDisabled(true));
+              dispatch(setAreaValue(e.target.value));
+            }
           },
         })}
         className={errors?.area ? 'form-select mb-1 error' : 'form-select mb-1'}
       >
-        <option value=''>{defaultValue}</option>
+        <option value={defaultValue.id}>{defaultValue.name}</option>
         {areas.map((element: Area) => {
           const { name, id } = element;
           return (

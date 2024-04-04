@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import AddIssueButton from './AddIssueButton';
-import { InspectionFormInputs } from '../types/types.ts';
+import { Area, InspectionFormInputs } from '../types/types.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
 import {
@@ -52,28 +52,26 @@ const InspectionForm = () => {
   const navigate = useNavigate();
 
   const editMode = useSelector((state: RootState) => state.editMode.value);
-  const [areaDefault, setAreaDefault] = useState<string>('Select Area');
-  const [dateDefault, setDateDefault] = useState<string>();
+  const [areaDefault, setAreaDefault] = useState<Area>({
+    id: 0,
+    name: 'Select Area',
+  });
   const [descriptionDefault, setDescriptionDefault] = useState<string>('');
 
   useEffect(() => {
-    if (editMode === true && formId !== undefined) {
+    if (editMode && formId !== undefined) {
       getInspection(formId)
         .then((inspection) => {
-          const date = new Date(inspection.date).toISOString().substring(0, 10);
-          setDateDefault(date);
-
+          const date = inspection.date.substring(0, 10);
+          setValue('date', date);
+          setValue('area', inspection.area);
           dispatch(setDefaultLocation(inspection.location));
           dispatch(setAreaValue(inspection.area.name));
-          setAreaDefault(inspection.area.name);
+          setAreaDefault(inspection.area);
           dispatch(setIsAreaDisabled(true));
-
           setDescriptionDefault(inspection.description);
         })
         .then(() => dispatch(setEditMode(false)));
-    } else {
-      const date = new Date().toISOString().substring(0, 10);
-      setDateDefault(date);
     }
   }, [editMode, dispatch, formId]);
 
@@ -98,6 +96,7 @@ const InspectionForm = () => {
     resetField,
     control,
     formState: { errors },
+    setValue,
   } = useForm<InspectionFormInputs>({
     mode: 'onChange',
     defaultValues: {
@@ -129,15 +128,17 @@ const InspectionForm = () => {
       <h1 className='section-title mb-12'>
         <span>General information</span>
       </h1>
-      {dateDefault !== undefined && (
-        <DateInput dateDefault={dateDefault} register={register} />
-      )}
+      {/*{dateDefault !== undefined && (*/}
+      <DateInput register={register} />
+      {/*)/!*}*!/*/}
       <LocationSelectInput register={register} resetField={resetField} />
+      {/*{areaDefault !== undefined && (*/}
       <AreaSelectInput
         register={register}
         errors={errors}
         defaultValue={areaDefault}
       />
+      {/*)}*/}
       <h1 className='section-title'>
         <span>List of issues</span>
       </h1>

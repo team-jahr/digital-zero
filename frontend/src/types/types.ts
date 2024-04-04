@@ -8,7 +8,7 @@ export type Area = {
 };
 export type InspectionFormInputs = {
   date: string;
-  location: Location[];
+  location: Location;
   area: Area;
   email: boolean;
   emails: { value: string }[];

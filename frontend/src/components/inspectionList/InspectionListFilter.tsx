@@ -33,11 +33,11 @@ const InspectionListFilter = () => {
     let url = `submitted=${data.submitted}`;
     if (data.location != 0) {
       url += `&location=${data.location}`;
-    } else if (!isNaN(+data.date)) {
+    }
+    if (!isNaN(+data.date)) {
       const date = new Date(data.date).toISOString();
       url += `&date=${date}`;
     }
-
     fetch(
       `${import.meta.env.VITE_API_BASE_URL}/api/inspections/filterBy?${url}`,
     )
@@ -120,7 +120,7 @@ const InspectionListFilter = () => {
           </select>
         </div>
         <button className='primary-button' type='submit'>
-          Filter
+          Apply filters
         </button>
       </form>
     </div>
