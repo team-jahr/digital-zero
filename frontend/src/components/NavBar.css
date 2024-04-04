@@ -1,53 +1,67 @@
 nav {
-    position: sticky;
-    top: 0;
-    background-image: linear-gradient(
-            310deg,
-            hsl(51deg 96% 49%) 0%,
-            hsl(43deg 95% 51%) 23%,
-            hsl(34deg 93% 54%) 35%,
-            hsl(26deg 88% 56%) 43%,
-            hsl(17deg 79% 56%) 48%,
-            hsl(7deg 66% 55%) 53%,
-            hsl(356deg 54% 51%) 58%,
-            hsl(345deg 59% 43%) 66%,
-            hsl(336deg 65% 36%) 78%,
-            hsl(327deg 69% 29%) 100%
-    );
-    opacity: 0.9;
-    padding: 10px 20px;
-    z-index: 1000;
-    color: white;
-    display: flex;
-    height: 4rem;
-    align-items: center;
-    justify-content: space-between;
+  position: fixed;
+  top: 0;
+  background-image: linear-gradient(
+    310deg,
+    hsl(51deg 96% 49%) 0%,
+    hsl(43deg 95% 51%) 23%,
+    hsl(34deg 93% 54%) 35%,
+    hsl(26deg 88% 56%) 43%,
+    hsl(17deg 79% 56%) 48%,
+    hsl(7deg 66% 55%) 53%,
+    hsl(356deg 54% 51%) 58%,
+    hsl(345deg 59% 43%) 66%,
+    hsl(336deg 65% 36%) 78%,
+    hsl(327deg 69% 29%) 100%
+  );
+  opacity: 0.9;
+  padding: 10px 20px;
+  z-index: 1000;
+  color: white;
+  display: flex;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-navbar {
+  width: 20px;
+  position: fixed;
+  top: 21px;
+  left: 16px;
+  z-index: 1000;
 }
 
 .nav-list {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  margin-right: 50px;
+  align-items: center;
+}
+.nav-title {
+  display: flex;
+  align-items: center;
 }
 
 .nav-user {
-    @apply text-gray-800;
+  @apply text-gray-800;
 }
 
 li {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .active a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
