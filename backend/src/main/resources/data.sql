@@ -18,25 +18,25 @@ insert into area (name, location_id) values ('Hall 888', 3);
 insert into app_user (email, location_id) values ('test@gmail.com', 2);
 
 -- -------------------------------------------------------------------------------------------------
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('', '2021-03-04', 0, '', 1, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('', '2021-03-04', false, '', 1, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-04', 1, 'jimmyhampussoderberg@gmail.com', 2, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-04', true, 'jimmyhampussoderberg@gmail.com', 2, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('', '2021-02-01', 1, 'jimmyhampussoderberg@gmail.com', 3, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('', '2021-02-01', true, 'jimmyhampussoderberg@gmail.com', 3, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('', '2021-03-03', 0, '', 4, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('', '2021-03-03', false, '', 4, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-02', 1, 'jimmyhampussoderberg@gmail.com', 5, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-02', true, 'jimmyhampussoderberg@gmail.com', 5, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-01', 0, '', 6, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-01', false, '', 6, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-02', 1, 'jimmyhampussoderberg@gmail.com', 7, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-02', true, 'jimmyhampussoderberg@gmail.com', 7, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-03', 0, '', 8, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-03', false, '', 8, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-01', 1, 'jimmyhampussoderberg@gmail.com', 1, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-01', true, 'jimmyhampussoderberg@gmail.com', 1, 1);
 
-insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-02', 1, 'jimmyhampussoderberg@gmail.com', 1, 1);
+insert into inspection (description, date, submitted, reported_to, area_id, app_user_id) values ('No issues found', '2021-03-02', true, 'jimmyhampussoderberg@gmail.com', 1, 1);
 
 -------------------------------------------------------------------------------------------------
 insert into issue (title, description, severity, img_ref) values ('Grip carpet at station 1', 'Starting to get worn out, will become a security liability soon', 'warning', '');

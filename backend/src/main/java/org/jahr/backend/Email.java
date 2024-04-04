@@ -1,5 +1,11 @@
 package org.jahr.backend;
 
+import com.azure.communication.email.EmailClient;
+import com.azure.communication.email.EmailClientBuilder;
+import com.azure.communication.email.models.EmailMessage;
+import com.azure.communication.email.models.EmailSendResult;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import javax.activation.DataHandler;
@@ -20,7 +26,25 @@ public class Email {
     MimeMessage mimeMessage = null;
     MimeMultipart multipart = new MimeMultipart();
 
+    private final String connectionString =
+            "endpoint=https://inspection-tracker-communication-service.europe.communication.azure"
+                    + ".com/;accesskey=4w9yGa6RnUagB+ZM38A"
+                    + "+Y1yLpPR5uIpyr6cbN6YeKjijXR7pcruWO6khf86ALDMCF07petcaqHVtJJww9GvuzQ==";
+
+    private final EmailClient emailClient =
+            new EmailClientBuilder().connectionString(connectionString).buildClient();
+
     public void sendEmail() throws MessagingException {
+        EmailMessage message = new EmailMessage().setSenderAddress(
+                        "DoNotReply@1c52ece2-5066-400d-9008-8d714c8f32d2.azurecomm.net")
+                .setToRecipients("jimmyhampussoderberg@gmail.com")
+                .setSubject("Test subject")
+                .setBodyPlainText("This is the message in the email");
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+        System.out.println("Azure email response = " + response.getValue().getId());
+
         Dotenv dotenv = null;
         dotenv = Dotenv.configure().load();
         String user = dotenv.get("EMAIL_USER");
