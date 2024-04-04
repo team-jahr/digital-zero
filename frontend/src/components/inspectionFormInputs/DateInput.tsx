@@ -5,10 +5,11 @@ import { RootState } from '../../store/store.ts';
 import { setIsAreaDisabled } from '../../store/slices/InspectionFormSlice.ts';
 
 type DateInputProp = {
+  dateDefault: string | undefined;
   register: UseFormRegister<InspectionFormInputs>;
 };
 
-const DateInput = ({ register }: DateInputProp) => {
+const DateInput = ({ dateDefault, register }: DateInputProp) => {
   const areaDisabled = useSelector(
     (state: RootState) => state.inspectionForm.areaDisabled,
   );
@@ -16,6 +17,7 @@ const DateInput = ({ register }: DateInputProp) => {
     (state: RootState) => state.inspectionForm.areaValue,
   );
   const dispatch = useDispatch();
+
   return (
     <div className='form-field-container'>
       <label
@@ -37,7 +39,7 @@ const DateInput = ({ register }: DateInputProp) => {
             }
           },
         })}
-        defaultValue={new Date().toISOString().substring(0, 10)}
+        defaultValue={dateDefault}
       />
     </div>
   );

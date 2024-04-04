@@ -201,14 +201,36 @@ export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
       date: inspection.date,
       isSubmitted: inspection.isSubmitted,
       description: inspection.description,
-      locationName: inspection.location.name,
-      areaName: inspection.area.name,
+      location: inspection.location,
+      area: inspection.area,
       reportedToEmails: inspection.reportedTo,
-      issues: relevantIssues,
-      isSelected: false,
+      issues: relevantIssues.length,
     };
     inspectionDisplays.push(inspectionDisplay);
   });
 
   return new Promise((resolve) => resolve(inspectionDisplays));
+};
+
+export const getInspection = async (id: number): Promise<Inspection> => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/inspections/${id}`,
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch inspections');
+    }
+    const data: Inspection = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching inspections:', error);
+    throw error;
+  }
+};
+
+export const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${day}/${month}/${year}`;
 };

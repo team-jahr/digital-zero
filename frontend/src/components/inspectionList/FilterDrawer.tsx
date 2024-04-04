@@ -12,7 +12,6 @@ const FilterDrawer = () => {
   const onClose = () => {
     dispatch(setShowDrawer(false));
   };
-  console.log(isDrawerVisible);
   return (
     <Drawer
       title='Filter'

@@ -1,41 +1,46 @@
+import { useState } from 'react';
 import { InspectionDisplay } from '../../types/types';
-import DetailButton from './DetailButton';
+import InspectionItemDetails from './InspectionItemDetails';
+import { formatDate } from '../../api/api';
 
 type InspectionListItemProps = {
   inspection: InspectionDisplay;
-  onViewDetails: (inspection: InspectionDisplay) => void;
 };
 
-const InspectionListItem = ({
-  inspection,
-  onViewDetails,
-}: InspectionListItemProps) => {
+const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
   const inspectionDate = new Date(inspection.date);
-  const year = inspectionDate.getFullYear();
-  const month = String(inspectionDate.getMonth() + 1).padStart(2, '0');
-  const day = String(inspectionDate.getDate()).padStart(2, '0');
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = formatDate(inspectionDate);
+  const [detailed, setDetailed] = useState<boolean>(false);
+  // if (detailed) console.log(inspection);
 
-  const handleViewDetails = () => {
-    onViewDetails(inspection);
+  const handleDrawer = () => {
+    setDetailed(!detailed);
   };
 
   return (
-    <li className='inspection-item'>
-      <h3>Date: {formattedDate}</h3>
-      <h3>Is Submitted: {inspection.isSubmitted ? 'yes' : 'no'}</h3>
-      <DetailButton onClick={handleViewDetails} />
-      {inspection.isSelected && (
-        <div>
-          <h4>Description: {inspection.description}</h4>
-          <h4>Issues:</h4>
-          {/* <ul>
-            {inspection.issueKeys.map((issueKey, index) => (
-              <li key={index}>{issueKey.inspectionId}</li>
-            ))}
-          </ul> */}
-        </div>
-      )}
+    <li className='inspection-item col-span-full'>
+      {/* <h3 className='font-bold text-xl'>Summary:</h3> */}
+      <div className='inspection-item--summary'>
+        <article>{formattedDate}</article>
+        <article>{inspection.location.name}</article>
+        {inspection.isSubmitted ? (
+          <article className='text-green-600 font-semibold'>Yes</article>
+        ) : (
+          <article className='text-red-600 font-semibold'>No</article>
+        )}
+
+        <button
+          className='col-start-2 sm:col-start-4 max-w-28 primary-button'
+          onClick={handleDrawer}
+        >
+          View Details
+        </button>
+      </div>
+      <InspectionItemDetails
+        inspectionDisplay={inspection}
+        onClose={handleDrawer}
+        visible={detailed}
+      />
     </li>
   );
 };

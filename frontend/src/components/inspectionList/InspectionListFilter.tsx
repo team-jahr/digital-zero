@@ -1,7 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllLocations } from '../../api/api.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FilterInspectionsFormInputs } from '../../types/types.ts';
+import {
+  FilterInspectionsFormInputs,
+  Inspection,
+  InspectionDTO,
+  InspectionDisplay,
+} from '../../types/types.ts';
 import { RootState } from '../../store/store.ts';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +44,28 @@ const InspectionListFilter = () => {
     )
       .then((res) => res.json())
       .then((res) => {
-        dispatch(setInspectionDisplays(res.inspectionDTOs));
+        const data: Inspection[] = res.inspectionDTOs;
+        return data;
+      })
+      .then((res) => {
+        return res.map((el) => {
+          const inspectionDisplay: InspectionDisplay = {
+            id: el.id,
+            userEmail: el.user.email,
+            date: el.date,
+            isSubmitted: el.isSubmitted,
+            description: el.description,
+            location: el.location,
+            area: el.area,
+            reportedToEmails: el.reportedTo,
+            issues: el.inspectionIssueKeys.length,
+          };
+          return inspectionDisplay;
+        });
+      })
+      .then((res) => res.sort((a, b) => b.date.localeCompare(a.date)))
+      .then((res) => {
+        dispatch(setInspectionDisplays(res));
         navigate(`/filtered/${url}`);
         dispatch(setShowDrawer(false));
       })

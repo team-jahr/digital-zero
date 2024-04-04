@@ -34,7 +34,6 @@ export type Inspection = {
   inspectionIssueKeys: InspectionIssueKeys[];
   reportedTo: string[];
   user: User;
-  isSelected?: boolean;
 };
 
 export type User = {
@@ -48,11 +47,10 @@ export type InspectionDisplay = {
   date: string;
   isSubmitted: boolean;
   description: string;
-  locationName: string;
-  areaName: string;
+  location: Location;
+  area: Area;
   reportedToEmails: string[] | null;
-  issues: Issue[];
-  isSelected?: boolean;
+  issues: number;
 };
 
 export type InspectionIssueKeys = {

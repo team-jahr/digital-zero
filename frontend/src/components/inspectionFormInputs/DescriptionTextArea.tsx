@@ -4,10 +4,15 @@ import { useState } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 
 type DescriptionTextAreaProp = {
+  descriptionDefault: string;
   register: UseFormRegister<InspectionFormInputs>;
   errors: FieldErrors<InspectionFormInputs>;
 };
-const DescriptionTextArea = ({ register, errors }: DescriptionTextAreaProp) => {
+const DescriptionTextArea = ({
+  descriptionDefault,
+  register,
+  errors,
+}: DescriptionTextAreaProp) => {
   const [descriptionLength, setDescriptionLength] = useState(500);
   const handleAmountOfChars = (e: KeyboardEvent) => {
     if (descriptionLength < 0) {
@@ -21,6 +26,7 @@ const DescriptionTextArea = ({ register, errors }: DescriptionTextAreaProp) => {
     <div className='form-field-container'>
       <label className='form-label'>Additional notes</label>
       <textarea
+        defaultValue={descriptionDefault}
         onKeyDown={() => handleAmountOfChars}
         {...register('description', {
           maxLength: {

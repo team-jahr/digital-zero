@@ -8,11 +8,13 @@ import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
 import { createNewInspectionForm } from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import toast from 'react-hot-toast';
 import './InspectionList.css';
 import './DetailButton.css';
 import { setInspectionDisplays } from '../../store/slices/InspectionDisplaysSlice';
+import { setEditMode } from '../../store/slices/EditModeSlice';
+import { setIsAreaDisabled } from '../../store/slices/InspectionFormSlice';
 import FilterContainer from './FilterContainer.tsx';
 
 const InspectionList = () => {
@@ -47,31 +49,45 @@ const InspectionList = () => {
   }, [inspections, showAll]);
 
   const handleNewInspection = () => {
+    dispatch(setEditMode(false));
+    dispatch(setIsAreaDisabled(false));
     createNewInspectionForm(dispatch, navigate);
   };
-
-  const handleViewDetails = () => {};
 
   return (
     <div className='flex justify-center'>
       <div className='mx-2 max-w-5xl w-full grid grid-cols-12'>
         <div className='col-span-full sm:col-start-2 sm:col-span-10'>
-          <h1 className='title-inspection-list'>Inspection List</h1>
+          <h1 className='title'>Inspection List</h1>
           <div className='filter-button-container'>
             <FilterContainer />
           </div>
-          <button className='transparent-button' onClick={handleNewInspection}>
-            <FontAwesomeIcon icon={faSearch} />
-            New Inspection
-          </button>
           <button
+            className='transparent-button-2'
+            onClick={handleNewInspection}
+          >
+            <FontAwesomeIcon
+              icon={faPlus}
+              className='transparent-button__icon'
+            />
+            <p className='transparent-button-2__text'>New Inspection</p>
+          </button>
+          {/* <button
             className='transparent-button-icon'
             onClick={handleNewInspection}
           >
             <FontAwesomeIcon icon={faSearch} />
-          </button>
+          </button> */}
           <Spin spinning={loading}>
             <div className=''>
+              {showInspections !== undefined && showInspections.length > 0 && (
+                <div className='inspection-item--summary font-bold'>
+                  <h2 className='col-start-1'>Date</h2>
+                  <h2 className='col-start-2'>Location</h2>
+                  <h2 className='col-start-3'>Reported</h2>
+                </div>
+              )}
+
               <ul
                 className={
                   showInspections && showInspections.length > 0
@@ -80,11 +96,11 @@ const InspectionList = () => {
                 }
               >
                 {showInspections !== undefined &&
+                  !loading &&
                   showInspections.map((inspection: InspectionDisplay) => (
                     <InspectionListItem
                       key={inspection.id}
                       inspection={inspection}
-                      onViewDetails={handleViewDetails}
                     />
                   ))}
                 {showInspections !== undefined &&
@@ -99,12 +115,8 @@ const InspectionList = () => {
               >
                 {showAll ? 'Show less' : 'Show more'}
               </button>
+              <div className='mb-2'></div>
             </div>
-            {/* <Pagination
-          current={currentPage}
-          total={inspections.length * 10}
-          onChange={handlePageChange}
-        /> */}
           </Spin>
         </div>
       </div>
