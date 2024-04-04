@@ -58,7 +58,7 @@ const InspectionList = () => {
     <div className='flex justify-center'>
       <div className='mx-2 max-w-5xl w-full grid grid-cols-12'>
         <div className='col-span-full sm:col-start-2 sm:col-span-10'>
-          <h1 className='title-inspection-list'>Inspection List</h1>
+          <h1 className='title'>Inspection List</h1>
           <div className='filter-button-container'>
             <FilterContainer />
           </div>
@@ -80,11 +80,14 @@ const InspectionList = () => {
           </button> */}
           <Spin spinning={loading}>
             <div className=''>
-              <div className='inspection-item--summary font-bold'>
-                <h2 className='col-start-1'>Date</h2>
-                <h2 className='col-start-2'>Location</h2>
-                <h2 className='col-start-3'>Reported</h2>
-              </div>
+              {showInspections !== undefined && showInspections.length > 0 && (
+                <div className='inspection-item--summary font-bold'>
+                  <h2 className='col-start-1'>Date</h2>
+                  <h2 className='col-start-2'>Location</h2>
+                  <h2 className='col-start-3'>Reported</h2>
+                </div>
+              )}
+
               <ul
                 className={
                   showInspections && showInspections.length > 0

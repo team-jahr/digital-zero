@@ -201,10 +201,10 @@ export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
       date: inspection.date,
       isSubmitted: inspection.isSubmitted,
       description: inspection.description,
-      locationName: inspection.location.name,
-      areaName: inspection.area.name,
+      location: inspection.location,
+      area: inspection.area,
       reportedToEmails: inspection.reportedTo,
-      issues: relevantIssues,
+      issues: relevantIssues.length,
     };
     inspectionDisplays.push(inspectionDisplay);
   });

@@ -18,11 +18,11 @@ const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
   };
 
   return (
-    <li className='inspection-item'>
+    <li className='inspection-item col-span-full'>
       {/* <h3 className='font-bold text-xl'>Summary:</h3> */}
       <div className='inspection-item--summary'>
         <article>{formattedDate}</article>
-        <article>{inspection.locationName}</article>
+        <article>{inspection.location.name}</article>
         {inspection.isSubmitted ? (
           <article className='text-green-600 font-semibold'>Yes</article>
         ) : (

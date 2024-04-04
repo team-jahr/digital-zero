@@ -142,7 +142,7 @@ const InspectionForm = () => {
       <IssuesList />
       <AddIssueButton />
       <h1 className='section-title'>
-        <span>Additional informations</span>
+        <span>Additional information</span>
       </h1>
       <EmailFields
         register={register}

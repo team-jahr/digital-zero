@@ -12,17 +12,12 @@ const FilterDrawer = () => {
   const onClose = () => {
     dispatch(setShowDrawer(false));
   };
-  console.log(isDrawerVisible);
   return (
     <Drawer
       title='Filter'
       placement='right'
       onClose={onClose}
-<<<<<<< HEAD
-      open={visible}
-=======
       open={isDrawerVisible}
->>>>>>> main
       width={500}
     >
       <InspectionListFilter />

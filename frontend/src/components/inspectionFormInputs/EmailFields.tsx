@@ -28,7 +28,7 @@ const EmailFields = ({
   });
   return (
     <div className='form-field-container'>
-      <label className='emails-label'>Enter email(s):</label>
+      <label className='emails-label'>Enter email(s)</label>
       {fields.map((field, index) => {
         return (
           <div key={field.id} className='mb-3'>

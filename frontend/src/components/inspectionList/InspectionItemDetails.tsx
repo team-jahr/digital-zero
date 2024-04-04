@@ -33,15 +33,15 @@ const InspectionItemDetails = ({
     >
       <article>
         <div>Date: {inspectionDisplay.date}</div>
-        <div>Location: {inspectionDisplay.locationName}</div>
-        <div>Area: {inspectionDisplay.areaName}</div>
+        <div>Location: {inspectionDisplay.location.name}</div>
+        <div>Area: {inspectionDisplay.area.name}</div>
         <div>Reported: {inspectionDisplay.isSubmitted}</div>
         <div>Reported to: {inspectionDisplay.reportedToEmails} </div>
         <div>Description: {inspectionDisplay.description}</div>
 
-        <div>Issues: {inspectionDisplay.issues.length}</div>
+        <div>Issues: {inspectionDisplay.issues}</div>
       </article>
-      <button className='success-button' onClick={handleEdit}>
+      <button type='button' className='success-button' onClick={handleEdit}>
         Edit
       </button>
     </Drawer>

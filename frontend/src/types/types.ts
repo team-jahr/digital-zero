@@ -47,10 +47,10 @@ export type InspectionDisplay = {
   date: string;
   isSubmitted: boolean;
   description: string;
-  locationName: string;
-  areaName: string;
+  location: Location;
+  area: Area;
   reportedToEmails: string[] | null;
-  issues: Issue[];
+  issues: number;
 };
 
 export type InspectionIssueKeys = {
