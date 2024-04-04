@@ -21,7 +21,7 @@ const About = () => {
       <article className='article-container'>
         <h1>A complete inspection solution for your company</h1>
         <h2>Key Features:</h2>
-        <ul>
+        <ul className='about-list'>
           <li>
             <i className='fas fa-check'></i> User Authentication
           </li>

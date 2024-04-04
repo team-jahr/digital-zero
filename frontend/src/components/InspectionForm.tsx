@@ -129,7 +129,9 @@ const InspectionForm = () => {
       <h1 className='section-title mb-12'>
         <span>General information</span>
       </h1>
-      {<DateInput dateDefault={dateDefault} register={register} />}
+      {dateDefault !== undefined && (
+        <DateInput dateDefault={dateDefault} register={register} />
+      )}
       <LocationSelectInput register={register} resetField={resetField} />
       <AreaSelectInput
         register={register}

@@ -22,6 +22,7 @@ const InspectionItemDetails = ({
   const handleEdit = () => {
     dispatch(setEditMode(true));
     navigate(`/new-inspection/${inspectionDisplay.id}`);
+    window.scrollTo(0, 0);
   };
   return (
     <Drawer
