@@ -1,216 +1,216 @@
 /*-------- BUTTONS -------*/
 
 button[type='submit'] {
-  @apply bg-green-600 hover:bg-green-500 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    @apply bg-green-600 hover:bg-green-500 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
 
 button.success-button {
-  @apply bg-green-600 hover:bg-green-500 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    @apply bg-green-600 hover:bg-green-500 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
 
 button.primary-button {
-  @apply bg-blue-500 hover:bg-blue-400 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    @apply bg-blue-500 hover:bg-blue-400 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
+
 .primary-button--outlined {
-  border: 1px solid;
-  @apply bg-white hover:bg-blue-400 hover:text-white text-blue-500 text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    border: 1px solid;
+    @apply bg-white hover:bg-blue-400 hover:text-white text-blue-500 text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
+
 button.secondary-button {
-  @apply bg-green-500 hover:bg-green-400 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    @apply bg-green-500 hover:bg-green-400 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
 
 button.tertiary-button {
-  @apply bg-gray-400 hover:bg-gray-500 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    @apply bg-gray-400 hover:bg-gray-500 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
 
 button.danger-button {
-  @apply bg-pink-800 hover:bg-pink-700 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+    @apply bg-pink-800 hover:bg-pink-700 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
 
 .buttons-container {
-  @apply flex flex-row justify-between items-center;
+    @apply flex flex-row justify-between items-center;
 }
 
 .buttons-container-fixed {
-  @apply flex flex-row gap-5 justify-between items-center bg-white h-5 pt-1 fixed bottom-5 w-4/5;
+    @apply flex flex-row gap-5 justify-between items-center bg-white h-5 pt-1 fixed bottom-5 w-4/5;
 }
 
 .buttons-upload-container {
-  @apply flex flex-row justify-start items-center bg-white w-full gap-2;
+    @apply flex flex-row justify-start items-center bg-white w-full gap-2;
 }
 
 /*-------- FORM ELEMENTS -------*/
 
 .form {
-  @apply my-5 mx-5 flex flex-col relative max-w-2xl;
+    @apply my-5 mx-5 flex flex-col relative max-w-2xl;
 }
 
 .form-field-container {
-  @apply relative mb-8;
+    @apply relative mb-8;
 }
 
 .form-textarea,
 .form-select,
 .form-input {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  border: 1px solid #dce0e8;
-  @apply block box-border w-full rounded  py-2.5 px-4 outline-0 font-extralight text-sm;
+    border: 1px solid #dce0e8;
+    @apply block box-border w-full rounded  py-2.5 px-4 outline-0 font-extralight text-sm;
 }
 
 .form .form-input {
-  border: 1px solid #dce0e8;
+    border: 1px solid #dce0e8;
 }
 
 .form-select {
-  background: rgba(255, 255, 255, 1) url(./assets/arrow-down.svg) no-repeat
-    scroll calc(100% - 15px) center/8px auto;
-  background-size: 12px;
-  @apply py-3 px-4 appearance-none;
+    background: rgba(255, 255, 255, 1) url(./assets/arrow-down.svg) no-repeat scroll calc(100% - 15px) center/8px auto;
+    background-size: 12px;
+    @apply py-3 px-4 appearance-none;
 }
 
 .form-input[type='date'] {
-  background: rgba(255, 255, 255, 1) url(./assets/arrow-down.svg) no-repeat
-    scroll calc(100% - 15px) center/8px auto;
-  background-size: 12px;
+    background: rgba(255, 255, 255, 1) url(./assets/arrow-down.svg) no-repeat scroll calc(100% - 15px) center/8px auto;
+    background-size: 12px;
 }
 
 .form-textarea {
-  @apply resize-none p-2.5;
+    @apply resize-none p-2.5;
 }
 
 .email-input {
-  @apply w-4/5;
+    @apply w-4/5;
 }
 
 .form-email-field {
-  @apply flex items-center gap-5;
+    @apply flex items-center gap-5;
 }
 
 .emails-label {
-  @apply text-left block text-sm font-extralight text-gray-400 mb-2;
+    @apply text-left block text-sm font-extralight text-gray-400 mb-2;
 }
 
 .form-input[type='date'] {
-  padding: 11px 15px;
-  @apply bg-white w-full text-left;
+    padding: 11px 15px;
+    @apply bg-white w-full text-left;
 }
 
 .form-label {
-  left: 15px;
-  top: -12px;
-  z-index: 2;
-  @apply text-gray-400 text-sm bg-white absolute py-0 px-2 font-extralight;
+    left: 15px;
+    top: -12px;
+    z-index: 2;
+    @apply text-gray-400 text-sm bg-white absolute py-0 px-2 font-extralight;
 }
 
 .form-label.disabled {
-  background: linear-gradient(180deg, #fff 58%, rgb(249 250 251) 42%);
+    background: linear-gradient(180deg, #fff 58%, rgb(249 250 251) 42%);
 }
 
 .form-select:disabled,
 .form-input[type='date']:disabled {
-  cursor: not-allowed;
-  color: #9ca3af;
-  @apply bg-gray-50;
+    cursor: not-allowed;
+    color: #9ca3af;
+    @apply bg-gray-50;
 }
 
 .form-input[type='date']:disabled {
-  color: #b9b3c7;
-  border: 1px solid #e6e9ee;
+    color: #b9b3c7;
+    border: 1px solid #e6e9ee;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 /*-------- FORM ERRORS -------*/
 
 .form p {
-  @apply text-pink-800 text-xs font-extralight;
+    @apply text-pink-800 text-xs font-extralight;
 }
 
 .form p::before {
-  content: '⚠';
-  @apply inline pr-1;
+    content: '⚠';
+    @apply inline pr-1;
 }
 
 .error,
 .form .error {
-  @apply border-l-pink-700 border-l-4;
+    @apply border-l-pink-700 border-l-4;
 }
 
 /*-------- SECTIONS -------*/
 
 .section-title {
-  border-bottom: 1px solid #dfdede;
-  line-height: 0.1em;
-  margin: 30px auto;
-  @apply w-full text-center text-pink-800 mt-10 sm:mt-12;
+    border-bottom: 1px solid #dfdede;
+    line-height: 0.1em;
+    margin: 30px auto;
+    color: #484646;
+    @apply w-full text-center mt-10 sm:mt-12;
 }
 
 .section-title span {
-  @apply bg-white py-0 px-4;
+    @apply bg-white py-0 px-4;
 }
 
 /*-------- RESPONSIVE -------*/
 
 @media only screen and (min-width: 600px) {
-  .form {
-    @apply my-5 mx-auto flex flex-col relative max-w-2xl;
-  }
+    .form {
+        @apply my-5 mx-auto flex flex-col relative max-w-2xl;
+    }
 
-  .buttons-container-fixed {
-    width: 450px;
-    @apply flex flex-row gap-5 justify-between items-center bg-white h-5 pt-1 fixed bottom-5;
-  }
+    .buttons-container-fixed {
+        width: 450px;
+        @apply flex flex-row gap-5 justify-between items-center bg-white h-5 pt-1 fixed bottom-5;
+    }
 
-  .form-input[type='date'] {
-    background: rgba(255, 255, 255, 1) url(./assets/calendar.png) no-repeat
-      scroll calc(100% - 15px) center/8px auto;
-    background-size: 12px;
-  }
+    .form-input[type='date'] {
+        background: rgba(255, 255, 255, 1) url(./assets/calendar.png) no-repeat scroll calc(100% - 15px) center/8px auto;
+        background-size: 12px;
+    }
 
-  .section-title {
-    @apply w-3/5;
-  }
+    .section-title {
+        @apply w-3/5;
+    }
 
-  .form-input[type='date']::-webkit-calendar-picker-indicator {
-    background: transparent;
-    bottom: 0;
-    color: transparent;
-    cursor: pointer;
-    height: auto;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: auto;
-  }
+    .form-input[type='date']::-webkit-calendar-picker-indicator {
+        background: transparent;
+        bottom: 0;
+        color: transparent;
+        cursor: pointer;
+        height: auto;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+    }
 }
 
 @media only screen and (max-width: 600px) {
-  .form-input[type='date'] {
-    -webkit-appearance: none;
-  }
+    .form-input[type='date'] {
+        -webkit-appearance: none;
+    }
 
-  .form-input[type='date']::-webkit-inner-spin-button,
-  .form-input[type='date']::-webkit-calendar-picker-indicator {
-    color: white;
-    background-color: white;
-  }
+    .form-input[type='date']::-webkit-inner-spin-button,
+    .form-input[type='date']::-webkit-calendar-picker-indicator {
+        color: white;
+        background-color: white;
+    }
 }
 
 .listOfIssues-title {
-  @apply my-3 font-extralight text-sm;
+    @apply my-3 font-extralight text-sm;
 }
 
 .title {
-  text-align: center;
-  font-size: 2.5rem;
-  border-bottom: 1px solid #ccc;
-  @apply mb-12 mt-4 py-4;
+    text-align: center;
+    font-size: 2.5rem;
+    border-bottom: 1px solid #ccc;
+    @apply mb-12 mt-4 py-4;
 }

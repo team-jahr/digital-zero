@@ -64,7 +64,6 @@ const InspectionForm = () => {
         .then((inspection) => {
           const date = inspection.date.substring(0, 10);
           setValue('date', date);
-          setValue('area', inspection.area);
           dispatch(setDefaultLocation(inspection.location));
           dispatch(setAreaValue(inspection.area.name));
           setAreaDefault(inspection.area);

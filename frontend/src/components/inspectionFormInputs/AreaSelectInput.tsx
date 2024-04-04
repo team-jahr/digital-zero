@@ -18,7 +18,6 @@ const AreaSelectInput = ({
   errors,
   defaultValue,
 }: AreaSelectInputProp) => {
-  console.log(defaultValue);
   const areas = useSelector((state: RootState) => state.inspectionForm.areas);
   const dispatch = useDispatch<AppDispatch>();
   const areaDisabled = useSelector(
