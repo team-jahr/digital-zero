@@ -16,7 +16,7 @@ const About = () => {
   };
 
   return (
-    <div className='home-page-container'>
+    <div className='home-page-container mt-20'>
       <div className='background'></div>
       <article className='article-container'>
         <h1>A complete inspection solution for your company</h1>

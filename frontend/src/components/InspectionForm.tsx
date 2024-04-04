@@ -126,8 +126,8 @@ const InspectionForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='form'>
-      <h1 className='section-title'>
-        <span>Basic data</span>
+      <h1 className='section-title mb-12'>
+        <span>General information</span>
       </h1>
       {<DateInput dateDefault={dateDefault} register={register} />}
       <LocationSelectInput register={register} resetField={resetField} />

@@ -34,7 +34,7 @@ const MainApp = () => {
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />
-      <h1 className='title border-none text-2xl mb-0 pb-0'>
+      <h1 className='title border-none text-2xl mb-0 pb-0 mt-20'>
         {' '}
         Inspection nr {formId}
       </h1>

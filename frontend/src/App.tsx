@@ -8,12 +8,14 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route path='/about/*' element={<About />} />
-        <Route path='/new-inspection/*' element={<MainApp />} />
-        <Route path='/' element={<InspectionList />} />
-        <Route path='/filtered/*' element={<InspectionList />} />
-      </Routes>
+      <div className='mt-12'>
+        <Routes>
+          <Route path='/about/*' element={<About />} />
+          <Route path='/new-inspection/*' element={<MainApp />} />
+          <Route path='/' element={<InspectionList />} />
+          <Route path='/filtered/*' element={<InspectionList />} />
+        </Routes>
+      </div>
     </>
   );
 };
