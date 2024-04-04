@@ -30,7 +30,7 @@ const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
         )}
 
         <button
-          className='col-start-2 sm:col-start-4 max-w-28 primary-button'
+          className='col-start-2 sm:col-start-4 max-w-28 primary-button--outlined'
           onClick={handleDrawer}
         >
           View Details

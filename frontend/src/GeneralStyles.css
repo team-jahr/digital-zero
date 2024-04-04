@@ -11,7 +11,10 @@ button.success-button {
 button.primary-button {
   @apply bg-blue-500 hover:bg-blue-400 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }
-
+.primary-button--outlined {
+  border: 1px solid;
+  @apply bg-white hover:bg-blue-400 hover:text-white text-blue-500 text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
+}
 button.secondary-button {
   @apply bg-green-500 hover:bg-green-400 text-white text-sm font-extralight px-4 py-2 rounded w-40 mb-5 mt-5;
 }

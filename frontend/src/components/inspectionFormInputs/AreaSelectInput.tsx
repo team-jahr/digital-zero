@@ -56,7 +56,7 @@ const AreaSelectInput = ({
       {areaDisabled && (
         <button
           type='button'
-          className='tertiary-button'
+          className='primary-button'
           onClick={() => dispatch(setIsAreaDisabled(false))}
         >
           Edit section
