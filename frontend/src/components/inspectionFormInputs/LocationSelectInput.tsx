@@ -49,6 +49,7 @@ const LocationSelectInput = ({
             dispatch(setIsAreaDisabled(false));
             resetField('area');
             dispatch(setAreaValue(''));
+
             fetchAllAreas(dispatch, selectedLocation[0].id);
             dispatch(setSelectedLocation(selectedLocation[0]));
           },

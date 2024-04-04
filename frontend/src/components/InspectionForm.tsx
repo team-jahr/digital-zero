@@ -12,11 +12,13 @@ import {
   submitInspectionForm,
 } from '../api/api.ts';
 import {
+  setAllAreas,
   setAreaValue,
   setDefaultLocation,
   setIsAreaDisabled,
   setIsSubmitted,
   setListOfIssues,
+  setSelectedLocation,
 } from '../store/slices/InspectionFormSlice.ts';
 import LocationSelectInput from './inspectionFormInputs/LocationSelectInput.tsx';
 import AreaSelectInput from './inspectionFormInputs/AreaSelectInput.tsx';
@@ -31,7 +33,6 @@ import {
 import { setFormId } from '../store/slices/AppSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { setEditMode } from '../store/slices/EditModeSlice.ts';
 
 const InspectionForm = () => {
   const selectedLocation = useSelector(
@@ -58,37 +59,6 @@ const InspectionForm = () => {
   });
   const [descriptionDefault, setDescriptionDefault] = useState<string>('');
 
-  useEffect(() => {
-    if (editMode && formId !== undefined) {
-      getInspection(formId)
-        .then((inspection) => {
-          const date = inspection.date.substring(0, 10);
-          setValue('date', date);
-          dispatch(setDefaultLocation(inspection.location));
-          dispatch(setAreaValue(inspection.area.name));
-          setAreaDefault(inspection.area);
-          dispatch(setIsAreaDisabled(true));
-          setDescriptionDefault(inspection.description);
-        })
-        .then(() => dispatch(setEditMode(false)));
-    }
-  }, [editMode, dispatch, formId]);
-
-  useEffect(() => {
-    if (formId) {
-      fetchInspectionIssues(formId)
-        .then((issues) => dispatch(setListOfIssues(issues)))
-        .then(() => dispatch(setPictures([])))
-        .then(() => dispatch(setEnlargedImage(null)))
-        .catch(() => console.log('Error when fetching inspection issues'));
-    }
-  }, [formId, dispatch]);
-
-  useEffect(() => {
-    fetchAllLocations(dispatch, defaultLocation);
-    fetchAllAreas(dispatch, selectedLocation.id);
-  }, [defaultLocation, selectedLocation, dispatch]);
-
   const {
     register,
     handleSubmit,
@@ -103,16 +73,58 @@ const InspectionForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (editMode && formId !== undefined) {
+      getInspection(formId).then((inspection) => {
+        const date = inspection.date.substring(0, 10);
+        setValue('date', date);
+
+        fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/areas?location=${
+            inspection.location.id
+          }`,
+        )
+          .then((res) => res.json())
+          .then((res) => res.filter((el: Area) => el.id !== inspection.area.id))
+          .then((res) => {
+            dispatch(setAllAreas(res));
+          });
+
+        dispatch(setDefaultLocation(inspection.location));
+        dispatch(setSelectedLocation(inspection.location));
+        dispatch(setAreaValue(inspection.area.name));
+        setAreaDefault(inspection.area);
+        dispatch(setIsAreaDisabled(true));
+
+        setDescriptionDefault(inspection.description);
+      });
+    }
+  }, [editMode, dispatch, formId, setValue]);
+  useEffect(() => {
+    if (formId) {
+      fetchInspectionIssues(formId)
+        .then((issues) => dispatch(setListOfIssues(issues)))
+        .then(() => dispatch(setPictures([])))
+        .then(() => dispatch(setEnlargedImage(null)))
+        .catch(() => console.log('Error when fetching inspection issues'));
+    }
+  }, [formId, dispatch]);
+
+  useEffect(() => {
+    fetchAllLocations(dispatch, defaultLocation);
+    if (!editMode) {
+      fetchAllAreas(dispatch, selectedLocation.id);
+    }
+  }, [defaultLocation, selectedLocation, dispatch, editMode]);
+
   const onSubmit: SubmitHandler<InspectionFormInputs> = (data) => {
     if (formId) {
-      // try {
       submitInspectionForm(data, locations, areas, formId, isSubmitted);
       dispatch(setListOfIssues([]));
       dispatch(setFormId(undefined));
       toast.success('Success! Redirecting to the home page...');
       dispatch(setIsAreaDisabled(false));
       dispatch(setAreaValue(''));
-      // }
     } else {
       toast.error('Error: Unable to connect this inspection to database');
     }
@@ -127,17 +139,14 @@ const InspectionForm = () => {
       <h1 className='section-title mb-12'>
         <span>General information</span>
       </h1>
-      {/*{dateDefault !== undefined && (*/}
       <DateInput register={register} />
       {/*)/!*}*!/*/}
       <LocationSelectInput register={register} resetField={resetField} />
-      {/*{areaDefault !== undefined && (*/}
       <AreaSelectInput
         register={register}
         errors={errors}
         defaultValue={areaDefault}
       />
-      {/*)}*/}
       <h1 className='section-title'>
         <span>List of issues</span>
       </h1>

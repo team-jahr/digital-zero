@@ -11,7 +11,6 @@ const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
   const inspectionDate = new Date(inspection.date);
   const formattedDate = formatDate(inspectionDate);
   const [detailed, setDetailed] = useState<boolean>(false);
-  // if (detailed) console.log(inspection);
 
   const handleDrawer = () => {
     setDetailed(!detailed);
@@ -19,7 +18,6 @@ const InspectionListItem = ({ inspection }: InspectionListItemProps) => {
 
   return (
     <li className='inspection-item col-span-full'>
-      {/* <h3 className='font-bold text-xl'>Summary:</h3> */}
       <div className='inspection-item--summary'>
         <article>{formattedDate}</article>
         <article>{inspection.location.name}</article>

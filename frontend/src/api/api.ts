@@ -189,7 +189,7 @@ export const getInspectionDisplays = async (): Promise<InspectionDisplay[]> => {
 
   const inspectionDisplays: InspectionDisplay[] = [];
   allInspections.forEach((inspection) => {
-    const relevantIssueIds = inspection.inspectionIssueKeys.map(
+    const relevantIssueIds: number[] = inspection.inspectionIssueKeys.map(
       (el) => el.issueId,
     );
     const relevantIssues = allIssues.filter((issue) =>
