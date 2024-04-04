@@ -73,31 +73,32 @@ public class InspectionService {
         findInspection.setDescription(inspection.description());
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         List<IssueDTO> inspectionIssues = getIssuesForForm(inspection.id()).issues();
-        StringBuilder issuesList = new StringBuilder();
-        Email mail = new Email();
-        issuesList.append(String.format(
-                "<div>Inspection id: " + inspection.id() + "</div>" + "Inspection date: " + inspection.date()
-                        .format(myFormatObj) + "%n" + "Inspection description: "
-                        + inspection.description() + "%n"));
-        for (IssueDTO inspectionIssue : inspectionIssues) {
-            issuesList.append(String.format(
-                    "----------------------------------------------" + "%n" + "Title: "
-                            + inspectionIssue.title() + "%n" + "Severity: "
-                            + inspectionIssue.severity() + "%n" + "Description: "
-                            + inspectionIssue.description() + "%n"
-                            + "----------------------------------------------" + "%n"));
-            blobClient.getIssueImagesByList(inspectionIssue.images(),
-                    inspectionIssue.id(),
-                    mail,
-                    inspectionIssue.title()
-            );
 
-        }
         repo.save(findInspection);
         if (inspection.isSubmitted()) {
             System.out.println("test = ");
             try {
-
+                StringBuilder issuesList = new StringBuilder();
+                Email mail = new Email();
+                issuesList.append(String.format("<div><h3>Inspection nr <span style=\"color:#60A5FA;\">%s</span></h3></div>", inspection.id()));
+                issuesList.append(String.format("<div><h3 style=\"color:black;\">Date: %s </h3>", inspection.date()
+                        .format(myFormatObj)));
+                issuesList.append(String.format("<div><h3>Description: %s</h3></div>", inspection.description()));
+                issuesList.append(String.format("<div><h3>Inspector: Johan Hedberg</h3></div>"));
+                issuesList.append(String.format("<div><h3>List of issues:</h3></div>"));
+                for (IssueDTO inspectionIssue : inspectionIssues) {
+                    issuesList.append(String.format(
+                            "<div style=\"width: 200px; border-bottom: 1px solid black; height:2px\"></div></br>" +
+                                    "<div><h3>Title: <span style=\"color:#60A5FA;\">%s</span><h3></div>" +
+                                    "<div><h3>Severity: <span style=\"color:#60A5FA;\">%s</span><h3></div>" +
+                                    "<div><h3>Description: <span style=\"color:#60A5FA;\">%s</span></h3></div></br>",
+                            inspectionIssue.title(), inspectionIssue.severity(), inspectionIssue.description()));
+                    blobClient.getIssueImagesByList(inspectionIssue.images(),
+                            inspectionIssue.id(),
+                            mail,
+                            inspectionIssue.title()
+                    );
+                }
                 mail.setUpServerProperties();
                 mail.draftEmail(InspectionDTO.joinEmail(inspection.reportedTo()),
                         issuesList.toString(),
@@ -126,9 +127,9 @@ public class InspectionService {
             }).toList();
         } else if (location == null && date != null) {
 
-            return getInspections().stream().filter(el ->{
+            return getInspections().stream().filter(el -> {
                         System.out.println("el.getDate.toLocalDate() = " + el.getDate().toLocalDate());
-                    return el.getDate().toLocalDate().equals(parsedDate(date)) && el.isSubmitted() == submitted;
+                        return el.getDate().toLocalDate().equals(parsedDate(date)) && el.isSubmitted() == submitted;
                     }
             ).toList();
         } else if (location != null && date == null) {
