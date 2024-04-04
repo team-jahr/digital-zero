@@ -4,7 +4,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   FilterInspectionsFormInputs,
   Inspection,
-  InspectionDTO,
   InspectionDisplay,
 } from '../../types/types.ts';
 import { RootState } from '../../store/store.ts';
