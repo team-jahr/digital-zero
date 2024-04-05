@@ -1,5 +1,7 @@
 package org.jahr.backend.inspection.service;
 
+import com.azure.communication.email.models.EmailAttachment;
+import com.azure.communication.email.models.EmailMessage;
 import lombok.RequiredArgsConstructor;
 import org.jahr.backend.Email;
 import org.jahr.backend.area.exception.AreaNotFoundException;
@@ -20,11 +22,12 @@ import org.jahr.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -35,6 +38,7 @@ public class InspectionService {
     private final UserRepository userRepository;
     private final AreaRepository areaRepository;
     private final IssueBlobClient blobClient;
+    private final Email mail;
 
     public List<Inspection> getInspections() {
         return repo.findAll();
@@ -75,53 +79,78 @@ public class InspectionService {
 
         repo.save(findInspection);
         if (inspection.isSubmitted()) {
-            try {
-                StringBuilder issuesList = new StringBuilder();
-                Email mail = new Email();
+//            try {
+            StringBuilder issuesList = new StringBuilder();
+//                Email mail = new Email();
+            issuesList.append(String.format("<div><h3>Inspection nr <span " + "style=\"color" +
+                                                    ":#60A5FA;"
+                                                    + "\">%s</span></h3></div>",
+                                            inspection.id()
+            ));
+            issuesList.append(String.format("<div><h3 style=\"color:black;\">Date: %s </h3>",
+                                            inspection.date().format(myFormatObj)
+            ));
+            issuesList.append(String.format("<div><h3>Description: %s</h3></div>",
+                                            inspection.description()
+            ));
+            issuesList.append(String.format("<div><h3>Inspector: Johan Hedberg</h3></div>"));
+            issuesList.append(String.format("<div><h3>List of issues:</h3></div>"));
+            List<List<EmailAttachment>> allIssueAttachments = new ArrayList<>();
+            for (IssueDTO inspectionIssue : inspectionIssues) {
                 issuesList.append(String.format(
-                        "<div><h3>Inspection nr <span style=\"color:#60A5FA;"
-                                + "\">%s</span></h3></div>",
-                        inspection.id()
+                        "<div style=\"width: 200px; border-bottom: 1px solid black; "
+                                + "height:2px\"></div></br>"
+                                + "<div><h3>Title: <span style=\"color:#60A5FA;"
+                                + "\">%s</span><h3></div>"
+                                + "<div><h3>Severity: <span style=\"color:#60A5FA;"
+                                + "\">%s</span><h3></div>"
+                                + "<div><h3>Description: <span style=\"color:#60A5FA;"
+                                + "\">%s</span></h3></div></br>",
+                        inspectionIssue.title(),
+                        inspectionIssue.severity(),
+                        inspectionIssue.description()
                 ));
-                issuesList.append(String.format(
-                        "<div><h3 style=\"color:black;\">Date: %s </h3>",
-                        inspection.date().format(myFormatObj)
-                ));
-                issuesList.append(String.format(
-                        "<div><h3>Description: %s</h3></div>",
-                        inspection.description()
-                ));
-                issuesList.append(String.format("<div><h3>Inspector: Johan Hedberg</h3></div>"));
-                issuesList.append(String.format("<div><h3>List of issues:</h3></div>"));
-                for (IssueDTO inspectionIssue : inspectionIssues) {
-                    issuesList.append(String.format(
-                            "<div style=\"width: 200px; border-bottom: 1px solid black; "
-                                    + "height:2px\"></div></br>"
-                                    + "<div><h3>Title: <span style=\"color:#60A5FA;"
-                                    + "\">%s</span><h3></div>"
-                                    + "<div><h3>Severity: <span style=\"color:#60A5FA;"
-                                    + "\">%s</span><h3></div>"
-                                    + "<div><h3>Description: <span style=\"color:#60A5FA;"
-                                    + "\">%s</span></h3></div></br>",
-                            inspectionIssue.title(),
-                            inspectionIssue.severity(),
-                            inspectionIssue.description()
-                    ));
-                    blobClient.getIssueImagesByList(inspectionIssue.images(),
-                                                    inspectionIssue.id(),
-                                                    mail,
-                                                    inspectionIssue.title()
+//                    blobClient.getIssueImagesByList(inspectionIssue.images(),
+//                                                    inspectionIssue.id(),
+//                                                    mail,
+//                                                    inspectionIssue.title()
+//                    );
+                List<String> issueImages;
+                if (inspectionIssue.images().isEmpty() || inspectionIssue.images()
+                        .get(0)
+                        .isEmpty()) {
+                    issueImages = new ArrayList<>();
+                } else {
+                    issueImages = blobClient.getIssueImagesByList(inspectionIssue.images(),
+                                                                  inspectionIssue.id()
                     );
                 }
-                mail.setUpServerProperties();
-                mail.draftEmail(InspectionDTO.joinEmail(inspection.reportedTo()),
-                                issuesList.toString(),
-                                inspection.id().toString()
-                );
-                mail.sendEmail();
-            } catch (IOException e) {
-                throw new RuntimeException("Error at email");
+                List<EmailAttachment> attachments =
+                        mail.formatMessageImages(issueImages, inspectionIssue.title());
+                allIssueAttachments.add(attachments);
             }
+
+            List<EmailAttachment> finalAttachments =
+                    allIssueAttachments.stream().flatMap(Collection::stream).toList();
+
+            String[] recipients = inspection.reportedTo().toArray(new String[0]);
+            EmailMessage message = mail.draftEmailMessage(recipients,
+                                                          issuesList.toString(),
+                                                          inspection.id().toString(),
+                                                          finalAttachments
+            );
+
+            mail.sendEmail(message);
+
+//                mail.setUpServerProperties();
+//                mail.draftEmail(InspectionDTO.joinEmail(inspection.reportedTo()),
+//                                issuesList.toString(),
+//                                inspection.id().toString()
+//                );
+//                mail.sendEmail();
+//            } catch (IOException e) {
+//                throw new RuntimeException("Error at email");
+//            }
         }
     }
 
@@ -134,9 +163,7 @@ public class InspectionService {
 
 
     public List<Inspection> getIssuesSortedByLocation(
-            Integer location,
-            boolean submitted,
-            String date
+            Integer location, boolean submitted, String date
     ) {
         if (location != null && date != null) {
             return getInspections().stream().filter(el -> {

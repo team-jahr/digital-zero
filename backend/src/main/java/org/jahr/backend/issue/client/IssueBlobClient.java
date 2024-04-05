@@ -4,7 +4,6 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import org.jahr.backend.Email;
 import org.jahr.backend.issue.model.Issue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -102,7 +101,7 @@ public class IssueBlobClient {
         return String.join(",", issueImagesData);
     }
 
-    public void getIssueImagesByList(List<String> images, int id, Email email, String title)
+    public List<String> getIssueImagesByList(List<String> images, int id)
             throws MessagingException {
         BlobServiceClient blobServiceClient =
                 new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
@@ -114,7 +113,9 @@ public class IssueBlobClient {
         // This should already be a list in issue object
 //        List<String> issueImagesNames = List.of(issue.getImgRef());
         List<String> issueImagesData = new ArrayList<>();
-
+        System.out.println("images = " + images);
+        System.out.println("images.get(0).equals(\"\") = " + images.get(0).isEmpty());
+        System.out.println("images.get(0).equals(\"\") = " + (images.get(0) == null));
         for (int i = 0; i < images.size(); i++) {
             String blobName = ("" + id) + i + ".png";
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
@@ -126,7 +127,8 @@ public class IssueBlobClient {
 
             issueImagesData.add(imgData);
         }
-        email.addImgToEmail(String.join(",", issueImagesData), id, title);
+//        email.addImgToEmail(String.join(",", issueImagesData), id, title);
+        return issueImagesData;
     }
 }
 
