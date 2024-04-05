@@ -28,6 +28,7 @@ env:
   BLOB_CONTAINER_NAME: ${{ secrets.BLOB_CONTAINER_NAME }}
   EMAIL_USER: ${{ secrets.EMAIL_USER }}
   EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+  EMAIL_CONNECTION_STRING: ${{ secrets.EMAIL_CONNECTION_STRING }}
 
 on:
   push:
